@@ -16,6 +16,7 @@ const TAX_CONFIG = {
             BANK_INTEREST: 0.10
         },
         minimumWage: 4050,
+        minimumWageNote: 'Neschimbat din Iulie 2024 (crește +6.8% în 2026)',
         legislation: 'Codul Fiscal 2025'
     },
     2026: {
