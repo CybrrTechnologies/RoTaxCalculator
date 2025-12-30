@@ -35,8 +35,8 @@ const TAX_CONFIG = {
     }
 };
 
-// Current active year (default 2026)
-let ACTIVE_TAX_YEAR = 2026;
+// Current active year (default 2025)
+let ACTIVE_TAX_YEAR = 2025;
 
 // Active tax rates (updated when year changes)
 let TAX_RATES = TAX_CONFIG[ACTIVE_TAX_YEAR].rates;
