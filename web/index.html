@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoTaxCalculator - Calculator Taxe Romania 2026</title>
+
+    <!-- Google Analytics (GA4) -->
+    <!--
+    Uncomment and replace G-XXXXXXXXXX with your actual Measurement ID from Google Analytics
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    -->
+
+    <!-- Google AdSense -->
+    <!--
+    Uncomment and replace ca-pub-XXXXXXXXXXXXXXXX with your AdSense publisher ID
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+         crossorigin="anonymous"></script>
+    -->
+
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>RoTaxCalculator</h1>
+            <p class="subtitle">Calculator Taxe Investitii Romania</p>
+        </header>
+
+        <!-- Tax Year Selector -->
+        <div class="tax-year-selector">
+            <div class="year-toggle">
+                <button type="button" class="year-btn" data-year="2025">2025</button>
+                <button type="button" class="year-btn active" data-year="2026">2026</button>
+            </div>
+            <div class="year-info" id="yearInfo">
+                <p><strong>An Fiscal: 2026</strong></p>
+                <p>Salariu Minim: <strong>Ian-Iun: 4,050 RON, Iul-Dec: 4,325 RON (+6.8%)</strong></p>
+                <p>Legislație: Legea 239/2025</p>
+            </div>
+        </div>
+
+        <main>
+            <form id="taxForm">
+                <!-- Dividends Section -->
+                <section class="form-section" data-section="dividends" draggable="false">
+                    <div class="section-header">
+                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
+                        <span class="collapse-icon">▶</span>
+                        <input type="checkbox" id="enableDividends" class="section-toggle">
+                        <h2>
+                            <label for="enableDividends">
+                                💰 Dividende
+                            </label>
+                        </h2>
+                    </div>
+
+                    <div class="section-content collapsed">
+                        <div class="form-group">
+                            <label for="domesticDividends">Dividende Romanesti (RON brut)</label>
+                            <input type="number" id="domesticDividends" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small>Taxa: 16% (reținută la sursă)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="foreignDividends">Dividende Straine (RON brut)</label>
+                            <input type="number" id="foreignDividends" step="0.01" min="0" placeholder="0.00" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="foreignTaxPaid">Taxa Plătită în Străinătate (RON)</label>
+                            <input type="number" id="foreignTaxPaid" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small>Credit fiscal disponibil (max 16%)</small>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Capital Gains Section -->
+                <section class="form-section" data-section="capitalGains" draggable="false">
+                    <div class="section-header">
+                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
+                        <span class="collapse-icon">▶</span>
+                        <input type="checkbox" id="enableCapitalGains" class="section-toggle">
+                        <h2>
+                            <label for="enableCapitalGains">
+                                📈 Câștiguri din Capital
+                            </label>
+                        </h2>
+                    </div>
+
+                    <div class="section-content collapsed">
+                        <h3>Broker Românesc (XTB, Tradeville, BT Trade)</h3>
+                        <div class="form-group">
+                            <label for="roGainsShort">Câștig &lt; 365 zile (RON)</label>
+                            <input type="number" id="roGainsShort" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small>Taxa: 6% (reținută la sursă)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="roGainsLong">Câștig ≥ 365 zile (RON)</label>
+                            <input type="number" id="roGainsLong" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small>Taxa: 3% (reținută la sursă)</small>
+                        </div>
+
+                        <h3>Broker Străin (IBKR, Trading212, eToro)</h3>
+                        <div class="form-group">
+                            <label for="foreignGains">Câștiguri Totale (RON)</label>
+                            <input type="number" id="foreignGains" step="0.01" min="0" placeholder="0.00" disabled>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="foreignLosses">Pierderi Anul Curent (RON)</label>
+                            <input type="number" id="foreignLosses" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small>Se pot compensa cu câștigurile</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="priorYearLosses">Pierderi Reportate din Anul Trecut (RON)</label>
+                            <input type="number" id="priorYearLosses" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small>Se pot folosi 70% din valoare (până la 7 ani)</small>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Crypto Section -->
+                <section class="form-section" data-section="crypto" draggable="false">
+                    <div class="section-header">
+                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
+                        <span class="collapse-icon">▶</span>
+                        <input type="checkbox" id="enableCrypto" class="section-toggle">
+                        <h2>
+                            <label for="enableCrypto">
+                                🪙 Criptomonede
+                            </label>
+                        </h2>
+                    </div>
+
+                    <div class="section-content collapsed">
+                        <div class="form-group">
+                            <label for="cryptoGains">Câștiguri Totale Criptomonede (RON)</label>
+                            <input type="number" id="cryptoGains" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small>Taxa: 16% (scutire: &lt;200 RON/tranzacție ȘI &lt;600 RON/an)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cryptoExempt">Câștiguri Sub Prag de Scutire (RON)</label>
+                            <input type="number" id="cryptoExempt" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small>Tranzacții cu câștig &lt;200 RON fiecare</small>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Rental Income Section -->
+                <section class="form-section" data-section="rental" draggable="false">
+                    <div class="section-header">
+                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
+                        <span class="collapse-icon">▶</span>
+                        <input type="checkbox" id="enableRental" class="section-toggle">
+                        <h2>
+                            <label for="enableRental">
+                                🏠 Venituri din Chirii
+                            </label>
+                        </h2>
+                    </div>
+
+                    <div class="section-content collapsed">
+                        <div class="form-group">
+                            <label for="rentalIncome">Chirii Anuale Brute (RON)</label>
+                            <input type="number" id="rentalIncome" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small id="rentalRateText">Taxa efectivă: 7% (forfet 30% + 10% pe net)</small>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Interest Section -->
+                <section class="form-section" data-section="interest" draggable="false">
+                    <div class="section-header">
+                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
+                        <span class="collapse-icon">▶</span>
+                        <input type="checkbox" id="enableInterest" class="section-toggle">
+                        <h2>
+                            <label for="enableInterest">
+                                💵 Dobânzi & Altele
+                            </label>
+                        </h2>
+                    </div>
+
+                    <div class="section-content collapsed">
+                        <div class="form-group">
+                            <label for="bankInterest">Dobânzi Bancare Brute (RON)</label>
+                            <input type="number" id="bankInterest" step="0.01" min="0" placeholder="0.00" disabled>
+                            <small>Taxa: 10% (reținută la sursă). Exclud titluri de stat (Fidelis, Tezaur)</small>
+                        </div>
+                    </div>
+                </section>
+
+                <button type="button" id="calculateBtn" class="btn-primary">Vezi Rezultate ↓</button>
+                <button type="button" id="clearBtn" class="btn-secondary">Șterge Tot</button>
+            </form>
+
+            <!-- Google AdSense - Ad Placeholder (between form and results) -->
+            <!--
+            Example AdSense ad unit - Uncomment and configure after approval
+            <div style="text-align: center; margin: 30px 0;">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="YYYYYYYYYY"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            -->
+
+            <!-- Results Section -->
+            <section id="results" class="results-section hidden">
+                <h2>📊 Rezultate</h2>
+
+                <div class="result-card">
+                    <h3>Impozite pe Tip de Venit</h3>
+                    <table class="results-table">
+                        <thead>
+                            <tr>
+                                <th>Tip Venit</th>
+                                <th>Bază Impozabilă</th>
+                                <th>Rată</th>
+                                <th>Impozit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taxBreakdown"></tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="3"><strong>Total Impozit</strong></td>
+                                <td id="totalTax"><strong>0 RON</strong></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <p class="cass-amount">Impozit Datorat: <strong id="totalTaxToPay">0 RON</strong></p>
+                </div>
+
+                <div class="result-card">
+                    <h3>Contributie CASS (Asigurări Sociale de Sănătate)</h3>
+                    <div class="cass-info">
+                        <p style="display: flex; align-items: center; gap: 8px; cursor: pointer;" id="netIncomeToggle">
+                            <span class="cass-collapse-icon">▶</span>
+                            <span>Venit Net Total: <strong id="cassNetIncome">0 RON</strong></span>
+                        </p>
+                        <div class="cass-brackets-detail" id="netIncomeDetail" style="display: none; margin-top: 10px;">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                        <p style="display: flex; align-items: center; gap: 8px; cursor: pointer;" id="cassBracketToggle">
+                            <span class="cass-collapse-icon">▶</span>
+                            <span>Prag CASS: <strong id="cassBracket">-</strong></span>
+                        </p>
+                        <div class="cass-brackets-detail" id="cassBracketsDetail" style="display: none; margin-top: 10px;">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                        <p class="cass-amount">CASS Datorat: <strong id="cassAmount">0 RON</strong></p>
+                        <small class="cass-explanation" id="cassExplanation"></small>
+                    </div>
+                </div>
+
+                <div class="result-card summary-card">
+                    <h3>💳 Total de Plată (Ce Trebuie Să Plătești Tu)</h3>
+                    <div class="summary-grid">
+                        <div class="summary-item">
+                            <span>Impozit de Plătit:</span>
+                            <span id="summaryTax" class="summary-value">0 RON</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>CASS:</span>
+                            <span id="summaryCass" class="summary-value">0 RON</span>
+                        </div>
+                        <div class="summary-item total">
+                            <span>TOTAL DE PLATĂ:</span>
+                            <span id="summaryTotal" class="summary-value">0 RON</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Termen plată:</span>
+                            <span class="deadline">25 Mai 2026</span>
+                        </div>
+                    </div>
+                    <small style="display: block; margin-top: 15px; color: #64748b;">* Exclud impozitele reținute la sursă (deja plătite)</small>
+                </div>
+
+                <button type="button" id="printBtn" class="btn-primary">Printează / Salvează PDF</button>
+            </section>
+        </main>
+
+        <footer>
+            <p><small>RoTaxCalculator - Calculator neoficial pentru estimare. Pentru situații complexe, consultați un expert contabil autorizat.</small></p>
+            <p><small>Conform legislației 2026 (Legea 239/2025). Ultima actualizare: Ianuarie 2025</small></p>
+        </footer>
+    </div>
+
+    <!-- Floating Payment Banner -->
+    <div id="floatingBanner" class="floating-banner" style="display: none;">
+        <div class="banner-content">
+            <div class="banner-info">
+                <span class="banner-label">Total de Plată:</span>
+                <span class="banner-amount" id="bannerAmount">0 RON</span>
+            </div>
+            <button type="button" id="scrollToResultsBtn" class="banner-btn">
+                Vezi Rezultate ↓
+            </button>
+        </div>
+    </div>
+
+    <script src="calculator.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

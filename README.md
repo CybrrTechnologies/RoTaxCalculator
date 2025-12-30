@@ -1,0 +1,117 @@
+# RoTaxCalculator - Romanian Tax Calculator
+
+Cross-platform tax calculation app for Romanian investors (stocks, crypto, real estate).
+
+## 🎯 Features
+
+- Calculate taxes for dividends, capital gains, crypto, rent
+- Compute CASS (social health insurance contribution)
+- Generate tax reports (PDF)
+- Fill Declarația Unică 212 (Romanian tax form)
+
+## 🛠️ Tech Stack
+
+- **Core Logic**: Rust (shared across all platforms)
+- **iOS**: Swift + SwiftUI + UniFFI
+- **Android**: Kotlin + Jetpack Compose + UniFFI
+- **Web**: React + Rust WASM
+- **Backend**: Python FastAPI (PDF filling service)
+
+## 📁 Project Structure
+
+```
+RoTaxCalculator/
+├── docs/              # 📄 Documentation (Markdown files)
+├── src/               # 🦀 Rust core logic (shared)
+├── mobile/
+│   ├── ios/          # 📱 iOS app (Swift + SwiftUI)
+│   └── android/      # 🤖 Android app (Kotlin + Compose)
+├── web/              # 🌐 Web app (React + WASM)
+├── backend/          # 🐍 PDF service (Python FastAPI)
+└── resources/        # 📋 Assets, PDF templates
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- **Rust** 1.75+ - [Install here](https://rustup.rs)
+- **Xcode** 15+ (for iOS development)
+- **Android Studio** (for Android development)
+- **Node.js** 20+ (for Web)
+- **Python** 3.11+ (for Backend)
+
+### Installation
+
+```bash
+# Navigate to project
+cd ~/Documents/SideProjects/RoTaxCalculator
+
+# Install Rust (if not installed)
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Build Rust core
+cd src
+cargo build
+
+# Run tests
+cargo test
+```
+
+## 📖 Documentation
+
+All documentation is in the [`docs/`](docs/) folder:
+
+- [Requirements](docs/01-requirements.md) - Product vision & features
+- [Tax Rules 2026](docs/02-tax-rules-romania-2026.md) ⭐ - Complete tax legislation reference
+- [Architecture](docs/03-architecture.md) - Technical design
+- [Rust Learning Plan](docs/04-rust-learning-plan.md) - Learning roadmap
+- [API Contracts](docs/05-api-contracts.md) - Data structures & API design
+- [Data Models](docs/06-data-models.md) - Rust types & models
+- [Implementation Log](docs/07-implementation-log.md) 📊 - Daily progress tracking
+- [Deployment](docs/08-deployment.md) - Deployment guide
+
+## 📊 Current Status
+
+**Phase**: Learning & Setup (Week 1)
+
+See [Implementation Log](docs/07-implementation-log.md) for detailed progress.
+
+## 🗓️ Roadmap
+
+- **Weeks 1-2**: Rust fundamentals learning
+- **Weeks 3-4**: Core logic implementation (calculators, validators)
+- **Weeks 5-6**: iOS app (SwiftUI + UniFFI integration)
+- **Weeks 7-8**: Testing & polish
+- **Weeks 9-10**: Android app (Kotlin contractor or self-build)
+- **Weeks 11-12**: Web app (React + WASM)
+- **Weeks 13-16**: Backend service + Launch 🚀
+
+## 🧪 Testing
+
+```bash
+# Rust unit tests
+cd src
+cargo test
+
+# iOS tests
+cd mobile/ios
+xcodebuild test -scheme TaxCalculator
+
+# Integration tests
+cargo test --test integration_tests
+```
+
+## 📄 License
+
+Private project - All rights reserved
+
+## 👤 Author
+
+iOS Engineer with 10+ years experience, learning Rust for cross-platform development.
+
+**Contact**: [Your contact info]
+
+---
+
+**Last Updated**: January 2025
