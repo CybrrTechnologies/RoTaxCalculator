@@ -76,9 +76,10 @@ function initApp() {
                 btn.classList.add('active');
             }
         });
-
-        updateYearInfo(year);
     }
+
+    // Always update year info on init (whether saved or default year)
+    updateYearInfo(ACTIVE_TAX_YEAR);
 
     // Setup tax year selector
     setupTaxYearSelector();
