@@ -118,7 +118,7 @@
                         <div class="form-group">
                             <label for="foreignTaxPaid">Taxa Plătită în Străinătate (RON)</label>
                             <input type="number" id="foreignTaxPaid" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small>Credit fiscal disponibil (max 16%)</small>
+                            <small id="foreignTaxCreditText">Credit fiscal disponibil (max 16%)</small>
                         </div>
                     </div>
                 </section>
@@ -340,7 +340,66 @@
         <footer>
             <p><small>RoTaxCalculator - Calculator neoficial pentru estimare. Pentru situații complexe, consultați un expert contabil autorizat.</small></p>
             <p><small>Conform legislației 2026 (Legea 239/2025). Ultima actualizare: Ianuarie 2025</small></p>
+            <p><small><a href="#" id="privacyLink" style="color: #3b82f6; text-decoration: none;">Confidențialitate și Date Personale</a></small></p>
         </footer>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div id="privacyModal" class="privacy-modal" style="display: none;">
+        <div class="privacy-modal-content">
+            <div class="privacy-modal-header">
+                <h2>🔒 Confidențialitate și Protecția Datelor</h2>
+                <button type="button" class="privacy-close" aria-label="Închide">&times;</button>
+            </div>
+            <div class="privacy-modal-body">
+                <h3>Angajamentul Nostru</h3>
+                <p>Confidențialitatea ta este importantă pentru noi. Această aplicație este proiectată să funcționeze <strong>100% local în browser-ul tău</strong>.</p>
+
+                <h3>Ce Date Colectăm?</h3>
+                <p><strong>Nicio dată personală nu este trimisă către servere externe.</strong> Toate calculele se fac în browser-ul tău.</p>
+
+                <h3>Stocare Locală (localStorage)</h3>
+                <p>Aplicația salvează următoarele informații <strong>doar pe dispozitivul tău</strong>:</p>
+                <ul>
+                    <li>Sumele introduse în calculator (dividende, câștiguri, chirii, etc.)</li>
+                    <li>Anul fiscal selectat (2025 sau 2026)</li>
+                    <li>Preferințele tale (secțiuni activate, ordinea secțiunilor)</li>
+                </ul>
+                <p><strong>Scopul:</strong> Pentru a-ți salva munca și a nu fi nevoie să reintroduci datele la fiecare vizită.</p>
+                <p><strong>Cum să ștergi datele:</strong> Apasă butonul "Șterge Tot" din calculator sau șterge datele de navigare din browser.</p>
+
+                <h3>Cookie-uri și Tracking</h3>
+                <p><strong>Momentan:</strong> Nu folosim cookie-uri, Google Analytics sau alte sisteme de tracking.</p>
+                <p><strong>În viitor:</strong> Dacă vom adăuga Google Analytics sau reclame, vei fi notificat și vei putea alege dacă accepți sau nu.</p>
+
+                <h3>Securitate</h3>
+                <ul>
+                    <li>✅ Site-ul folosește HTTPS (conexiune criptată)</li>
+                    <li>✅ Datele tale nu părăsesc browser-ul tău</li>
+                    <li>✅ Nu avem acces la informațiile tale financiare</li>
+                    <li>✅ Nu solicităm date personale (nume, email, etc.)</li>
+                </ul>
+
+                <h3>Drepturile Tale (GDPR)</h3>
+                <p>Conform GDPR, ai următoarele drepturi:</p>
+                <ul>
+                    <li><strong>Dreptul de acces:</strong> Poți vedea datele salvate în browser (consola developer → Application → Local Storage)</li>
+                    <li><strong>Dreptul la ștergere:</strong> Poți șterge oricând datele (buton "Șterge Tot" sau din setările browser-ului)</li>
+                    <li><strong>Dreptul la portabilitate:</strong> Datele sunt salvate în format JSON în browser-ul tău</li>
+                </ul>
+
+                <h3>Contact</h3>
+                <p><a href="mailto:cybrrsoft@protonmail.com">cybrrsoft@protonmail.com</a></p>
+
+                <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9em;">
+                    <strong>Ultima actualizare:</strong> Ianuarie 2025<br>
+                    <strong>Aplicabil pentru:</strong> impoziteonline.ro
+                </p>
+            </div>
+            <div class="privacy-modal-footer">
+                <button type="button" class="btn-primary" id="privacyClose">Am Înțeles</button>
+            </div>
+        </div>
     </div>
 
     <!-- Floating Payment Banner -->

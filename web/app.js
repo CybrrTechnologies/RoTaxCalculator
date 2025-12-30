@@ -232,6 +232,13 @@ function updateFormFieldRates(rates) {
             `Taxa: ${(rates.DIVIDEND * 100).toFixed(0)}%${createRateComparison(ACTIVE_TAX_YEAR, rates.DIVIDEND, config2025.DIVIDEND)}`;
     }
 
+    // Update foreign tax credit text
+    const foreignTaxCreditText = document.getElementById('foreignTaxCreditText');
+    if (foreignTaxCreditText) {
+        foreignTaxCreditText.innerHTML =
+            `Credit fiscal disponibil (max ${(rates.DIVIDEND * 100).toFixed(0)}%)`;
+    }
+
     // Update foreign capital gains
     const foreignGainsSmall = document.querySelector('label[for="foreignGains"] + input + small');
     if (foreignGainsSmall && !foreignGainsSmall.textContent.includes('compensate')) {
@@ -1084,9 +1091,61 @@ function loadSectionOrder() {
     }
 }
 
+/**
+ * Setup privacy modal
+ */
+function setupPrivacyModal() {
+    const privacyLink = document.getElementById('privacyLink');
+    const privacyModal = document.getElementById('privacyModal');
+    const privacyClose = document.querySelector('.privacy-close');
+    const privacyCloseBtn = document.getElementById('privacyClose');
+
+    // Open modal
+    privacyLink?.addEventListener('click', (e) => {
+        e.preventDefault();
+        privacyModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    });
+
+    // Close modal - X button
+    privacyClose?.addEventListener('click', () => {
+        privacyModal.style.display = 'none';
+        document.body.style.overflow = ''; // Restore scrolling
+    });
+
+    // Close modal - "Am Înțeles" button
+    privacyCloseBtn?.addEventListener('click', () => {
+        privacyModal.style.display = 'none';
+        document.body.style.overflow = '';
+    });
+
+    // Close modal - Click outside
+    privacyModal?.addEventListener('click', (e) => {
+        if (e.target === privacyModal) {
+            privacyModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
+
+    // Close modal - ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && privacyModal.style.display === 'flex') {
+            privacyModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    });
+}
+
 // Initialize app when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initApp);
 } else {
     initApp();
+}
+
+// Setup privacy modal after DOM loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupPrivacyModal);
+} else {
+    setupPrivacyModal();
 }
