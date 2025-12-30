@@ -1,0 +1,6 @@
+# RoTaxCalculator - Robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://peterrobert.github.io/RoTaxCalculator/sitemap.xml

@@ -570,8 +570,9 @@ function autoCalculate() {
     updateClearButtonVisibility(hasInput);
 
     if (!hasInput) {
-        // No input, hide results
+        // No input, hide results and banner
         document.getElementById('results').classList.add('hidden');
+        document.getElementById('floatingBanner').style.display = 'none';
         return;
     }
 
