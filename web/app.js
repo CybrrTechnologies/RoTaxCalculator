@@ -147,7 +147,7 @@ function getIncomeFieldsTemplate(sectionName, entryId) {
             html += '<div class="form-group">';
             html += '  <label for="foreignTaxPaid_' + entryId + '">Taxa Plătită în Străinătate (RON)</label>';
             html += '  <input type="number" id="foreignTaxPaid_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="foreignTaxPaid" step="0.01" min="0" placeholder="0.00">';
-            html += '  <small>Credit fiscal disponibil (max ' + (rates.DIVIDEND * 100).toFixed(0) + '%)</small>';
+            html += '  <small>Credit fiscal disponibil (max ' + (rates.DIVIDEND * 100).toFixed(0) + '%)' + (year === 2026 ? ' <span style="color: var(--danger);">(+6% față de 2025)</span>' : '') + '</small>';
             html += '</div>';
             return html;
 

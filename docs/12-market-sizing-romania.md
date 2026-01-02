@@ -107,22 +107,22 @@ Data compiled from ChatGPT conversation, verified against official sources where
 
 | Net Income | CASS Due |
 |------------|----------|
-| < 25,125 RON (6 MW) | 0 RON |
-| 25,125 - 50,250 RON | 2,512.50 RON |
-| 50,250 - 100,500 RON | 5,025 RON |
-| > 100,500 RON | 10,050 RON |
+| < 24,300 RON (6 MW) | 0 RON |
+| 24,300 - 48,600 RON | 2,430 RON |
+| 48,600 - 97,200 RON | 4,860 RON |
+| > 97,200 RON | 9,720 RON |
 
 ### PFA CASS (Proportional above 24 MW)
 
 | Net Income | CASS Due |
 |------------|----------|
-| < 25,125 RON | 0 RON |
-| 25,125 - 50,250 RON | 2,512.50 RON |
-| 50,250 - 100,500 RON | 5,025 RON |
-| 100,500 - 301,500 RON | **10% of real income** |
-| > 301,500 RON | 30,150 RON (capped) |
+| < 24,300 RON | 0 RON |
+| 24,300 - 48,600 RON | 2,430 RON |
+| 48,600 - 97,200 RON | 4,860 RON |
+| 97,200 - 291,600 RON | **10% of real income** |
+| > 291,600 RON | 29,160 RON (capped at 72 MW) |
 
-**Key Correction**: The 48,000 RON threshold in the ChatGPT conversation is outdated (based on 4,000 RON minimum wage). 2026 uses average MW of 4,187.50 RON.
+**Key Correction**: CASS calculations use the January 1st minimum wage (4,050 RON), NOT the average. This is the legally correct value per Codul Fiscal.
 
 ---
 
@@ -157,7 +157,7 @@ Data compiled from ChatGPT conversation, verified against official sources where
 1. **Most investment fund income is taxed at source** - no filing needed
 2. **Fidelis/Tezaur bonds are 100% tax-exempt** - ~22% of BVB investors
 3. **Low compliance for crypto** - 15% filing rate is optimistic
-4. **CASS threshold filters out small investors** - most retail investors below 25,125 RON
+4. **CASS threshold filters out small investors** - most retail investors below 24,300 RON
 
 ### Numbers May Be Higher Because:
 
@@ -210,7 +210,7 @@ The market sizing from the ChatGPT conversation is **roughly accurate** with the
 | ~262,700 stock investors | Close | ~246,000 (March 2025) |
 | ~1,000,000 fund investors | Correct | 1,007,481 (June 2025) |
 | ~600,000 crypto investors | Correct | Confirmed by AAF president |
-| CASS threshold 48,000 RON | Wrong | 6 MW = 25,125 RON (first bracket) |
+| CASS threshold 48,000 RON | Wrong | 6 MW = 24,300 RON (first bracket) |
 | 280,000-460,000 filers | Reasonable | Conservative estimate |
 
 **Recommendation**: The numbers support building a tax filing service. Key differentiator should be multi-income support (especially crypto + foreign brokers) and simple CASS calculation.

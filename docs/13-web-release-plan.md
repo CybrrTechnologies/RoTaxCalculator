@@ -27,10 +27,11 @@ The web app at `web/` already has:
 - ✅ Print/Save PDF button
 - ✅ Responsive design
 - ✅ LocalStorage persistence
+- ✅ MINIMUM_WAGE correct: 4,050 RON (Jan 1 value, NOT average)
+- ✅ Year-over-year rate comparisons (+X% față de 2025)
 - ⚠️ GA4 placeholder (commented out)
 - ❌ Feedback widget
 - ❌ Email capture
-- ❌ Bug: MINIMUM_WAGE for 2026 should be 4,187.50 (average)
 
 ---
 
@@ -40,16 +41,16 @@ The web app at `web/` already has:
 
 ### Tasks
 
-| Task | Priority | Est. Time |
-|------|----------|-----------|
-| Fix MINIMUM_WAGE for 2026 (4,187.50 average) | P0 | 30 min |
-| Deploy to Vercel/Netlify/Cloudflare | P0 | 1 hour |
-| Configure DNS for impoziteonline.ro | P0 | 1 hour |
-| Test all income types manually | P0 | 2 hours |
-| Test CASS brackets (6/12/24 MW) | P0 | 1 hour |
-| Submit sitemap to Google Search Console | P1 | 30 min |
-| Create og-image.png for social sharing | P1 | 1 hour |
-| Add robots.txt tweaks if needed | P2 | 15 min |
+| Task | Priority | Status |
+|------|----------|--------|
+| ~~Fix MINIMUM_WAGE for 2026~~ | ~~P0~~ | ✅ Done (4,050 RON) |
+| Deploy to Vercel/Netlify/Cloudflare | P0 | Pending |
+| Configure DNS for impoziteonline.ro | P0 | Pending |
+| Test all income types manually | P0 | Pending |
+| Test CASS brackets (6/12/24 MW) | P0 | Pending |
+| Submit sitemap to Google Search Console | P1 | Pending |
+| Create og-image.png for social sharing | P1 | Pending |
+| Add robots.txt tweaks if needed | P2 | Pending |
 
 ### Deliverables
 - [ ] Site live at impoziteonline.ro
@@ -248,7 +249,7 @@ Jan 2026                Feb 2026                Mar 2026                Apr 2026
 
 ## Immediate Next Steps (Today)
 
-1. **Fix MINIMUM_WAGE bug** - Set 2026 to 4187.50 (not 4050)
+1. ~~**Fix MINIMUM_WAGE bug**~~ - ✅ Already correct: 4,050 RON (Jan 1 value)
 2. **Deploy to Vercel** - Get live today
 3. **Configure DNS** - Point impoziteonline.ro
 4. **Test all flows** - Manual QA
