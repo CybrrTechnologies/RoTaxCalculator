@@ -1,11 +1,88 @@
 # Romanian Tax Rules 2025-2026
 
-> **Sources**: 
-> - Legea 239/2025 (Tax Code modifications)
-> - ANAF Guidelines 2026
-> - Codul Fiscal (updated provisions)
->
-> **Last Updated**: January 15, 2025
+## 📚 Legal Framework & Sources
+
+### 🏛️ Primary Legislation (Official Government Sources):
+
+**Romanian Tax Code:**
+- **[Legea 227/2015](https://legislatie.just.ro/Public/DetaliiDocument/171282)** - Codul Fiscal (Romanian Tax Code)
+- **[Legea 239/2024](https://legislatie.just.ro/Public/DetaliiDocumentAfis/287644)** - Tax Code modifications for 2025-2026
+- **[HG 1/2016](https://legislatie.just.ro/Public/DetaliiDocument/174060)** - Normele metodologice de aplicare a Codului fiscal
+
+**Social Contributions & Minimum Wage:**
+- **[OUG 115/2023](https://legislatie.just.ro/Public/DetaliiDocument/277836)** - Minimum wage and social contributions
+- **[OUG 114/2023](https://legislatie.just.ro/Public/DetaliiDocument/265749)** - CAS optional for PFA (starting 2023)
+
+**Business Forms:**
+- **[Legea 346/2004](https://legislatie.just.ro/Public/DetaliiDocument/54045)** - Stimulare IF (Întreprinzător Individual)
+
+**EU Directives:**
+- **[DAC8 Directive](https://eur-lex.europa.eu/legal-content/RO/TXT/?uri=CELEX:32023L2852)** - Crypto platform reporting to ANAF (2026)
+
+---
+
+### 📋 ANAF Official Guidelines:
+
+**Tax Declaration & Forms:**
+- [ANAF - Ghid Declarație Unică 2025](https://www.anaf.ro/anaf/internet/ANAF/despre_anaf/strategii_anaf/declaratia_unica/)
+- [ANAF - Ghid Declarația Unică 2025 (PDF)](https://static.anaf.ro/static/10/Anaf/AsistentaContribuabili_r/Ghid_Declaratia_Unica_2025.pdf)
+- [ANAF - Impozitare venituri independente 2025 (PDF)](https://static.anaf.ro/static/10/Ploiesti/impozitare_venituri_independente25.pdf)
+
+**Investment Income:**
+- [ANAF - Impozitare venituri investiții](https://www.anaf.ro/anaf/internet/ANAF/asistenta_contribuabili/venituri_investitii/)
+- [ANAF - CASS pentru venituri din investiții](https://www.anaf.ro/anaf/internet/ANAF/asistenta_contribuabili/contributii_sociale_sanatate/)
+
+**Business Income:**
+- [ANAF - Norme de venit 2025 (PDF)](https://static.anaf.ro/static/10/Anaf/legislatie/norme_venit_2025.pdf)
+- [ANAF - Ghid taxare PFA](https://www.anaf.ro/anaf/internet/ANAF/asistenta_contribuabili/persoane_fizice/)
+
+---
+
+### ⚖️ Tax Code Articles (by Income Type):
+
+| Income Type | Tax Code Article | Rate Article |
+|-------------|-----------------|--------------|
+| **Dividends** | Art. 97 CF | Art. 97 alin. (1) - 16% (2026) |
+| **Capital Gains (Stocks)** | Art. 94-96 CF | Art. 94 alin. (2) - 16% foreign, 6%/3% RO (2026) |
+| **Crypto** | Art. 98 CF | Art. 98 alin. (1) - 16% (2026) |
+| **Rental Income** | Art. 84-86 CF | Art. 84 alin. (3) - 10% on 70% = 7% effective |
+| **Bank Interest** | Art. 92 CF | Art. 92 alin. (1) - 10% |
+| **PFA/IF Income** | Art. 67-69 CF | Art. 68 - 10% on profit |
+| **Employment (CIM)** | Art. 76-78 CF | Art. 76 - 10% on net salary |
+| **Copyright** | Art. 70-74 CF | Art. 72 - 10% on 80% (forfeit 20%) |
+| **CASS** | Art. 170-172 CF | Art. 170 - 10% |
+| **CAS** | Art. 137-139 CF | Art. 137 - 25% |
+
+---
+
+### 🏦 Official Government Portals:
+
+**File Taxes & Check Data:**
+- [SPV (Spațiul Privat Virtual)](https://www.anaf.ro/anaf/internet/ANAF/servicii_online/e_services/) - File Form 212, check pre-filled data, pay taxes
+- [Portal ANAF](https://www.anaf.ro) - Tax authority main website
+- [Legis.just.ro](https://legislatie.just.ro) - Official legal database (Monitorul Oficial)
+
+**Exchange Rates:**
+- [BNR (Banca Națională a României)](https://www.bnr.ro/Cursuri-zilnice-3424.aspx) - Official exchange rates for foreign currency conversions
+
+---
+
+### 📰 Secondary Sources (Non-Government):
+
+**Tax Guides & Articles:**
+- [Groupama - Ghid Taxe PFA](https://www.groupama.ro/ghiduri/ghid-taxe-pfa)
+- [ContApp - Taxe PFA 2025](https://contapp.ro/blog/taxe-pfa-2025-cas-cass-si-impozit/)
+- [Financiarul - PFA 2025 ghid complet](https://financiarul.ro/economice/pfa-2025-taxe-venituri-contributii/)
+- [Tax Mentor - Calculator taxe PFA](https://www.taxmentor.ro/resurse-antreprenori/taxe-pfa/)
+
+**Community Resources:**
+- [r/Romania Financial Wiki](https://www.reddit.com/r/Romania/wiki/financiar) - Community tax guides
+- [r/robursa](https://www.reddit.com/r/robursa/) - Romanian investors forum
+- [Impozite Online Forum](https://forum.softpedia.com/forum/181-economie-finante/) - Tax discussion community
+
+**Last Updated**: January 30, 2025
+**Tax Years Covered**: 2025, 2026
+**Next Legislative Review**: March 2025 (potential ANAF clarifications)
 
 ---
 
@@ -28,6 +105,9 @@
 ---
 
 ## 💰 1. DIVIDENDS
+
+> **Legal Basis**: Art. 97 Codul Fiscal ([Legea 227/2015](https://legislatie.just.ro/Public/DetaliiDocument/171282))
+> **2026 Changes**: [Legea 239/2024](https://legislatie.just.ro/Public/DetaliiDocumentAfis/287644) - Art. I pct. 78
 
 ### 1.1 Domestic Dividends (Romanian Companies)
 
@@ -91,6 +171,9 @@ Total tax paid: 742.50 (US) + 49.50 (RO) = 792 RON (16% total)
 ---
 
 ## 📈 2. CAPITAL GAINS (Stocks, ETFs, Bonds)
+
+> **Legal Basis**: Art. 94-96 Codul Fiscal ([Legea 227/2015](https://legislatie.just.ro/Public/DetaliiDocument/171282))
+> **2026 Changes**: [Legea 239/2024](https://legislatie.just.ro/Public/DetaliiDocumentAfis/287644) - Art. I pct. 75-77
 
 ### 2.1 Romanian Brokers (XTB, Tradeville, BT Trade)
 
@@ -201,6 +284,10 @@ Plus capital gains tax on sale
 
 ## 🪙 3. CRYPTOCURRENCY
 
+> **Legal Basis**: Art. 98 Codul Fiscal ([Legea 227/2015](https://legislatie.just.ro/Public/DetaliiDocument/171282))
+> **2026 Changes**: [Legea 239/2024](https://legislatie.just.ro/Public/DetaliiDocumentAfis/287644) - Art. I pct. 79
+> **Platform Reporting**: [DAC8 Directive](https://eur-lex.europa.eu/legal-content/RO/TXT/?uri=CELEX:32023L2852) - Platforms report to ANAF starting 2026
+
 ### 3.1 Tax Rate
 
 **2026**: 16% (increased from 10% in 2025)
@@ -263,6 +350,9 @@ Gain calculation:
 
 ## 🏠 4. RENTAL INCOME
 
+> **Legal Basis**: Art. 84-86 Codul Fiscal ([Legea 227/2015](https://legislatie.just.ro/Public/DetaliiDocument/171282))
+> **Forfeit Rules**: Art. 84 alin. (2) - Cheltuieli forfetare
+
 ### 4.1 Tax Calculation (2026)
 
 **Forfeit System** (simplified):
@@ -306,6 +396,10 @@ For CASS: Use 16,800 RON (net income)
 ---
 
 ## 🏥 5. CASS (Health Insurance Contribution)
+
+> **Legal Basis**: Art. 170-172 Codul Fiscal ([Legea 227/2015](https://legislatie.just.ro/Public/DetaliiDocument/171282))
+> **CASS Rate**: Art. 170 alin. (1) - 10%
+> **ANAF Methodology**: [ANAF - CASS Guidelines 2025](https://www.anaf.ro/anaf/internet/ANAF/asistenta_contribuabili/contributii_sociale_sanatate/)
 
 ### 5.1 Who Pays CASS on Investment Income
 
@@ -661,6 +755,447 @@ See [minimum-wage-history-romania.md](minimum-wage-history-romania.md) for compl
 | **2026-01** | Min wage increase (July 1st) | CASS brackets use average MW: 4,187.50 |
 | **2026-01-15** | CASS calculation methodology clarified | Thresholds use monthly MW × months (not annual × multiplier) |
 | **2026-03** | ANAF pre-fills available | Check for accuracy |
+
+---
+
+## 💼 11. BUSINESS INCOME (Not in Current Calculator - Future Phase)
+
+> **Note**: The current calculator focuses on **investment income only**. This section documents business income types for future development.
+>
+> **Primary Sources**:
+> - [Groupama - Ghid Taxe PFA](https://www.groupama.ro/ghiduri/ghid-taxe-pfa)
+> - [ContApp - Taxe PFA 2025](https://contapp.ro/blog/taxe-pfa-2025-cas-cass-si-impozit/)
+> - [ANAF - Impozitare venituri independente (PDF)](https://static.anaf.ro/static/10/Ploiesti/impozitare_venituri_independente25.pdf)
+> - [Financiarul - PFA 2025 ghid](https://financiarul.ro/economice/pfa-2025-taxe-venituri-contributii/)
+
+### 11.1 IF (Întreprinzător Individual) - Individual Entrepreneur
+
+> **Legal Basis**: Art. 50-53 Legea 346/2004 (Stimulare IF)
+> **Tax Rules**: Art. 94 Codul Fiscal (venituri activități independente)
+
+**Revenue-Based Taxation** (not profit-based):
+
+#### Tax Rates (2025-2026):
+- **With employees (1-8)**: 1% of revenue
+- **No employees**: 3% of revenue
+
+#### Mandatory Contributions (Even with €0 Revenue):
+
+**Contribution Base**: Minimum **12 × Minimum Wage**
+- 2025: 12 × 4,050 = **48,600 RON/year**
+- 2026: 12 × 4,187.50 (avg) = **50,250 RON/year**
+
+**Contributions**:
+```
+2026 Example (no revenue):
+CAS (pension): 50,250 × 25% = 12,562.50 RON
+CASS (health): 50,250 × 10% = 5,025 RON
+Total: 17,587.50 RON/year (mandatory!)
+
+Plus accounting: ~2,400 RON/year
+Minimum annual cost: ~20,000 RON
+```
+
+#### Limits & Restrictions:
+
+| Limit | Value | Consequence |
+|-------|-------|-------------|
+| **Revenue Cap** | €500,000/year (~2.5M RON) | Must convert to SRL if exceeded |
+| **Employees** | Maximum 8 | Cannot exceed |
+| **VAT Threshold** | €88,500 (~437k RON) | Mandatory VAT registration |
+
+**Cannot do IF if**:
+- ❌ Full-time employee elsewhere (CIM contract)
+- ❌ Certain regulated activities (banking, insurance, gambling)
+- ❌ Some professional services (lawyers, doctors use specific forms)
+
+#### Cost Comparison - IF vs PFA:
+
+**Example**: 200,000 RON revenue, 50,000 RON expenses
+
+**IF (3% rate)**:
+```
+Revenue tax: 200,000 × 3% = 6,000 RON
+CAS: 12,562 RON (mandatory)
+CASS: 5,025 RON (mandatory)
+Accountant: 2,400 RON
+───────────────────────────────
+Total: 25,987 RON (13% of revenue)
+```
+
+**PFA (10% on profit)**:
+```
+Profit: 200,000 - 50,000 = 150,000 RON
+Income tax: 150,000 × 10% = 15,000 RON
+CAS: 0 RON (optional, if not opted in)
+CASS: ~2,500 RON (based on income)
+Accountant: 0-1,200 RON (optional)
+───────────────────────────────
+Total: ~17,500 RON (8.75% of revenue)
+```
+
+#### Break-Even Analysis:
+
+**IF is better than PFA when**:
+```
+3% of Revenue < 10% of (Revenue - Expenses)
+3% × R < 10% × (R - E)
+3% × R < 10% × R - 10% × E
+10% × E < 7% × R
+E < 70% of R
+
+→ Profit margin > 30%
+→ Expenses < 70% of revenue
+```
+
+**Best use cases for IF**:
+- ✅ High-margin services (consulting, software, coaching)
+- ✅ Revenue €200k-€500k with >70% profit margin
+- ✅ Want pension contributions anyway
+- ✅ Simple business model
+
+**Better to use PFA when**:
+- ❌ Profit margin < 30%
+- ❌ High expenses (trading, reselling, manufacturing)
+- ❌ Revenue < €50k (mandatory costs too high)
+- ❌ Don't want mandatory pension contributions
+
+---
+
+### 11.2 PFA (Persoană Fizică Autorizată) - Self-Employed
+
+> **Legal Basis**: Art. 67-69 Codul Fiscal (venituri activități independente)
+> **CAS Optional**: [OUG 114/2023](https://legislatie.just.ro/Public/DetaliiDocument/265749) - CAS opțional din 2023
+
+PFA has **TWO taxation systems**: Real System (majority) and Income Norms (limited activities).
+
+---
+
+#### 11.2.1 Real System (Sistem Real) - Most Common
+
+> **Tax Base**: Art. 68 CF - Profit (venituri - cheltuieli)
+
+**Profit-Based Taxation** (income minus expenses):
+
+#### Tax Rates (2025-2026):
+- **Income Tax**: 10% on net profit (Revenue - Expenses)
+
+#### Contributions (2025-2026):
+
+**CAS (Pension) - 25%**:
+- **Status**: OPTIONAL (since 2023!)
+- **Base**: Declared income (you choose, minimum = minimum wage)
+- **If you opt out**: Zero pension points (smaller future pension)
+- **Decision**: Annual, cannot change mid-year
+
+**CASS (Health) - 10%**:
+- **Status**: MANDATORY
+- **Base**: Net annual income
+- **Brackets**: Same as investment income (6 MW, 12 MW, 24 MW thresholds)
+
+#### Example Calculation (2026):
+
+```
+Revenue: 150,000 RON
+Expenses: 40,000 RON (office, travel, software, etc.)
+Profit: 110,000 RON
+
+Income tax: 110,000 × 10% = 11,000 RON
+
+CAS (if opted in):
+  - Choose base: e.g., 60,000 RON
+  - CAS: 60,000 × 25% = 15,000 RON
+
+CASS:
+  - Net income: 110,000 RON (after tax)
+  - Bracket: 12-24 MW (50,250 - 100,500)
+  - CASS: 5,025 RON (fixed amount)
+
+Total (with CAS): 11,000 + 15,000 + 5,025 = 31,025 RON
+Total (without CAS): 11,000 + 5,025 = 16,025 RON
+```
+
+#### Advance Payments:
+
+PFA must make **quarterly advance payments**:
+- **Deadline**: 25th of month following quarter end
+  - Q1 (Jan-Mar): Pay by April 25
+  - Q2 (Apr-Jun): Pay by July 25
+  - Q3 (Jul-Sep): Pay by October 25
+  - Q4 (Oct-Dec): Pay by January 25 (next year)
+
+**Amount**: 1/4 of estimated annual tax + contributions
+
+**Annual settlement**: Form 212 by May 25 (reconcile advances with actual)
+
+---
+
+#### 11.2.2 Income Norms System (Norme de Venit) - Limited Use
+
+> **Legal Basis**: Art. 69 Codul Fiscal
+> **Norms List**: [ANAF - Norme de venit 2025 (PDF)](https://static.anaf.ro/static/10/Anaf/legislatie/norme_venit_2025.pdf)
+> **Revenue Cap**: €25,000 = 124,365 RON (2025 BNR rate)
+
+**Fixed Annual Income** (set by ANAF, not based on actual revenue):
+
+#### What Are Income Norms?
+
+A **simplified taxation system** where you pay tax on a **fixed annual income** established by ANAF for specific activities, regardless of actual revenue/expenses.
+
+#### Eligibility (2025):
+
+Must meet **ALL** conditions:
+- ✅ Your activity (CAEN code) must be in [ANAF's norms list](https://static.anaf.ro/static/10/Anaf/legislatie/norme_venit_2025.pdf)
+- ✅ Previous year revenue < €25,000 (124,365 RON at 2025 exchange rate)
+- ✅ Choose at beginning of year (cannot switch mid-year)
+
+**Common activities eligible**:
+- Some retail (small shops)
+- Certain services (repairs, tailoring, hairdressing)
+- Small-scale agriculture
+- **Check ANAF list** - most professional services NOT eligible
+
+**NOT eligible** (must use Real System):
+- IT/software development
+- Consulting (most types)
+- Marketing, accounting, legal
+- Engineering, architecture
+- Any activity not in ANAF norms
+
+#### How It Works (2025):
+
+**ANAF publishes annual norms** for each:
+- Activity type (CAEN code)
+- County (București has different norms than Cluj, etc.)
+- Sometimes city size
+
+**Example Norms (2025 - hypothetical)**:
+```
+Activity: Hairdressing (CAEN 9602)
+Location: Cluj County
+Norm: 35,000 RON/year (set by ANAF)
+
+You pay tax on 35,000 RON regardless of whether you earned:
+- 10,000 RON (you pay more than real system!)
+- 50,000 RON (you pay less than real system!)
+```
+
+#### Taxation on Norms (2025):
+
+```
+Example: Norm = 35,000 RON/year
+
+Income tax: 35,000 × 10% = 3,500 RON
+
+CAS (if opted in):
+  - Base: 35,000 RON (the norm)
+  - CAS: 35,000 × 25% = 8,750 RON
+
+CASS:
+  - Base: 35,000 RON
+  - Bracket: 6-12 MW (25,125 - 50,250)
+  - CASS: 2,512.50 RON (stepped)
+
+Total (with CAS): 3,500 + 8,750 + 2,512.50 = 14,762.50 RON
+Total (without CAS): 3,500 + 2,512.50 = 6,012.50 RON
+```
+
+#### Forced Transition to Real System:
+
+If in 2024 you had **revenue > €25,000** (€124,365 RON):
+- ⚠️ **Mandatory** switch to Real System for 2025
+- No option to stay on norms
+- Must track expenses and real profit
+
+#### Pros & Cons:
+
+**Advantages** ✅:
+- Simple accounting (no expense tracking needed)
+- Predictable taxes (know exact amount at year start)
+- Good if actual revenue > norm (pay less tax)
+- Minimal record-keeping
+
+**Disadvantages** ❌:
+- Pay tax even if revenue < norm (or even zero!)
+- No expense deductions allowed
+- Limited to specific activities
+- Revenue cap €25,000 (very low)
+- ANAF can change norms yearly
+
+#### When to Use Norms vs Real:
+
+**Use Norms if**:
+- ✅ Your activity qualifies (CAEN in list)
+- ✅ Revenue consistently > norm but < €25k
+- ✅ Low/no expenses to deduct
+- ✅ Want simple accounting
+
+**Use Real System if**:
+- ✅ High expenses (norm doesn't allow deductions)
+- ✅ Revenue > €25,000
+- ✅ Activity not in norms list
+- ✅ Variable income (might be below norm)
+
+#### 2025 Key Thresholds:
+
+| Threshold | Amount (RON) | Purpose |
+|-----------|--------------|---------|
+| **Revenue cap for norms** | 124,365 (€25k) | Above = forced to Real System |
+| **CAS threshold 1** | 48,600 (12 MW) | Below = no CAS if opted out |
+| **CAS threshold 2** | 97,200 (24 MW) | Affects CAS calculation base |
+| **CASS threshold** | 24,300 (6 MW) | Below = no CASS (if insured otherwise) |
+
+---
+
+### 11.3 CIM (Convenții Individuale de Muncă) - Employment Income
+
+> **Legal Basis**:
+> - Income Tax: Art. 76-78 Codul Fiscal
+> - CAS: Art. 137-138 CF
+> - CASS: Art. 155 CF
+> - Personal Deductions: Art. 77 alin. (2) CF
+
+**Salary Taxation**:
+
+#### Employee Contributions (2025-2026):
+- **Income Tax**: 10% on gross salary
+- **CAS (pension)**: 25% on gross salary
+- **CASS (health)**: 10% on gross salary
+- **Total**: 45% withheld from gross
+
+#### Employer Contributions (separate):
+- **CAS employer**: 4% (reduced from 25%)
+- **Social insurance**: 2.25%
+- **Total employer**: ~6.25%
+
+#### Personal Deductions (2026):
+
+| Deduction Type | Monthly Amount | Annual |
+|----------------|----------------|--------|
+| **Basic** (everyone) | 300 RON | 3,600 RON |
+| **1 dependent** | +100 RON | +1,200 RON |
+| **2 dependents** | +200 RON | +2,400 RON |
+| **3 dependents** | +300 RON | +3,600 RON |
+| **4+ dependents** | +400 RON | +4,800 RON |
+
+**Dependent**: Child, spouse without income, disabled family member
+
+#### Example (2026):
+
+```
+Gross salary: 10,000 RON/month
+Dependents: 1 child
+
+Personal deduction: 300 + 100 = 400 RON
+Taxable income: 10,000 - 400 = 9,600 RON
+
+Income tax: 9,600 × 10% = 960 RON
+CAS: 10,000 × 25% = 2,500 RON
+CASS: 10,000 × 10% = 1,000 RON
+Total withheld: 4,460 RON
+
+Net salary: 10,000 - 4,460 = 5,540 RON
+
+Annual:
+Gross: 120,000 RON
+Net: 66,480 RON
+Effective rate: 44.6%
+```
+
+#### CASS Exemption:
+
+If you're employed AND have investment income:
+- **Employer already pays CASS** on your salary
+- **Investment income**: May be exempt from CASS if total < certain threshold
+- Check with accountant - rules complex
+
+---
+
+### 11.4 Copyright & Royalties
+
+> **Legal Basis**: Art. 70-74 Codul Fiscal (venituri drepturi proprietate intelectuală)
+> **Forfeit Deduction**: Art. 72 alin. (2) - 20% cheltuieli forfetare
+
+**Creative/Intellectual Work Income**:
+
+#### Tax Treatment (2025-2026):
+- **Forfeit Deduction**: 20% (automatic, no expenses needed)
+- **Net Income**: Revenue × 80%
+- **Tax Rate**: 10% on net income
+- **Effective Rate**: 8% of gross revenue
+
+#### CASS (2026):
+- **Rate**: 10%
+- **Base**: Net income (after forfeit)
+- **Brackets**: Same as investment income
+
+#### Example (2026):
+
+```
+Royalties: 50,000 RON (book sales, music, software)
+
+Forfeit: 50,000 × 20% = 10,000 RON (automatic deduction)
+Net income: 50,000 × 80% = 40,000 RON
+
+Income tax: 40,000 × 10% = 4,000 RON
+
+CASS:
+  - Net: 40,000 RON
+  - Bracket: 6-12 MW (25,125 - 50,250)
+  - CASS: 2,512.50 RON
+
+Total: 4,000 + 2,512.50 = 6,512.50 RON
+Effective rate: 13% of gross
+```
+
+#### What Qualifies as Copyright:
+
+✅ **Eligible**:
+- Books, articles, blog posts
+- Music, songs, compositions
+- Software (some cases)
+- Art, photography
+- Film, video
+- Translation work
+
+❌ **Not eligible**:
+- Standard consulting services
+- Regular employment work
+- Business operations
+
+---
+
+### 11.5 CASS Aggregation Across Income Types
+
+**Important**: CASS is calculated on **total net income** from ALL sources (except exempt ones).
+
+#### Example - Multiple Income Types (2026):
+
+```
+1. Employment (CIM): 120,000 RON gross
+   → CASS paid by employer: 12,000 RON ✓
+
+2. Investment income (dividends): 30,000 RON net
+
+3. Copyright (royalties): 40,000 RON net (after forfeit)
+
+Total net for CASS calculation:
+  - Employment: Exempt (employer pays)
+  - Investment: 30,000 RON
+  - Copyright: 40,000 RON
+  ─────────────────────────────
+  Total: 70,000 RON
+
+CASS bracket: 12-24 MW (50,250 - 100,500)
+CASS due: 5,025 RON (one payment in May)
+
+Note: This is ON TOP of the CASS already paid by employer
+```
+
+**Complex Rule**: If employer pays CASS on salary AND you have investment/other income:
+- Some interpretations: Exempt if total < 12 MW
+- Other interpretations: Always pay on non-employment income
+- **Recommendation**: Consult accountant for multi-source scenarios
 
 ---
 

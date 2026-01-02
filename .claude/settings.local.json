@@ -2,7 +2,17 @@
   "permissions": {
     "allow": [
       "Bash(open:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "WebSearch",
+      "WebFetch(domain:www.onrc.ro)",
+      "WebFetch(domain:dianex.ro)",
+      "WebFetch(domain:infiintarefirmaonline.ro)",
+      "WebFetch(domain:startco.ro)",
+      "WebFetch(domain:myportal.onrc.ro)",
+      "WebFetch(domain:onrc.ro)",
+      "WebFetch(domain:portal.onrc.ro)",
+      "WebFetch(domain:www.incorpo.ro)",
+      "Bash(ls:*)"
     ]
   }
 }

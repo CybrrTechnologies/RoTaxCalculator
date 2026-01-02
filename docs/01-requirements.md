@@ -174,6 +174,64 @@ These are explicitly OUT OF SCOPE for initial launch:
 - ❌ Multi-language support (Romanian only initially)
 - ❌ Desktop native apps (Web works on desktop)
 
+## 🔮 Future Development (Post-MVP)
+
+Potential features to add after successful MVP launch:
+
+### Additional Income Types (Phase 2)
+- **PFA (Persoană Fizică Autorizată)** - Self-employed professional income
+  - Business/service income calculations
+  - Optional CAS (pension) contributions (25%)
+  - Mandatory CASS (health insurance) on different base
+  - Quarterly advance payments
+
+- **CIM (Conventii Individuale de Munca)** - Employment income
+  - Salary tax calculator (10% income tax)
+  - Employee contributions (CAS 25%, CASS 10%)
+  - Personal deductions (basic, dependents)
+  - Meal vouchers, bonuses
+
+- **IF (Întreprinzător Individual)** - Individual Entrepreneur
+  - 1% revenue tax (with employees) or 3% (no employees)
+  - **Important limitations:**
+    - Revenue cap: €500,000/year (~2.5M RON) - must convert to SRL if exceeded
+    - Employee limit: Maximum 8 employees
+    - Mandatory contributions: CAS 25% + CASS 10% on minimum 12 MW base (~17,000 RON/year)
+    - Mandatory accounting (double-entry, ~2,400 RON/year for accountant)
+    - VAT registration required if revenue > €88,500
+    - Cannot combine with full-time employment
+    - Total minimum cost: ~19,400 RON/year even with zero revenue
+  - **Best for**: High-margin businesses (>70% profit margin) with revenue under €500k
+  - **Break-even**: IF better than PFA when expenses < 70% of revenue
+  - **Calculator features needed:**
+    - Revenue input
+    - Employee count (affects 1% vs 3% rate)
+    - Automatic CAS/CASS calculation on 12 MW base
+    - Warning when approaching €500k cap
+    - Cost comparison vs PFA
+
+- **Copyright/Royalties** - Creative income
+  - 20% forfeit deduction
+  - 10% tax on net
+  - CASS applicable
+
+- **Agricultural Income** - Farming
+  - Norm-based taxation
+  - Simplified regime
+
+### CASS Aggregation
+- Combine all income types (investment + PFA + employment + copyright)
+- Single CASS calculation on total net income
+- Handle cases where employer already pays CASS (exemptions)
+
+### Premium Features
+- Multi-year tax planning (compare 2025 vs 2026)
+- What-if scenarios ("What if I earn X more?")
+- Tax optimization suggestions
+- Historical data tracking
+- Export to Excel/PDF for accountant
+- Import from broker statements (CSV/PDF parsing)
+
 ## 📊 Success Metrics
 
 ### MVP Launch (Month 2)
