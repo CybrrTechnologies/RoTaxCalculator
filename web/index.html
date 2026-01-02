@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RoTaxCalculator - Calculator Taxe Romania 2026</title>
+    <title>Impozite Online - Calculator Taxe Romania 2026</title>
 
     <!-- SEO Meta Tags -->
     <meta name="description" content="Calculator gratuit de taxe pentru investitori din România. Calculați rapid impozite pe dividende, câștiguri din acțiuni, cripto, chirii conform legislației 2026.">
@@ -15,13 +15,13 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://impoziteonline.ro/">
-    <meta property="og:title" content="RoTaxCalculator - Calculator Taxe Investiții România 2026">
-    <meta property="og:description" content="Calculator gratuit pentru impozite pe dividende, acțiuni, cripto și chirii. Conform legislației 2026.">
+    <meta property="og:title" content="Impozite Online - Calculator Taxe Venituri Diverse România 2026">
+    <meta property="og:description" content="Calculator gratuit pentru impozite pe dividende, acțiuni, cripto și chirii.">
     <meta property="og:image" content="https://impoziteonline.ro/og-image.png">
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="RoTaxCalculator - Calculator Taxe România">
+    <meta name="twitter:title" content="Impozite Online - Calculator Taxe România">
     <meta name="twitter:description" content="Calculator gratuit de taxe pentru investitori. Dividende, acțiuni, cripto, chirii 2026.">
     <meta name="twitter:image" content="https://impoziteonline.ro/og-image.png">
 
@@ -30,7 +30,7 @@
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "RoTaxCalculator",
+      "name": "Impozite Online",
       "description": "Calculator de taxe pentru investitori din România - dividende, acțiuni, cripto, chirii",
       "url": "https://impoziteonline.ro/",
       "applicationCategory": "FinanceApplication",
@@ -43,7 +43,7 @@
       },
       "author": {
         "@type": "Person",
-        "name": "RoTaxCalculator"
+        "name": "Impozite Online"
       },
       "keywords": "calculator taxe, impozit dividende, capital gains, crypto, CASS, Romania 2026"
     }
@@ -73,171 +73,131 @@
 <body>
     <div class="container">
         <header>
-            <h1>RoTaxCalculator</h1>
-            <p class="subtitle">Calculator Taxe Investiții România</p>
+            <h1>Impozite Online</h1>
+            <p class="subtitle">Calculator Impozit / CASS (dividende, câștiguri capital, crypto, chirii)</p>
         </header>
 
         <!-- Tax Year Selector -->
         <div class="tax-year-selector">
+            <div class="year-info" id="yearInfo">
+                <p><strong>An Fiscal:</strong> 2025<br><strong>Salariu Minim:</strong> 4.050 RON/lună<br><small style="color: #64748b;">Neschimbat din Iulie 2024 (crește +6.8% în 2026)</small></p>
+            </div>
             <div class="year-toggle">
                 <button type="button" class="year-btn active" data-year="2025">2025</button>
                 <button type="button" class="year-btn" data-year="2026">2026</button>
             </div>
-            <div class="year-info" id="yearInfo">
-                <p><strong>An Fiscal:</strong> 2025<br><strong>Salariu Minim:</strong> 4.050 RON/lună<br><small style="color: #64748b;">Neschimbat din Iulie 2024 (crește +6.8% în 2026)</small><br><strong>Legislație:</strong> Codul Fiscal 2025</p>
-            </div>
         </div>
 
         <main>
+            <!-- Add Income Button -->
+            <div class="add-income-section">
+                <button type="button" id="addIncomeBtn" class="btn-primary">
+                    + Adaugă Venit
+                </button>
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="empty-state">
+                <div class="empty-state-icon">📊</div>
+                <p>Niciun venit adăugat încă. Adaugă un venit pentru a calcula taxele.</p>
+            </div>
+
             <form id="taxForm">
                 <!-- Dividends Section -->
-                <section class="form-section" data-section="dividends" draggable="false">
+                <section class="form-section" data-section="dividends" draggable="false" style="display: none;">
                     <div class="section-header">
-                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
                         <span class="collapse-icon">▶</span>
-                        <input type="checkbox" id="enableDividends" class="section-toggle">
-                        <h2>
-                            <label for="enableDividends">
-                                💰 Dividende
-                            </label>
-                        </h2>
+                        <h2>💰 Dividende</h2>
+                        <button type="button" class="btn-add-entry" data-section="dividends">+ Adaugă</button>
                     </div>
 
                     <div class="section-content collapsed">
-                        <div class="form-group">
-                            <label for="domesticDividends">Dividende Românești (RON brut)</label>
-                            <input type="number" id="domesticDividends" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small>Taxa: 16% (reținută la sursă)</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="foreignDividends">Dividende Străine (RON brut)</label>
-                            <input type="number" id="foreignDividends" step="0.01" min="0" placeholder="0.00" disabled>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="foreignTaxPaid">Taxa Plătită în Străinătate (RON)</label>
-                            <input type="number" id="foreignTaxPaid" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small id="foreignTaxCreditText">Credit fiscal disponibil (max 16%)</small>
+                        <div class="income-entries" data-section="dividends">
+                            <!-- Income entries will be added here dynamically -->
                         </div>
                     </div>
                 </section>
 
                 <!-- Capital Gains Section -->
-                <section class="form-section" data-section="capitalGains" draggable="false">
+                <section class="form-section" data-section="capitalGains" style="display: none;" draggable="false">
                     <div class="section-header">
-                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
+                        
                         <span class="collapse-icon">▶</span>
-                        <input type="checkbox" id="enableCapitalGains" class="section-toggle">
+                        
                         <h2>
-                            <label for="enableCapitalGains">
+                            <span>
                                 📈 Câștiguri din Capital
-                            </label>
+                            </span>
                         </h2>
+                        <button type="button" class="btn-add-entry" data-section="capitalGains">+ Adaugă</button>
                     </div>
 
                     <div class="section-content collapsed">
-                        <h3>Broker Românesc (XTB, Tradeville, BT Trade)</h3>
-                        <div class="form-group">
-                            <label for="roGainsShort">Câștig &lt; 365 zile (RON)</label>
-                            <input type="number" id="roGainsShort" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small>Taxa: 6% (reținută la sursă)</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="roGainsLong">Câștig ≥ 365 zile (RON)</label>
-                            <input type="number" id="roGainsLong" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small>Taxa: 3% (reținută la sursă)</small>
-                        </div>
-
-                        <h3>Broker Străin (IBKR, Trading212, eToro)</h3>
-                        <div class="form-group">
-                            <label for="foreignGains">Câștiguri Totale (RON)</label>
-                            <input type="number" id="foreignGains" step="0.01" min="0" placeholder="0.00" disabled>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="foreignLosses">Pierderi Anul Curent (RON)</label>
-                            <input type="number" id="foreignLosses" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small>Se pot compensa cu câștigurile</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="priorYearLosses">Pierderi Reportate din Anul Trecut (RON)</label>
-                            <input type="number" id="priorYearLosses" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small>Se pot folosi 70% din valoare (până la 7 ani)</small>
+                        <div class="income-entries" data-section="capitalGains">
+                            <!-- Income entries will be added here dynamically -->
                         </div>
                     </div>
                 </section>
 
                 <!-- Crypto Section -->
-                <section class="form-section" data-section="crypto" draggable="false">
+                <section class="form-section" data-section="crypto" style="display: none;" draggable="false">
                     <div class="section-header">
-                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
+                        
                         <span class="collapse-icon">▶</span>
-                        <input type="checkbox" id="enableCrypto" class="section-toggle">
+                        
                         <h2>
-                            <label for="enableCrypto">
+                            <span>
                                 🪙 Criptomonede
-                            </label>
+                            </span>
                         </h2>
+                        <button type="button" class="btn-add-entry" data-section="crypto">+ Adaugă</button>
                     </div>
 
                     <div class="section-content collapsed">
-                        <div class="form-group">
-                            <label for="cryptoGains">Câștiguri Totale Criptomonede (RON)</label>
-                            <input type="number" id="cryptoGains" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small>Taxa: 16% (scutire: &lt;200 RON/tranzacție ȘI &lt;600 RON/an)</small>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="cryptoExempt">Câștiguri Sub Prag de Scutire (RON)</label>
-                            <input type="number" id="cryptoExempt" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small>Tranzacții cu câștig &lt;200 RON fiecare</small>
+                        <div class="income-entries" data-section="crypto">
+                            <!-- Income entries will be added here dynamically -->
                         </div>
                     </div>
                 </section>
 
                 <!-- Rental Income Section -->
-                <section class="form-section" data-section="rental" draggable="false">
+                <section class="form-section" data-section="rental" style="display: none;" draggable="false">
                     <div class="section-header">
-                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
+                        
                         <span class="collapse-icon">▶</span>
-                        <input type="checkbox" id="enableRental" class="section-toggle">
+                        
                         <h2>
-                            <label for="enableRental">
+                            <span>
                                 🏠 Venituri din Chirii
-                            </label>
+                            </span>
                         </h2>
+                        <button type="button" class="btn-add-entry" data-section="rental">+ Adaugă</button>
                     </div>
 
                     <div class="section-content collapsed">
-                        <div class="form-group">
-                            <label for="rentalIncome">Chirii Anuale Brute (RON)</label>
-                            <input type="number" id="rentalIncome" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small id="rentalRateText">Taxa efectivă: 7% (forfet 30% + 10% pe net)</small>
+                        <div class="income-entries" data-section="rental">
+                            <!-- Income entries will be added here dynamically -->
                         </div>
                     </div>
                 </section>
 
                 <!-- Interest Section -->
-                <section class="form-section" data-section="interest" draggable="false">
+                <section class="form-section" data-section="interest" style="display: none;" draggable="false">
                     <div class="section-header">
-                        <span class="drag-handle" title="Apasă și trage pentru a reordona">⋮⋮</span>
+                        
                         <span class="collapse-icon">▶</span>
-                        <input type="checkbox" id="enableInterest" class="section-toggle">
+                        
                         <h2>
-                            <label for="enableInterest">
+                            <span>
                                 💵 Dobânzi & Altele
-                            </label>
+                            </span>
                         </h2>
+                        <button type="button" class="btn-add-entry" data-section="interest">+ Adaugă</button>
                     </div>
 
                     <div class="section-content collapsed">
-                        <div class="form-group">
-                            <label for="bankInterest">Dobânzi Bancare Brute (RON)</label>
-                            <input type="number" id="bankInterest" step="0.01" min="0" placeholder="0.00" disabled>
-                            <small>Taxa: 10% (reținută la sursă). Exclud titluri de stat (Fidelis, Tezaur)</small>
+                        <div class="income-entries" data-section="interest">
+                            <!-- Income entries will be added here dynamically -->
                         </div>
                     </div>
                 </section>
@@ -293,7 +253,7 @@
                     <div class="cass-info">
                         <p style="display: flex; align-items: center; gap: 8px; cursor: pointer;" id="netIncomeToggle">
                             <span class="cass-collapse-icon">▶</span>
-                            <span>Venit Net Total: <strong id="cassNetIncome">0 RON</strong></span>
+                            <span>Venit Net Anual (bază calcul CASS): <strong id="cassNetIncome">0 RON</strong></span>
                         </p>
                         <div class="cass-brackets-detail" id="netIncomeDetail" style="display: none; margin-top: 10px;">
                             <!-- Will be populated by JavaScript -->
@@ -306,12 +266,11 @@
                             <!-- Will be populated by JavaScript -->
                         </div>
                         <p class="cass-amount">CASS Datorat: <strong id="cassAmount">0 RON</strong></p>
-                        <small class="cass-explanation" id="cassExplanation"></small>
                     </div>
                 </div>
 
                 <div class="result-card summary-card">
-                    <h3>💳 Total de Plată (Ce Trebuie Să Plătești Tu)</h3>
+                    <h3>💳 Total de Plată</h3>
                     <div class="summary-grid">
                         <div class="summary-item">
                             <span>Impozit de Plătit:</span>
@@ -338,10 +297,44 @@
         </main>
 
         <footer>
-            <p><small>RoTaxCalculator - Calculator neoficial pentru estimare. Pentru situații complexe, consultați un expert contabil autorizat.</small></p>
-            <p><small>Conform legislației 2026 (Legea 239/2025). Ultima actualizare: Ianuarie 2025</small></p>
+            <p><small>Impozite Online - Calculator neoficial pentru estimare. Pentru situații complexe, consultați un expert contabil autorizat.</small></p>
+            <p><small>Ultima actualizare: Ianuarie 2026</small></p>
             <p><small><a href="#" id="privacyLink" style="color: #3b82f6; text-decoration: none;">Confidențialitate și Date Personale</a></small></p>
         </footer>
+    </div>
+
+    <!-- Add Income Type Modal -->
+    <div id="addIncomeModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Selectează Tipul de Venit</h2>
+                <button type="button" class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="income-type-grid">
+                    <button type="button" class="income-type-btn" data-section="dividends">
+                        <span class="income-type-icon">💰</span>
+                        <span class="income-type-name">Dividende</span>
+                    </button>
+                    <button type="button" class="income-type-btn" data-section="capitalGains">
+                        <span class="income-type-icon">📈</span>
+                        <span class="income-type-name">Câștiguri Capital</span>
+                    </button>
+                    <button type="button" class="income-type-btn" data-section="crypto">
+                        <span class="income-type-icon">🪙</span>
+                        <span class="income-type-name">Criptomonede</span>
+                    </button>
+                    <button type="button" class="income-type-btn" data-section="rental">
+                        <span class="income-type-icon">🏠</span>
+                        <span class="income-type-name">Chirii</span>
+                    </button>
+                    <button type="button" class="income-type-btn" data-section="interest">
+                        <span class="income-type-icon">🏦</span>
+                        <span class="income-type-name">Dobânzi</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Privacy Modal -->

@@ -1,13 +1,23 @@
 # RoTaxCalculator - Romanian Tax Calculator
 
-Cross-platform tax calculation app for Romanian investors (stocks, crypto, real estate).
+**Web MVP**: Tax calculator for Romanian investors - dividends, capital gains, crypto, and rental income.
 
-## 🎯 Features
+**Domain**: [impoziteonline.ro](https://impoziteonline.ro)
 
-- Calculate taxes for dividends, capital gains, crypto, rent
-- Compute CASS (social health insurance contribution)
+## 🎯 Current Features (Web MVP)
+
+- Calculate taxes for dividends, capital gains, crypto, rent, and interest
+- Automatic CASS calculation (stepped brackets: 6/12/24 MW)
+- Multi-income support (combine multiple sources)
+- Tax breakdown and summary
+- Year comparison (2025 vs 2026)
+
+## 🎯 Future Features
+
 - Generate tax reports (PDF)
 - Fill Declarația Unică 212 (Romanian tax form)
+- Broker statement import (IBKR, Trading212)
+- ANAF XML export
 
 ## 🛠️ Tech Stack
 
@@ -70,22 +80,45 @@ All documentation is in the [`docs/`](docs/) folder:
 - [Data Models](docs/06-data-models.md) - Rust types & models
 - [Implementation Log](docs/07-implementation-log.md) 📊 - Daily progress tracking
 - [Deployment](docs/08-deployment.md) - Deployment guide
+- [SEO Setup](docs/09-seo-setup.md) - SEO configuration
+- [SRL Procedures](docs/10-srl-procedures.md) - Company registration
+- [ONRC County Contacts](docs/11-onrc-county-contacts.md) - Registry contacts
+- [Market Sizing Romania](docs/12-market-sizing-romania.md) 📊 - Target market analysis
+- [Web Release Plan](docs/13-web-release-plan.md) - Web MVP launch strategy
 
 ## 📊 Current Status
 
-**Phase**: Learning & Setup (Week 1)
+**Phase**: Web MVP - Live at [impoziteonline.ro](https://impoziteonline.ro)
+
+✅ **Completed**:
+- Tax calculator (dividends, capital gains, crypto, rent, interest)
+- CASS calculator (6/12/24 MW brackets)
+- Multi-income entry system
+- Year selector (2025/2026)
+- Number input validation
+- LocalStorage persistence
 
 See [Implementation Log](docs/07-implementation-log.md) for detailed progress.
 
 ## 🗓️ Roadmap
 
-- **Weeks 1-2**: Rust fundamentals learning
-- **Weeks 3-4**: Core logic implementation (calculators, validators)
-- **Weeks 5-6**: iOS app (SwiftUI + UniFFI integration)
-- **Weeks 7-8**: Testing & polish
-- **Weeks 9-10**: Android app (Kotlin contractor or self-build)
-- **Weeks 11-12**: Web app (React + WASM)
-- **Weeks 13-16**: Backend service + Launch 🚀
+**Phase 1 - Web MVP (Current)**:
+- ✅ Basic tax calculator
+- ✅ CASS calculation
+- ✅ Multi-income support
+- 🔄 Analytics integration
+- 🔄 Feedback widget
+- 📋 SEO optimization
+
+**Phase 2 - Enhanced Features**:
+- PDF Form 212 generation
+- ANAF XML export
+- Broker statement import
+- User accounts/save history
+
+**Phase 3 - Mobile Apps** (Future):
+- iOS app (SwiftUI + UniFFI)
+- Android app (Kotlin + UniFFI)
 
 ## 🧪 Testing
 

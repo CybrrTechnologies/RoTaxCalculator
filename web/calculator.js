@@ -29,8 +29,8 @@ const TAX_CONFIG = {
             RENT_EFFECTIVE: 0.07,
             BANK_INTEREST: 0.10
         },
-        minimumWage: 4050,  // Used for CASS calculation (first half of year)
-        minimumWageNote: 'Ian-Iun: 4,050 RON, Iul-Dec: 4,325 RON (+6.8%)',
+        minimumWage: 4050,  // CASS uses Jan 1 minimum wage (NOT average)
+        minimumWageNote: 'CASS: 4,050 RON (Ian-Iun), salariu crește la 4,325 din Iul',
         legislation: 'Legea 239/2025'
     }
 };
@@ -238,32 +238,27 @@ function calculateCASS(netIncome) {
     let bracket;
     let cassBase;
     let cassAmount;
-    let explanation;
 
     if (netIncome < cassBase6MW) {
         // < 6 MW
         bracket = `< ${CASS_BRACKETS.NONE} salarii minime`;
         cassBase = 0;
         cassAmount = 0;
-        explanation = `Venit sub pragul de ${cassBase6MW.toLocaleString('ro-RO')} RON → CASS = 0`;
     } else if (netIncome < cassBase12MW) {
         // 6-12 MW
         bracket = `${CASS_BRACKETS.NONE}-${CASS_BRACKETS.LOW} salarii minime`;
         cassBase = cassBase6MW;
         cassAmount = cassBase * CASS_RATE;
-        explanation = `Venit între ${cassBase6MW.toLocaleString('ro-RO')} - ${cassBase12MW.toLocaleString('ro-RO')} RON → CASS = 10% × 6 SM`;
     } else if (netIncome < cassBase24MW) {
         // 12-24 MW
         bracket = `${CASS_BRACKETS.LOW}-${CASS_BRACKETS.MEDIUM} salarii minime`;
         cassBase = cassBase12MW;
         cassAmount = cassBase * CASS_RATE;
-        explanation = `Venit între ${cassBase12MW.toLocaleString('ro-RO')} - ${cassBase24MW.toLocaleString('ro-RO')} RON → CASS = 10% × 12 SM`;
     } else {
         // > 24 MW
         bracket = `> ${CASS_BRACKETS.MEDIUM} salarii minime`;
         cassBase = cassBase24MW;
         cassAmount = cassBase * CASS_RATE;
-        explanation = `Venit peste ${cassBase24MW.toLocaleString('ro-RO')} RON → CASS = 10% × 24 SM`;
     }
 
     return {
@@ -271,7 +266,6 @@ function calculateCASS(netIncome) {
         bracket: bracket,
         cassBase: cassBase,
         cassAmount: cassAmount,
-        explanation: explanation,
         minimumWage: MINIMUM_WAGE
     };
 }

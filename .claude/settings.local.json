@@ -12,7 +12,8 @@
       "WebFetch(domain:onrc.ro)",
       "WebFetch(domain:portal.onrc.ro)",
       "WebFetch(domain:www.incorpo.ro)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(node:*)"
     ]
   }
 }

@@ -86,6 +86,57 @@
 
 ---
 
+## 🔢 CONSTANTS (2026) — Single Source of Truth
+
+> ⚠️ **UPDATE HERE ONLY** — All values below are derived from these constants.
+> When minimum wage changes, update `MW` and all derived values update automatically.
+
+### Base Values
+
+| Constant | Value | Notes |
+|----------|-------|-------|
+| **MW** (Minimum Wage) | **4,050 RON** | Used for CASS/CAS calculations (Jan 1 value) |
+| MW_JUL | 4,325 RON | July 1st increase (informational only) |
+
+### Derived Thresholds (MW × Multiplier)
+
+| Threshold | Formula | Value |
+|-----------|---------|-------|
+| **6_MW** | 4,050 × 6 | **24,300 RON** |
+| **12_MW** | 4,050 × 12 | **48,600 RON** |
+| **24_MW** | 4,050 × 24 | **97,200 RON** |
+| **60_MW** | 4,050 × 60 | **243,000 RON** |
+| **72_MW** | 4,050 × 72 | **291,600 RON** |
+
+### CASS Amounts (Investment Income — Stepped)
+
+| Bracket | Formula | Amount |
+|---------|---------|--------|
+| < 6 MW | 0 | **0 RON** |
+| 6-12 MW | 6_MW × 10% | **2,430 RON** |
+| 12-24 MW | 12_MW × 10% | **4,860 RON** |
+| > 24 MW | 24_MW × 10% | **9,720 RON** |
+
+### CAS Amounts (PFA — Threshold-Based)
+
+| Bracket | Formula | Amount |
+|---------|---------|--------|
+| < 12 MW | Optional | **0 RON** |
+| 12-24 MW | 12_MW × 25% | **12,150 RON** |
+| > 24 MW | 24_MW × 25% | **24,300 RON** |
+
+### CASS Amounts (PFA — Proportional above 24 MW)
+
+| Bracket | Formula | Amount |
+|---------|---------|--------|
+| < 6 MW | 0 | **0 RON** |
+| 6-12 MW | 6_MW × 10% | **2,430 RON** |
+| 12-24 MW | 12_MW × 10% | **4,860 RON** |
+| 24-72 MW | Income × 10% | **Proportional** |
+| > 72 MW | 72_MW × 10% | **29,160 RON** (cap) |
+
+---
+
 ## 📋 Quick Reference Table
 
 | Income Type | Tax Rate 2025 | Tax Rate 2026 | Change |
@@ -100,7 +151,20 @@
 **Minimum Wage**:
 - 2025: 4,050 RON/month
 - 2026: 4,050 RON/month (Jan-Jun), 4,325 RON/month (Jul-Dec) (+6.8% from July 1st)
-- 2026 Average (for CASS): 4,187.50 RON/month = (4,050×6 + 4,325×6) / 12
+- **For CASS calculations**: Use 4,050 RON (Jan 1 value, NOT average)
+
+**CASS Thresholds (2026)** — Based on 4,050 RON:
+| Bracket | Threshold | CASS Due |
+|---------|-----------|----------|
+| 6 MW | 24,300 RON | 2,430 RON |
+| 12 MW | 48,600 RON | 4,860 RON |
+| 24 MW | 97,200 RON | 9,720 RON |
+
+**PFA Contributions (2026)** — See Section 11 for details:
+| Contribution | Threshold | Amount |
+|--------------|-----------|--------|
+| **CAS** (optional <12 MW) | 12 MW / 24 MW | 12,150 / 24,300 RON |
+| **CASS** (proportional 24-72 MW) | 6 / 12 / 24-72 MW | 2,430 / 4,860 / 10% real / 29,160 max |
 
 ---
 
@@ -415,21 +479,23 @@ For CASS: Use 16,800 RON (net income)
 - ❌ Interest with tax withheld at source
 - ❌ Losses (don't reduce net income)
 
-### 5.2 CASS Brackets (2026)
+### 5.2 CASS Brackets (2026) — Investment Income
+
+> ⚠️ **Note**: This section covers CASS for **investment income** (dividends, capital gains, crypto, rent). For **PFA/business income**, see Section 11.2 — the rules differ significantly (CASS becomes proportional above 24 MW).
 
 **Important**: 2026 minimum wage changes mid-year:
 - **Jan-Jun**: 4,050 RON/month
 - **Jul-Dec**: 4,325 RON/month (+6.8%)
-- **Average for CASS**: 4,187.50 RON/month = (4,050×6 + 4,325×6) / 12
+- **For CASS calculations**: Use **4,050 RON** (Jan 1 value, NOT average)
 
-**CASS Thresholds (using average minimum wage)**:
+**CASS Thresholds (based on 4,050 RON minimum wage)**:
 
-| Net Income Range | Threshold Calculation | CASS Calculation | Amount Due |
-|------------------|----------------------|------------------|------------|
-| **< 6 × MW** (< 25,125 RON) | 4,187.50 × 6 | 0% | **0 RON** |
-| **6-12 × MW** (25,125 - 50,250 RON) | 4,187.50 × 12 | 10% × (4,187.50 × 6) | **2,512.50 RON** |
-| **12-24 × MW** (50,250 - 100,500 RON) | 4,187.50 × 24 | 10% × (4,187.50 × 12) | **5,025 RON** |
-| **> 24 × MW** (> 100,500 RON) | - | 10% × (4,187.50 × 24) | **10,050 RON** |
+| Net Income Range | Threshold | CASS Calculation | Amount Due |
+|------------------|-----------|------------------|------------|
+| **< 6 × MW** (< 24,300 RON) | 4,050 × 6 | 0% | **0 RON** |
+| **6-12 × MW** (24,300 - 48,600 RON) | 4,050 × 12 | 10% × (4,050 × 6) | **2,430 RON** |
+| **12-24 × MW** (48,600 - 97,200 RON) | 4,050 × 24 | 10% × (4,050 × 12) | **4,860 RON** |
+| **> 24 × MW** (> 97,200 RON) | - | 10% × (4,050 × 24) | **9,720 RON** |
 
 **Key Points**:
 - CASS is **stepped**, not progressive (you pay fixed amount per bracket)
@@ -437,34 +503,30 @@ For CASS: Use 16,800 RON (net income)
 - Use **net income** after taxes/forfeit
 - Exclude losses from calculation
 - One-time payment by May 25 (with Form 212)
-- Average minimum wage accounts for mid-year increase in 2026
+- Use January 1st minimum wage (4,050 RON) for threshold calculations
 
-### 5.3 Average Minimum Wage Calculation (2026)
+### 5.3 Minimum Wage for CASS Calculations (2026)
 
-Since the minimum wage changes mid-year in 2026, CASS calculations use an **average monthly minimum wage**:
+> ⚠️ **Important**: CASS thresholds use the **January 1st minimum wage** (4,050 RON), NOT an average.
 
-**Formula**:
-```
-Average MW = (MW_Jan_Jun × 6 months + MW_Jul_Dec × 6 months) / 12 months
-           = (4,050 × 6 + 4,325 × 6) / 12
-           = (24,300 + 25,950) / 12
-           = 50,250 / 12
-           = 4,187.50 RON/month
-```
-
-**Why use average?**
-- CASS is calculated once per year (declared in May)
-- Net income is aggregated for entire year (Jan 1 - Dec 31)
-- Using average ensures fair treatment regardless of when income was earned
-- This is the official methodology per ANAF guidelines
+**2026 Minimum Wage**:
+- **Jan-Jun**: 4,050 RON/month
+- **Jul-Dec**: 4,325 RON/month (+6.8%)
+- **For CASS**: Use **4,050 RON** (Jan 1 value)
 
 **Threshold Calculation**:
 ```
-Threshold = Average Monthly MW × Number of Months
+Threshold = Monthly MW × Number of Months
 
-Example for 6 MW threshold:
-= 4,187.50 × 6 = 25,125 RON (NOT 4,325 × 6 = 25,950)
+6 MW threshold:  4,050 × 6  = 24,300 RON
+12 MW threshold: 4,050 × 12 = 48,600 RON
+24 MW threshold: 4,050 × 24 = 97,200 RON
 ```
+
+**Why Jan 1 value?**
+- Thresholds are set at the beginning of the fiscal year
+- Provides predictability for tax planning
+- Consistent with ANAF methodology
 
 ### 5.4 Calculation Example
 
@@ -493,8 +555,8 @@ Example for 6 MW threshold:
 Total net for CASS:
 25,200 + 20,000 + 5,000 + 16,800 = 67,000 RON
 
-CASS bracket: 12-24 × MW (50,250 - 100,500)
-→ CASS due: 10% × (4,187.50 × 12) = 5,025 RON
+CASS bracket: 12-24 × MW (48,600 - 97,200)
+→ CASS due: 10% × (4,050 × 12) = 4,860 RON
 ```
 
 ---
@@ -645,21 +707,21 @@ fn foreign_broker_tax(
 ### 8.3 CASS
 
 ```rust
-// IMPORTANT: min_wage should be the AVERAGE monthly minimum wage for the year
-// For 2026: 4,187.50 = (4,050×6 + 4,325×6) / 12
+// IMPORTANT: min_wage should be the January 1st minimum wage
+// For 2026: 4,050 RON (NOT average!)
 //
 // CRITICAL: Thresholds use monthly_wage × number_of_months
-// NOT annual_wage × multiplier
 fn calculate_cass(net_income: f64, min_wage_monthly: f64) -> f64 {
     // Calculate thresholds using monthly wage × months
-    let threshold_6_mw = min_wage_monthly * 6.0;   // 25,125 RON for 2026
-    let threshold_12_mw = min_wage_monthly * 12.0; // 50,250 RON for 2026
-    let threshold_24_mw = min_wage_monthly * 24.0; // 100,500 RON for 2026
+    // For 2026 with MW = 4,050:
+    let threshold_6_mw = min_wage_monthly * 6.0;   // 24,300 RON
+    let threshold_12_mw = min_wage_monthly * 12.0; // 48,600 RON
+    let threshold_24_mw = min_wage_monthly * 24.0; // 97,200 RON
 
     // CASS amounts (10% of threshold basis)
-    let cass_6_mw = threshold_6_mw * 0.10;   // 2,512.50 RON
-    let cass_12_mw = threshold_12_mw * 0.10; // 5,025 RON
-    let cass_24_mw = threshold_24_mw * 0.10; // 10,050 RON
+    let cass_6_mw = threshold_6_mw * 0.10;   // 2,430 RON
+    let cass_12_mw = threshold_12_mw * 0.10; // 4,860 RON
+    let cass_24_mw = threshold_24_mw * 0.10; // 9,720 RON
 
     if net_income < threshold_6_mw {
         0.0
@@ -747,12 +809,15 @@ See [minimum-wage-history-romania.md](minimum-wage-history-romania.md) for compl
 
 ---
 
-## 📝 11. CHANGE LOG
+## 📝 10.5 CHANGE LOG
 
 | Date | Change | Impact |
 |------|--------|--------|
 | **2025-12** | Legea 239/2025 published | Major tax increases for 2026 |
-| **2026-01** | Min wage increase (July 1st) | CASS brackets use average MW: 4,187.50 |
+| **2026-01** | Min wage increase (July 1st) | Salariu crește la 4,325 din Iulie |
+| **2026-01-03** | CASS calculation clarification | Use 4,050 RON (Jan 1 value), NOT average |
+| **2026-01-03** | PFA CAS/CASS thresholds clarified | CAS on threshold base (not real income); CASS proportional 24-72 MW |
+| **2026-01-03** | CASS ceiling for PFA increased | From 60 MW to 72 MW (max CASS: 29,160 RON) |
 | **2026-01-15** | CASS calculation methodology clarified | Thresholds use monthly MW × months (not annual × multiplier) |
 | **2026-03** | ANAF pre-fills available | Check for accuracy |
 
@@ -761,7 +826,36 @@ See [minimum-wage-history-romania.md](minimum-wage-history-romania.md) for compl
 ## 💼 11. BUSINESS INCOME (Not in Current Calculator - Future Phase)
 
 > **Note**: The current calculator focuses on **investment income only**. This section documents business income types for future development.
->
+
+### 📋 PFA Quick Reference — CAS & CASS (2026)
+
+> **Minimum Wage for Calculations**: 4,050 RON (Jan 1 value, NOT average)
+
+**CAS (Pension) — 25% on THRESHOLD base (never proportional)**
+
+| Net Income | CAS Status | You Pay |
+|------------|------------|---------|
+| < 48,600 RON | ❌ Optional | 0 |
+| 48,600 - 97,200 RON | ✅ Mandatory | **12,150 RON** |
+| > 97,200 RON | ✅ Mandatory (capped) | **24,300 RON** |
+
+**CASS (Health) — 10%, becomes proportional above 24 MW**
+
+| Net Income | CASS Base | You Pay |
+|------------|-----------|---------|
+| < 24,300 RON | - | 0 |
+| 24,300 - 48,600 RON | 6 MW (fixed) | **2,430 RON** |
+| 48,600 - 97,200 RON | 12 MW (fixed) | **4,860 RON** |
+| 97,200 - 291,600 RON | **REAL income** | **10% × income** |
+| > 291,600 RON | 72 MW (capped) | **29,160 RON** |
+
+**Key Rules:**
+- CAS & CASS are **independent** — paying one doesn't affect the other
+- CAS = always on threshold base; CASS = proportional above 24 MW
+- Common case: income 24k-48k → pay CASS only, CAS optional
+
+---
+
 > **Primary Sources**:
 > - [Groupama - Ghid Taxe PFA](https://www.groupama.ro/ghiduri/ghid-taxe-pfa)
 > - [ContApp - Taxe PFA 2025](https://contapp.ro/blog/taxe-pfa-2025-cas-cass-si-impozit/)
@@ -783,17 +877,17 @@ See [minimum-wage-history-romania.md](minimum-wage-history-romania.md) for compl
 
 **Contribution Base**: Minimum **12 × Minimum Wage**
 - 2025: 12 × 4,050 = **48,600 RON/year**
-- 2026: 12 × 4,187.50 (avg) = **50,250 RON/year**
+- 2026: 12 × 4,050 = **48,600 RON/year**
 
 **Contributions**:
 ```
 2026 Example (no revenue):
-CAS (pension): 50,250 × 25% = 12,562.50 RON
-CASS (health): 50,250 × 10% = 5,025 RON
-Total: 17,587.50 RON/year (mandatory!)
+CAS (pension): 48,600 × 25% = 12,150 RON
+CASS (health): 48,600 × 10% = 4,860 RON
+Total: 17,010 RON/year (mandatory!)
 
 Plus accounting: ~2,400 RON/year
-Minimum annual cost: ~20,000 RON
+Minimum annual cost: ~19,500 RON
 ```
 
 #### Limits & Restrictions:
@@ -816,11 +910,11 @@ Minimum annual cost: ~20,000 RON
 **IF (3% rate)**:
 ```
 Revenue tax: 200,000 × 3% = 6,000 RON
-CAS: 12,562 RON (mandatory)
-CASS: 5,025 RON (mandatory)
+CAS: 12,150 RON (mandatory)
+CASS: 4,860 RON (mandatory)
 Accountant: 2,400 RON
 ───────────────────────────────
-Total: 25,987 RON (13% of revenue)
+Total: 25,410 RON (12.7% of revenue)
 ```
 
 **PFA (10% on profit)**:
@@ -828,10 +922,10 @@ Total: 25,987 RON (13% of revenue)
 Profit: 200,000 - 50,000 = 150,000 RON
 Income tax: 150,000 × 10% = 15,000 RON
 CAS: 0 RON (optional, if not opted in)
-CASS: ~2,500 RON (based on income)
+CASS: ~4,860 RON (12 MW bracket)
 Accountant: 0-1,200 RON (optional)
 ───────────────────────────────
-Total: ~17,500 RON (8.75% of revenue)
+Total: ~20,000 RON (10% of revenue)
 ```
 
 #### Break-Even Analysis:
@@ -883,36 +977,102 @@ PFA has **TWO taxation systems**: Real System (majority) and Income Norms (limit
 #### Contributions (2025-2026):
 
 **CAS (Pension) - 25%**:
-- **Status**: OPTIONAL (since 2023!)
-- **Base**: Declared income (you choose, minimum = minimum wage)
+- **Status**: OPTIONAL below 12 MW, MANDATORY above
+- **Base**: THRESHOLD base (NOT real income!) - see table below
 - **If you opt out**: Zero pension points (smaller future pension)
 - **Decision**: Annual, cannot change mid-year
 
+**CAS Thresholds for PFA** (25% rate applied to threshold base):
+
+| Net Annual Income | CAS Status | CAS Base | CAS Amount (2026) |
+|-------------------|------------|----------|-------------------|
+| < 12 MW (~48,600 RON) | ❌ Optional | - | 0 (unless voluntary) |
+| 12-24 MW (~48,600-97,200 RON) | ✅ Mandatory | 12 × MW | 25% × 48,600 = **12,150 RON** |
+| > 24 MW (>97,200 RON) | ✅ Mandatory | 24 × MW (capped) | 25% × 97,200 = **24,300 RON** |
+
+⚠️ **Important**: CAS is paid on the THRESHOLD base, NOT on your real income. Even if you earn 500,000 RON, CAS is capped at 24,300 RON.
+
 **CASS (Health) - 10%**:
-- **Status**: MANDATORY
-- **Base**: Net annual income
-- **Brackets**: Same as investment income (6 MW, 12 MW, 24 MW thresholds)
+- **Status**: MANDATORY above 6 MW
+- **Base**: Stepped thresholds, then PROPORTIONAL, then capped
 
-#### Example Calculation (2026):
+⚠️ **CASS for PFA differs from investment income!** Above 24 MW, CASS is calculated on REAL income (not stepped).
 
+**CASS Thresholds for PFA** (10% rate):
+
+| Net Annual Income | CASS Base | CASS Amount (2026) |
+|-------------------|-----------|-------------------|
+| < 6 MW (~24,300 RON) | - | **0 RON** |
+| 6-12 MW (~24,300-48,600 RON) | 6 × MW (fixed) | 10% × 24,300 = **2,430 RON** |
+| 12-24 MW (~48,600-97,200 RON) | 12 × MW (fixed) | 10% × 48,600 = **4,860 RON** |
+| 24-72 MW (~97,200-291,600 RON) | **REAL income** (proportional!) | 10% × actual income |
+| > 72 MW (>291,600 RON) | 72 × MW (capped) | 10% × 291,600 = **29,160 RON** |
+
+⚠️ **2026 Change**: CASS ceiling increased from 60 MW to **72 MW** (291,600 RON).
+
+**CAS vs CASS - Key Differences**:
+- ✅ CAS and CASS are **completely independent** - paying one doesn't affect the other
+- ✅ CAS is always on **threshold base** (never proportional)
+- ✅ CASS becomes **proportional** between 24-72 MW (unlike investment income!)
+- ✅ You can owe CASS without owing CAS (common case: income 6-12 MW)
+
+#### Example Calculations (2026):
+
+**Example 1: Income 80,000 RON (between 12-24 MW)**
 ```
-Revenue: 150,000 RON
-Expenses: 40,000 RON (office, travel, software, etc.)
-Profit: 110,000 RON
+Revenue: 120,000 RON
+Expenses: 40,000 RON
+Net Profit: 80,000 RON
 
-Income tax: 110,000 × 10% = 11,000 RON
+Income tax: 80,000 × 10% = 8,000 RON
 
-CAS (if opted in):
-  - Choose base: e.g., 60,000 RON
-  - CAS: 60,000 × 25% = 15,000 RON
+CAS (mandatory - income > 12 MW):
+  - Base: 12 × MW = 48,600 RON (threshold, not real income!)
+  - CAS: 48,600 × 25% = 12,150 RON
 
 CASS:
-  - Net income: 110,000 RON (after tax)
-  - Bracket: 12-24 MW (50,250 - 100,500)
-  - CASS: 5,025 RON (fixed amount)
+  - Income in 12-24 MW range → fixed base
+  - Base: 12 × MW = 48,600 RON
+  - CASS: 48,600 × 10% = 4,860 RON
 
-Total (with CAS): 11,000 + 15,000 + 5,025 = 31,025 RON
-Total (without CAS): 11,000 + 5,025 = 16,025 RON
+Total: 8,000 + 12,150 + 4,860 = 25,010 RON
+```
+
+**Example 2: Income 150,000 RON (above 24 MW, CASS proportional!)**
+```
+Revenue: 200,000 RON
+Expenses: 50,000 RON
+Net Profit: 150,000 RON
+
+Income tax: 150,000 × 10% = 15,000 RON
+
+CAS (mandatory - income > 24 MW):
+  - Base: 24 × MW = 97,200 RON (CAPPED - not real income!)
+  - CAS: 97,200 × 25% = 24,300 RON
+
+CASS (proportional zone!):
+  - Income 150,000 is between 24-72 MW
+  - Base: REAL income = 150,000 RON
+  - CASS: 150,000 × 10% = 15,000 RON
+
+Total: 15,000 + 24,300 + 15,000 = 54,300 RON
+```
+
+**Example 3: Income 35,000 RON (between 6-12 MW)**
+```
+Net Profit: 35,000 RON
+
+Income tax: 35,000 × 10% = 3,500 RON
+
+CAS: ❌ OPTIONAL (income < 12 MW)
+  - You can opt out and pay nothing
+  - Or voluntarily contribute for pension credits
+
+CASS (mandatory - income > 6 MW):
+  - Base: 6 × MW = 24,300 RON (fixed)
+  - CASS: 24,300 × 10% = 2,430 RON
+
+Total (without CAS): 3,500 + 2,430 = 5,930 RON
 ```
 
 #### Advance Payments:
@@ -993,11 +1153,11 @@ CAS (if opted in):
 
 CASS:
   - Base: 35,000 RON
-  - Bracket: 6-12 MW (25,125 - 50,250)
-  - CASS: 2,512.50 RON (stepped)
+  - Bracket: 6-12 MW (24,300 - 48,600)
+  - CASS: 2,430 RON (stepped)
 
-Total (with CAS): 3,500 + 8,750 + 2,512.50 = 14,762.50 RON
-Total (without CAS): 3,500 + 2,512.50 = 6,012.50 RON
+Total (with CAS): 3,500 + 8,750 + 2,430 = 14,680 RON
+Total (without CAS): 3,500 + 2,430 = 5,930 RON
 ```
 
 #### Forced Transition to Real System:
@@ -1141,11 +1301,11 @@ Income tax: 40,000 × 10% = 4,000 RON
 
 CASS:
   - Net: 40,000 RON
-  - Bracket: 6-12 MW (25,125 - 50,250)
-  - CASS: 2,512.50 RON
+  - Bracket: 6-12 MW (24,300 - 48,600)
+  - CASS: 2,430 RON
 
-Total: 4,000 + 2,512.50 = 6,512.50 RON
-Effective rate: 13% of gross
+Total: 4,000 + 2,430 = 6,430 RON
+Effective rate: 12.9% of gross
 ```
 
 #### What Qualifies as Copyright:
@@ -1186,8 +1346,8 @@ Total net for CASS calculation:
   ─────────────────────────────
   Total: 70,000 RON
 
-CASS bracket: 12-24 MW (50,250 - 100,500)
-CASS due: 5,025 RON (one payment in May)
+CASS bracket: 12-24 MW (48,600 - 97,200)
+CASS due: 4,860 RON (one payment in May)
 
 Note: This is ON TOP of the CASS already paid by employer
 ```
@@ -1217,5 +1377,5 @@ Note: This is ON TOP of the CASS already paid by employer
 
 ---
 
-**Last Updated**: 2025-01-15  
-**Next Review**: 2026-01 (check for any ANAF clarifications)
+**Last Updated**: 2026-01-03
+**Next Review**: 2026-03 (check for any ANAF clarifications)
