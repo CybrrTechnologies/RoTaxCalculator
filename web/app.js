@@ -193,10 +193,10 @@ function getIncomeFieldsTemplate(sectionName, entryId) {
             html3 += '  <input type="number" id="cryptoGains_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="cryptoGains" step="0.01" min="0" placeholder="0.00">';
             html3 += '  <small>Taxa: ' + (rates.CRYPTO * 100).toFixed(0) + '%' + cryptoComparison + '</small>';
             html3 += '</div>';
-            html3 += '<div class="form-group checkbox-group">';
+            html3 += '<label style="display: flex; align-items: center; gap: 8px; margin-top: 12px; cursor: pointer;">';
             html3 += '  <input type="checkbox" id="cryptoExempt_' + entryId + '" class="income-field-checkbox" data-entry="' + entryId + '" data-field="cryptoExempt">';
-            html3 += '  <label for="cryptoExempt_' + entryId + '">Toate tranzacțiile sunt sub prag de scutire (&lt;200 RON/tranzacție ȘI &lt;600 RON/an)</label>';
-            html3 += '</div>';
+            html3 += '  <span>Scutit de taxă (&lt;200 RON/tranzacție, &lt;600 RON/an)</span>';
+            html3 += '</label>';
             return html3;
 
         case 'rental':
@@ -1369,7 +1369,19 @@ function displayTaxBreakdown(taxes, totalTax) {
 
         // Rate
         const rateCell = document.createElement('td');
-        rateCell.textContent = tax.rate;
+        // Check if exempt (rate contains "scutit")
+        const isExempt = tax.rate && tax.rate.includes('scutit');
+        if (isExempt) {
+            rateCell.textContent = tax.rate.replace(' (scutit)', '').replace('(scutit)', '');
+            row.style.opacity = '0.6';
+            const exemptSpan = document.createElement('div');
+            exemptSpan.style.fontSize = '0.8em';
+            exemptSpan.style.color = '#10b981';
+            exemptSpan.textContent = '(scutit)';
+            rateCell.appendChild(exemptSpan);
+        } else {
+            rateCell.textContent = tax.rate;
+        }
         if (tax.withheld) {
             const withheldSpan = document.createElement('div');
             withheldSpan.style.fontSize = '0.8em';
