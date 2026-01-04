@@ -415,6 +415,51 @@
     <div id="tooltipOverlay" class="tooltip-overlay" onclick="hideTooltip()"></div>
     <div id="tooltipPopup" class="tooltip-popup"></div>
 
+    <!-- Floating Feedback Button -->
+    <button type="button" id="feedbackBtn" class="feedback-btn" aria-label="Trimite feedback">
+        💬
+    </button>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="feedback-modal" style="display: none;">
+        <div class="feedback-modal-content">
+            <div class="feedback-modal-header">
+                <h2>💬 Trimite Feedback</h2>
+                <button type="button" class="feedback-close" aria-label="Închide">&times;</button>
+            </div>
+            <div class="feedback-modal-body">
+                <p>Părerea ta ne ajută să îmbunătățim calculatorul!</p>
+
+                <div class="feedback-rating">
+                    <span class="feedback-rating-label">Cum ți se pare aplicația?</span>
+                    <div class="feedback-stars">
+                        <button type="button" class="star-btn" data-rating="1">😞</button>
+                        <button type="button" class="star-btn" data-rating="2">😐</button>
+                        <button type="button" class="star-btn" data-rating="3">🙂</button>
+                        <button type="button" class="star-btn" data-rating="4">😊</button>
+                        <button type="button" class="star-btn" data-rating="5">🤩</button>
+                    </div>
+                </div>
+
+                <div class="feedback-type">
+                    <span class="feedback-type-label">Tip feedback:</span>
+                    <div class="feedback-type-options">
+                        <label><input type="radio" name="feedbackType" value="sugestie" checked> Sugestie</label>
+                        <label><input type="radio" name="feedbackType" value="bug"> Bug / Eroare</label>
+                        <label><input type="radio" name="feedbackType" value="intrebare"> Întrebare</label>
+                    </div>
+                </div>
+
+                <label for="feedbackText" class="feedback-label">Mesajul tău:</label>
+                <textarea id="feedbackText" class="feedback-textarea" rows="4" placeholder="Scrie aici feedback-ul tău..."></textarea>
+            </div>
+            <div class="feedback-modal-footer">
+                <button type="button" class="btn-secondary" id="feedbackCopy">📋 Copiază</button>
+                <button type="button" class="btn-primary" id="feedbackSend">📧 Trimite Email</button>
+            </div>
+        </div>
+    </div>
+
     <script src="calculator.js"></script>
     <script src="app.js"></script>
 </body>

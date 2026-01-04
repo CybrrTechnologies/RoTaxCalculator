@@ -2777,3 +2777,120 @@ if (document.readyState === 'loading') {
 } else {
     setupPrivacyModal();
 }
+
+/**
+ * Setup feedback modal functionality
+ */
+function setupFeedbackModal() {
+    var feedbackBtn = document.getElementById('feedbackBtn');
+    var feedbackModal = document.getElementById('feedbackModal');
+    var feedbackClose = feedbackModal?.querySelector('.feedback-close');
+    var feedbackText = document.getElementById('feedbackText');
+    var feedbackSend = document.getElementById('feedbackSend');
+    var feedbackCopy = document.getElementById('feedbackCopy');
+    var starBtns = document.querySelectorAll('.star-btn');
+    var selectedRating = 0;
+
+    // Star rating selection
+    starBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            selectedRating = parseInt(btn.dataset.rating);
+            starBtns.forEach(function(b) {
+                b.classList.toggle('selected', parseInt(b.dataset.rating) === selectedRating);
+            });
+        });
+    });
+
+    // Open modal
+    feedbackBtn?.addEventListener('click', function() {
+        feedbackModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    });
+
+    // Close modal
+    function closeFeedbackModal() {
+        feedbackModal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    feedbackClose?.addEventListener('click', closeFeedbackModal);
+
+    feedbackModal?.addEventListener('click', function(e) {
+        if (e.target === feedbackModal) closeFeedbackModal();
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && feedbackModal?.style.display === 'flex') {
+            closeFeedbackModal();
+        }
+    });
+
+    // Build feedback message
+    function buildFeedbackMessage() {
+        var ratingEmojis = ['', '😞', '😐', '🙂', '😊', '🤩'];
+        var feedbackType = document.querySelector('input[name="feedbackType"]:checked')?.value || 'sugestie';
+        var message = feedbackText?.value || '';
+
+        var text = 'Feedback Impozite Online\n';
+        text += '========================\n\n';
+        if (selectedRating > 0) {
+            text += 'Rating: ' + ratingEmojis[selectedRating] + ' (' + selectedRating + '/5)\n';
+        }
+        text += 'Tip: ' + feedbackType.charAt(0).toUpperCase() + feedbackType.slice(1) + '\n\n';
+        text += 'Mesaj:\n' + message + '\n\n';
+        text += '---\n';
+        text += 'An fiscal selectat: ' + ACTIVE_TAX_YEAR + '\n';
+        text += 'Trimis de la: ' + window.location.href;
+
+        return text;
+    }
+
+    // Send email
+    feedbackSend?.addEventListener('click', function() {
+        var feedbackType = document.querySelector('input[name="feedbackType"]:checked')?.value || 'sugestie';
+        var subject = 'Feedback Impozite Online - ' + feedbackType.charAt(0).toUpperCase() + feedbackType.slice(1);
+        var body = buildFeedbackMessage();
+        var mailtoUrl = 'mailto:cybrrsoft@protonmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        window.location.href = mailtoUrl;
+        closeFeedbackModal();
+    });
+
+    // Copy to clipboard
+    feedbackCopy?.addEventListener('click', function() {
+        var text = buildFeedbackMessage();
+        navigator.clipboard.writeText(text).then(function() {
+            showToast('Copiat în clipboard!');
+        }).catch(function() {
+            // Fallback for older browsers
+            var textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            showToast('Copiat în clipboard!');
+        });
+    });
+}
+
+// Show toast notification
+function showToast(message) {
+    var existing = document.querySelector('.feedback-toast');
+    if (existing) existing.remove();
+
+    var toast = document.createElement('div');
+    toast.className = 'feedback-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    setTimeout(function() {
+        toast.remove();
+    }, 3000);
+}
+
+// Setup feedback modal after DOM loads
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFeedbackModal);
+} else {
+    setupFeedbackModal();
+}
