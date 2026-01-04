@@ -6,17 +6,63 @@ Enable Romanian investors to **calculate taxes accurately** and **generate tax d
 
 ## 👥 Target Users
 
-### Primary Users
-- **Romanian investors** (age 25-45)
-- Invest in: stocks, ETFs, crypto, rental properties
-- Tech-savvy, use multiple brokers (Romanian + foreign)
-- Pain point: Complex tax calculations, fear of errors
-- Need: Accurate tax calculation + Form 212 generation
+### Market Size
 
-### Secondary Users
+**Total Addressable Market (TAM)**: 500,000-700,000 people
+- Stock investors: 246,000 (BVB/foreign brokers)
+- Crypto traders: 600,000+ (active declarants: ~100,000)
+- Rental property owners: 250,000-300,000
+- Multiple income types: Significant overlap
+
+**Serviceable Available Market (SAM)**: 150,000-250,000 users
+- Tech-savvy investors willing to use online calculators
+- Self-filers (not using accountants)
+
+**User Projections**:
+- Year 1 (2026): 5,000-10,000 users (conservative: 2,000-3,000)
+- Year 2 (2027): 20,000-30,000 users (conservative: 10,000-15,000)
+- Year 3 (2028): 50,000-80,000 users (conservative: 30,000-40,000)
+
+See [Market Sizing Document](12-market-sizing-romania.md) for detailed analysis.
+
+### Primary Users (High Priority)
+
+1. **Tech Investor** (25-45 years) - **Market: 80,000-120,000**
+   - Uses foreign brokers (IBKR, Trading212, eToro)
+   - Files own taxes, tracks gains/losses carefully
+   - Pain point: Foreign broker loss carryforward, tax credit calculation
+   - Need: Complex scenario support, CASS calculation
+
+2. **Airbnb Host** (30-50 years) - **Market: 10,000-20,000**
+   - Needs 2026 short-term rental calculation (30% forfeit)
+   - Understands platform commission deduction
+   - Pain point: New 2026 rules, CASS threshold confusion
+   - Need: Commission handling, forfeit rate clarity
+
+3. **Crypto Trader** (20-40 years) - **Market: 50,000-80,000**
+   - Tracks multiple exchanges, wallets
+   - Understands 200 RON/600 RON exemptions
+   - Pain point: Transaction aggregation, FIFO cost basis
+   - Need: Exemption tracking, multi-exchange support
+
+### Secondary Users (Medium Priority)
+
+4. **Romanian Broker User** (30-55 years) - **Market: 40,000-60,000**
+   - Tax withheld by broker automatically
+   - Pain point: CASS calculation still required
+   - Need: CASS bracket determination
+
+5. **Traditional Landlord** (40-60 years) - **Market: 30,000-50,000**
+   - Long-term rental contracts
+   - Pain point: Simple calculation, but wants validation
+   - Need: 20% forfeit calculator, CASS estimation
+
+### Tertiary Users (Lower Priority)
+
 - PFA (self-employed) with investment income
 - Small business owners with side investments
 - Expats investing while in Romania
+- Bank interest only (simple, often skip calculator)
 
 ## ✨ Core Features
 

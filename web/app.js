@@ -57,6 +57,624 @@ var incomeEntries = {
 };
 
 /**
+ * Get tooltip data for a specific field and year
+ * Returns year-appropriate content with examples
+ * Dynamically calculates rates and examples from TAX_CONFIG
+ */
+function getTooltipData(tooltipId, year) {
+    var baseData = TOOLTIP_DATA_BASE[tooltipId];
+    if (!baseData) return null;
+
+    // Clone the base data
+    var data = Object.assign({}, baseData);
+
+    // If tooltip has year-specific overrides, apply them
+    if (data.yearOverrides && data.yearOverrides[year]) {
+        data = Object.assign({}, data, data.yearOverrides[year]);
+    }
+
+    // Get config for year
+    var config = TAX_CONFIG[year];
+    var rates = config.rates;
+    var income = config.incomeCategories;
+    var cass = getCassThresholds(year);
+
+    // CASS info text - applies to total investment income
+    var cassText = 'Da, pe venitul net total din investiții > ' + formatRON(cass.threshold6) + ' RON';
+    var cassTextShort = 'Da, dacă total investiții > ' + formatRON(cass.threshold6) + ' RON';
+
+    // Dynamically enhance data based on tooltip type
+    switch (tooltipId) {
+        case 'domesticDividends':
+            data.taxRate = formatPercent(rates.DIVIDEND);
+            data.cassRequired = cassTextShort;
+            data.formula = 'Impozit = Dividend × ' + formatPercent(rates.DIVIDEND) + ' (reținut la sursă)';
+            break;
+
+        case 'foreignDividends':
+            data.taxRate = formatPercent(rates.DIVIDEND);
+            data.cassRequired = cassTextShort;
+            data.formula = 'Impozit RO = Dividend × ' + formatPercent(rates.DIVIDEND) + ' − Credit fiscal';
+            break;
+
+        case 'roGainsShort':
+            data.taxRate = formatPercent(rates.CAPITAL_GAINS_RO_SHORT);
+            data.cassRequired = cassTextShort + ' (impozit reținut la sursă, CASS separat)';
+            data.formula = 'Impozit = Câștig × ' + formatPercent(rates.CAPITAL_GAINS_RO_SHORT) + ' (reținut de broker)';
+            break;
+
+        case 'roGainsLong':
+            data.taxRate = formatPercent(rates.CAPITAL_GAINS_RO_LONG);
+            data.cassRequired = cassTextShort + ' (impozit reținut la sursă, CASS separat)';
+            data.formula = 'Impozit = Câștig × ' + formatPercent(rates.CAPITAL_GAINS_RO_LONG) + ' (reținut de broker)';
+            break;
+
+        case 'foreignGains':
+            data.taxRate = formatPercent(rates.CAPITAL_GAINS_FOREIGN);
+            data.cassRequired = cassTextShort;
+            data.formula = 'Impozit = (Câștiguri − Pierderi) × ' + formatPercent(rates.CAPITAL_GAINS_FOREIGN);
+            break;
+
+        case 'cryptoGains':
+            data.taxRate = formatPercent(rates.CRYPTO);
+            data.cassRequired = cassTextShort;
+            data.formula = 'Impozit = (Vânzare − Cumpărare) × ' + formatPercent(rates.CRYPTO);
+            break;
+
+        case 'cryptoExempt':
+            var exemption = config.cryptoExemption;
+            data.taxRate = '0% (scutit)';
+            data.cassRequired = 'Nu (sub pragul de scutire)';
+            data.formula = 'Tranzacție < ' + exemption.perTransaction + ' RON ȘI total < ' + exemption.annualTotal + ' RON/an → scutit';
+            break;
+
+        case 'rentalIncome':
+            data.taxRate = formatPercent(rates.RENT_BASE) + ' (efectiv ' + formatPercent(rates.RENT_EFFECTIVE_LONG) + ' lung / ' + formatPercent(rates.RENT_EFFECTIVE_SHORT) + ' scurt)';
+            data.cassRequired = cassTextShort;
+            var forfeitLong = Math.round((1 - rates.RENT_FORFEIT_LONG) * 100);
+            var forfeitShort = Math.round((1 - rates.RENT_FORFEIT_SHORT) * 100);
+            data.formula = 'Lung: Chirie × ' + forfeitLong + '% × 10% = ' + formatPercent(rates.RENT_EFFECTIVE_LONG) + '. Scurt: Chirie × ' + forfeitShort + '% × 10% = ' + formatPercent(rates.RENT_EFFECTIVE_SHORT);
+            break;
+
+        case 'bankInterest':
+            data.taxRate = formatPercent(rates.BANK_INTEREST);
+            data.cassRequired = 'Nu (dobânzile nu intră în baza CASS)';
+            data.formula = 'Impozit = Dobândă × ' + formatPercent(rates.BANK_INTEREST) + ' (reținut de bancă)';
+            break;
+
+        case 'cass':
+            data.taxRate = '10% (plafonat în trepte)';
+            data.cassRequired = 'Trepte: 0 / ' + formatRON(cass.cass6) + ' / ' + formatRON(cass.cass12) + ' / ' + formatRON(cass.cass24) + ' RON';
+            data.formula = '<' + formatRON(cass.threshold6) + '→0, ' + formatRON(cass.threshold6) + '-' + formatRON(cass.threshold12) + '→' + formatRON(cass.cass6) + ', ' + formatRON(cass.threshold12) + '-' + formatRON(cass.threshold24) + '→' + formatRON(cass.cass12) + ', >' + formatRON(cass.threshold24) + '→' + formatRON(cass.cass24);
+            break;
+
+        case 'priorYearLosses':
+            data.taxRate = 'N/A (reduce baza impozabilă)';
+            data.cassRequired = 'Reduce și baza CASS';
+            data.formula = 'Bază impozabilă = Câștig − (Pierdere × 70%)';
+            break;
+    }
+
+    return data;
+}
+
+/**
+ * Helper to get income categories from TAX_CONFIG
+ */
+function getIncomeCategories(year) {
+    return TAX_CONFIG[year].incomeCategories;
+}
+
+// Default income categories for static tooltip definitions
+// Note: These are for display labels only - actual calculations use TAX_CONFIG
+var INCOME_CATEGORIES = TAX_CONFIG[2026].incomeCategories;
+
+/**
+ * Helper to format number in Romanian locale
+ */
+function formatRON(value) {
+    return value.toLocaleString('ro-RO');
+}
+
+/**
+ * Helper to format percentage
+ */
+function formatPercent(rate) {
+    return Math.round(rate * 100) + '%';
+}
+
+/**
+ * Helper to get CASS thresholds for a year
+ */
+function getCassThresholds(year) {
+    var mw = TAX_CONFIG[year].minimumWage;
+    return {
+        threshold6: mw * 6,
+        threshold12: mw * 12,
+        threshold24: mw * 24,
+        cass6: mw * 6 * 0.10,
+        cass12: mw * 12 * 0.10,
+        cass24: mw * 24 * 0.10
+    };
+}
+
+/**
+ * Format saving text with line breaks for readability
+ * Splits on ". " to put each part on a new line
+ */
+function formatSavingLines(text) {
+    if (!text) return '';
+    // Split on ". " but preserve the period at end of each sentence
+    var parts = text.split('. ');
+    return parts.map(function(part, i) {
+        // Add period back except for the last part (might already have one)
+        if (i < parts.length - 1) {
+            return part + '.';
+        }
+        return part;
+    }).join('<br>');
+}
+
+/**
+ * Tooltip data for help popups
+ * hasSource: true = official source exists
+ * hasTip: true = fiscal optimization opportunity
+ * taxRate: tax percentage (e.g., '10%', '16%')
+ * cassRequired: whether CASS applies (true/false/string for conditional)
+ * formula: calculation formula (e.g., 'Venit × 10%')
+ * examples: concrete calculations for small/medium/large investors
+ * sources: array of {label, url} for multiple law references
+ */
+var TOOLTIP_DATA_BASE = {
+    domesticDividends: {
+        title: 'Dividende Românești',
+        hasSource: true,
+        hasTip: false,
+        sources: [
+            { label: 'Art. 97 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ],
+        yearOverrides: {
+            2025: {
+                content: 'Dividendele primite de la companii românești (SRL, SA) sunt impozitate cu 10%. Taxa este reținută la sursă de către compania care distribuie dividendele.'
+            },
+            2026: {
+                content: 'Dividendele primite de la companii românești (SRL, SA) sunt impozitate cu 16% (majorare de la 10% în 2025). Taxa este reținută la sursă de către compania care distribuie dividendele.',
+                sources: [
+                    { label: 'Art. 97 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' },
+                    { label: 'Legea 239/2024 (majorare 16%)', url: 'https://legislatie.just.ro/Public/DetaliiDocumentAfis/287644' }
+                ]
+            }
+        }
+    },
+    foreignDividends: {
+        title: 'Dividende Străine',
+        hasSource: true,
+        hasTip: true,
+        sources: [
+            { label: 'Art. 97 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' },
+            { label: 'Tratat fiscal RO-US', url: 'https://www.irs.gov/businesses/international-businesses/romania-tax-treaty-documents' }
+        ],
+        yearOverrides: {
+            2025: {
+                content: 'Dividendele primite de la companii străine sunt impozitate cu 10% în România. Dacă s-a reținut impozit în țara sursă, poți beneficia de credit fiscal până la 10%.',
+                tip: 'Completează formularul W-8BEN la brokerul american pentru a reduce reținerea la sursă de la 30% la 10% (tratat fiscal RO-US). Nu vei mai datora nimic în România!',
+                examples: {
+                    small: { label: INCOME_CATEGORIES.small.dividends.toLocaleString('ro-RO') + ' RON dividende US', saving: 'Fără W-8BEN: 1.500 US + 0 RO + 0 CASS = 1.500 RON. Cu W-8BEN: 500 US + 0 = 500 RON' },
+                    medium: { label: INCOME_CATEGORIES.medium.dividends.toLocaleString('ro-RO') + ' RON dividende US', saving: 'Fără W-8BEN: 9.000 US + 0 RO + 2.430 CASS. Cu W-8BEN: 3.000 + 0 + 2.430 = 5.430 RON' },
+                    large: { label: INCOME_CATEGORIES.large.dividends.toLocaleString('ro-RO') + ' RON dividende US', saving: 'Fără W-8BEN: 30.000 US + 0 RO + 7.920 CASS. Cu W-8BEN: 10.000 + 0 + 7.920 = 17.920 RON' }
+                }
+            },
+            2026: {
+                content: 'Dividendele primite de la companii străine sunt impozitate cu 16% în România. Dacă s-a reținut impozit în țara sursă, poți beneficia de credit fiscal până la 16%.',
+                tip: 'Completează formularul W-8BEN la brokerul american pentru a reduce reținerea la sursă de la 30% la 10% (tratat fiscal RO-US). Vei plăti doar 6% în România.',
+                examples: {
+                    small: { label: INCOME_CATEGORIES.small.dividends.toLocaleString('ro-RO') + ' RON dividende US', saving: 'Cu W-8BEN: 500 US + 300 RO + 0 CASS = 800 RON. Fără: 1.500 US + 0 = 1.500 RON' },
+                    medium: { label: INCOME_CATEGORIES.medium.dividends.toLocaleString('ro-RO') + ' RON dividende US', saving: 'Cu W-8BEN: 3.000 US + 1.800 RO + 2.595 CASS = 7.395 RON. Economie: 4.200 RON!' },
+                    large: { label: INCOME_CATEGORIES.large.dividends.toLocaleString('ro-RO') + ' RON dividende US', saving: 'Cu W-8BEN: 10.000 US + 6.000 RO + 10.380 CASS = 26.380 RON. Economie: 14.000 RON!' }
+                }
+            }
+        }
+    },
+    roGainsShort: {
+        title: 'Câștiguri Capital RO (<365 zile)',
+        hasSource: true,
+        hasTip: true,
+        sources: [
+            { label: 'Art. 94 alin. (2) Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ],
+        yearOverrides: {
+            2025: {
+                content: 'Câștigurile din vânzarea titlurilor deținute mai puțin de 365 zile la brokeri români sunt impozitate cu 3%. Taxa este reținută la sursă de broker.',
+                tip: 'În 2025, rata este aceeași (3%) indiferent de perioada de deținere. Nu există avantaj fiscal pentru așteptare.',
+                hasTip: false
+            },
+            2026: {
+                content: 'Câștigurile din vânzarea titlurilor deținute mai puțin de 365 zile la brokeri români sunt impozitate cu 6%. Taxa este reținută la sursă de broker.',
+                tip: 'Dacă poți aștepta, păstrează titlurile peste 365 zile pentru rata de 3%. Economisești 50% din impozit!',
+                examples: {
+                    small: { label: INCOME_CATEGORIES.small.gains.toLocaleString('ro-RO') + ' RON câștig', saving: 'Impozit 6%: 600 RON (reținut). CASS: 0 RON (sub prag). Total: 600 RON' },
+                    medium: { label: INCOME_CATEGORIES.medium.gains.toLocaleString('ro-RO') + ' RON câștig', saving: 'Impozit 6%: 3.000 RON. CASS: 2.430 RON. Total: 5.430 RON. Cu ≥365z: 1.500+2.430=3.930 RON' },
+                    large: { label: INCOME_CATEGORIES.large.gains.toLocaleString('ro-RO') + ' RON câștig', saving: 'Impozit 6%: 12.000 RON. CASS: 9.720 RON (plafonat). Total: 21.720 RON' }
+                }
+            }
+        }
+    },
+    roGainsLong: {
+        title: 'Câștiguri Capital RO (≥365 zile)',
+        hasSource: true,
+        hasTip: true,
+        sources: [
+            { label: 'Art. 94 alin. (2) Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ],
+        yearOverrides: {
+            2025: {
+                content: 'Câștigurile din vânzarea titlurilor deținute cel puțin 365 zile la brokeri români sunt impozitate cu 3%. Taxa este reținută la sursă de broker.',
+                tip: 'Aceasta este cea mai mică rată disponibilă pentru câștiguri de capital în România!',
+                hasTip: false
+            },
+            2026: {
+                content: 'Câștigurile din vânzarea titlurilor deținute cel puțin 365 zile la brokeri români sunt impozitate cu doar 3%. Taxa este reținută la sursă de broker.',
+                tip: 'Cea mai avantajoasă rată pentru câștiguri de capital! Strategia "buy and hold" te ajută să economisești 50% din impozit.',
+                examples: {
+                    small: { label: INCOME_CATEGORIES.small.gains.toLocaleString('ro-RO') + ' RON câștig', saving: 'Impozit 3%: 300 RON (reținut). CASS: 0 RON (sub prag). Total: 300 RON' },
+                    medium: { label: INCOME_CATEGORIES.medium.gains.toLocaleString('ro-RO') + ' RON câștig', saving: 'Impozit 3%: 1.500 RON. CASS: 2.430 RON. Total: 3.930 RON. La broker străin: 8.000+2.430!' },
+                    large: { label: INCOME_CATEGORIES.large.gains.toLocaleString('ro-RO') + ' RON câștig', saving: 'Impozit 3%: 6.000 RON. CASS: 9.720 RON. Total: 15.720 RON. La străin: 32.000+9.720!' }
+                }
+            }
+        }
+    },
+    foreignGains: {
+        title: 'Câștiguri Capital Broker Străin',
+        hasSource: true,
+        hasTip: true,
+        sources: [
+            { label: 'Art. 94-96 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ],
+        yearOverrides: {
+            2025: {
+                content: 'Câștigurile de la brokeri străini (IBKR, Trading212, eToro) sunt impozitate cu 10%. Nu se reține taxa la sursă - trebuie să declari și să plătești tu prin Declarația Unică.',
+                tip: 'Pierderile pot fi compensate cu câștigurile și reportate până la 7 ani (70% din valoare). Pentru sume mari, consideră un broker român pentru rata de 3%.',
+                examples: {
+                    small: { label: '10.000 RON câștig', saving: 'Impozit 10%: 1.000 RON. CASS: 0 RON (sub prag). Total: 1.000 RON' },
+                    medium: { label: '50.000 RON câștig', saving: 'Impozit 10%: 5.000 RON. CASS: 2.430 RON. Total: 7.430 RON' },
+                    large: { label: '200.000 RON câștig', saving: 'Impozit 10%: 20.000 RON. CASS: 7.920 RON (plafonat). Total: 27.920 RON' }
+                }
+            },
+            2026: {
+                content: 'Câștigurile de la brokeri străini (IBKR, Trading212, eToro) sunt impozitate cu 16%. Nu se reține taxa la sursă - trebuie să declari și să plătești tu prin Declarația Unică.',
+                tip: 'Pentru investitori activi, transferul la un broker român poate economisi masiv: 16%→3% impozit!',
+                examples: {
+                    small: { label: INCOME_CATEGORIES.small.gains.toLocaleString('ro-RO') + ' RON câștig', saving: 'Impozit 16%: 1.600 RON. CASS: 0 RON (sub prag). Total: 1.600 RON. La RO ≥365z: 300 RON!' },
+                    medium: { label: INCOME_CATEGORIES.medium.gains.toLocaleString('ro-RO') + ' RON câștig', saving: 'Impozit 16%: 8.000 RON. CASS: 2.595 RON. Total: 10.595 RON. La RO ≥365z: 4.095 RON!' },
+                    large: { label: INCOME_CATEGORIES.large.gains.toLocaleString('ro-RO') + ' RON câștig', saving: 'Impozit 16%: 32.000 RON. CASS: 10.380 RON. Total: 42.380 RON. La RO ≥365z: 16.380 RON!' }
+                }
+            }
+        }
+    },
+    priorYearLosses: {
+        title: 'Pierderi Reportate',
+        content: 'Pierderile din anii anteriori pot fi folosite pentru a reduce câștigurile impozabile. Se poate deduce 70% din valoarea pierderilor, pe o perioadă de până la 7 ani. Reduce și baza pentru CASS!',
+        hasSource: true,
+        hasTip: true,
+        tip: 'Ține evidența pierderilor! Deducerea de 70% pe 7 ani reduce atât impozitul cât și CASS în anii profitabili.',
+        sources: [
+            { label: 'Art. 94 alin. (8) Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ],
+        examples: {
+            small: { label: INCOME_CATEGORIES.small.dividends.toLocaleString('ro-RO') + ' RON pierderi reportate', saving: 'Deductibil: 3.500 RON (70%). Economie impozit 16%: 560 RON. CASS: poate reduce treapta!' },
+            medium: { label: INCOME_CATEGORIES.medium.dividends.toLocaleString('ro-RO') + ' RON pierderi reportate', saving: 'Deductibil: 21.000 RON. Economie impozit: 3.360 RON. Dacă trece sub prag CASS: +2.595 RON!' },
+            large: { label: INCOME_CATEGORIES.large.dividends.toLocaleString('ro-RO') + ' RON pierderi reportate', saving: 'Deductibil: 70.000 RON. Economie impozit: 11.200 RON. Poate reduce CASS cu o treaptă: +2.595-5.190 RON!' }
+        }
+    },
+    cryptoGains: {
+        title: 'Câștiguri Criptomonede',
+        hasSource: true,
+        hasTip: true,
+        sources: [
+            { label: 'Art. 98 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ],
+        yearOverrides: {
+            2025: {
+                content: 'Câștigurile din vânzarea/schimbul de criptomonede sunt impozitate cu 10%. Trebuie să declari și să plătești tu prin Declarația Unică.',
+                tips: [
+                    {
+                        title: 'Scutire sume mici',
+                        text: 'Tranzacțiile sub 200 RON/tranzacție ȘI sub 600 RON/an sunt scutite de impozit.'
+                    },
+                    {
+                        title: 'Alternativă ETF pentru HODLeri',
+                        text: 'ETF-uri crypto (BTC, ETH) la broker RO au taxă de doar 3% vs 10% crypto direct!',
+                        examples: {
+                            small: { label: INCOME_CATEGORIES.small.crypto.toLocaleString('ro-RO') + ' RON câștig', saving: 'Crypto: 500 RON impozit + 0 CASS = 500 RON. ETF: 150 RON + 0 = 150 RON' },
+                            medium: { label: INCOME_CATEGORIES.medium.crypto.toLocaleString('ro-RO') + ' RON câștig', saving: 'Crypto: 3.000 + 2.430 CASS = 5.430 RON. ETF: 900 + 2.430 = 3.330 RON' },
+                            large: { label: INCOME_CATEGORIES.large.crypto.toLocaleString('ro-RO') + ' RON câștig', saving: 'Crypto: 10.000 + 7.920 = 17.920 RON. ETF: 3.000 + 7.920 = 10.920 RON!' }
+                        }
+                    }
+                ]
+            },
+            2026: {
+                content: 'Câștigurile din vânzarea/schimbul de criptomonede sunt impozitate cu 16%. Trebuie să declari și să plătești tu prin Declarația Unică.',
+                tips: [
+                    {
+                        title: 'Scutire sume mici',
+                        text: 'Tranzacțiile sub 200 RON/tranzacție ȘI sub 600 RON/an sunt scutite de impozit și CASS.'
+                    },
+                    {
+                        title: 'Alternativă ETF pentru HODLeri',
+                        text: 'ETF-uri crypto (BTC, ETH) la broker RO au taxă de 6% (<365z) sau 3% (≥365z) vs 16% crypto direct!',
+                        examples: {
+                            small: { label: INCOME_CATEGORIES.small.crypto.toLocaleString('ro-RO') + ' RON câștig', saving: 'Crypto: 800 impozit + 0 CASS = 800 RON. ETF ≥365z: 150 + 0 = 150 RON' },
+                            medium: { label: INCOME_CATEGORIES.medium.crypto.toLocaleString('ro-RO') + ' RON câștig', saving: 'Crypto: 4.800 + 2.595 CASS = 7.395 RON. ETF ≥365z: 900 + 2.595 = 3.495 RON' },
+                            large: { label: INCOME_CATEGORIES.large.crypto.toLocaleString('ro-RO') + ' RON câștig', saving: 'Crypto: 16.000 + 10.380 = 26.380 RON. ETF ≥365z: 3.000 + 10.380 = 13.380 RON!' }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    cryptoExempt: {
+        title: 'Scutire Crypto',
+        content: 'Ești scutit de impozit și CASS dacă TOATE tranzacțiile sunt sub 200 RON per tranzacție ȘI totalul anual este sub 600 RON.',
+        hasSource: true,
+        hasTip: true,
+        tip: 'Util pentru sume foarte mici. O singură tranzacție peste 200 RON anulează scutirea pentru tot anul!',
+        sources: [
+            { label: 'Art. 98 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ]
+    },
+    rentalIncome: {
+        title: 'Venituri din Chirii',
+        hasSource: true,
+        hasTip: false,
+        sources: [
+            { label: 'Art. 84-86 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ],
+        yearOverrides: {
+            2025: {
+                content: 'Veniturile din chirii sunt impozitate cu 10% pe venitul net. Se aplică cheltuieli forfetare fixe de 20%, rezultând o taxă efectivă de 8%.',
+                hasTip: false
+            },
+            2026: {
+                content: 'Veniturile din chirii sunt impozitate cu 10% pe venitul net. Cheltuieli forfetare: 20% pentru termen lung (taxă efectivă 8%), 30% pentru termen scurt (taxă efectivă 7%).',
+                hasTip: true,
+                tip: 'Chiria pe termen scurt (Airbnb, Booking) are taxă efectivă mai mică: 7% vs 8%! Dar necesită casă de marcat fiscală.',
+                sources: [
+                    { label: 'Art. 84-86 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' },
+                    { label: 'Legea 239/2024 (termen scurt 30%)', url: 'https://legislatie.just.ro/Public/DetaliiDocumentAfis/287644' }
+                ],
+                examples: {
+                    small: { label: INCOME_CATEGORIES.small.rental.toLocaleString('ro-RO') + ' RON/an (1.000/lună)', saving: 'Impozit lung 8%: 960 RON. CASS: 0 RON (sub prag). Total: 960 RON. Scurt 7%: 840+0=840 RON' },
+                    medium: { label: INCOME_CATEGORIES.medium.rental.toLocaleString('ro-RO') + ' RON/an (3.000/lună)', saving: 'Impozit lung: 2.880 RON. CASS: 2.595 RON. Total: 5.475 RON. Scurt: 2.520+2.595=5.115 RON' },
+                    large: { label: INCOME_CATEGORIES.large.rental.toLocaleString('ro-RO') + ' RON/an (10.000/lună)', saving: 'Impozit lung: 9.600 RON. CASS: 10.380 RON (plafonat). Total: 19.980 RON. Scurt: 8.400+10.380=18.780 RON' }
+                }
+            }
+        }
+    },
+    bankInterest: {
+        title: 'Dobânzi Bancare',
+        content: 'Dobânzile la depozite bancare sunt impozitate cu 10%. Taxa este reținută la sursă de bancă. Dobânzile NU intră în baza CASS.',
+        hasSource: true,
+        hasTip: true,
+        tip: 'Titlurile de stat (Fidelis, Tezaur) sunt 100% scutite de impozit! La randamente similare, economisești 10% din câștig.',
+        sources: [
+            { label: 'Art. 92 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ],
+        examples: {
+            small: { label: INCOME_CATEGORIES.small.interest.toLocaleString('ro-RO') + ' RON dobândă/an', saving: 'Impozit 10%: 50 RON (reținut). CASS: 0 RON (nu se aplică). Fidelis: 0+0=0 RON!' },
+            medium: { label: INCOME_CATEGORIES.medium.interest.toLocaleString('ro-RO') + ' RON dobândă/an', saving: 'Impozit 10%: 300 RON (reținut). CASS: 0 RON. Fidelis: 0 RON. Economie: 300 RON' },
+            large: { label: INCOME_CATEGORIES.large.interest.toLocaleString('ro-RO') + ' RON dobândă/an', saving: 'Impozit 10%: 1.500 RON (reținut). CASS: 0 RON. Fidelis: 0 RON. Economie: 1.500 RON!' }
+        }
+    },
+    cass: {
+        title: 'CASS (Contribuția de Sănătate)',
+        hasSource: true,
+        hasTip: true,
+        sources: [
+            { label: 'Art. 170-172 Cod Fiscal', url: 'https://legislatie.just.ro/Public/DetaliiDocument/171282' }
+        ],
+        yearOverrides: {
+            2025: {
+                taxRate: '10% (plafonat în trepte)',
+                cassRequired: 'Da, în trepte: 0 / 1.980 / 3.960 / 7.920 RON',
+                formula: 'Vezi praguri: <19.800=0, 19.800-39.600=1.980, 39.600-79.200=3.960, >79.200=7.920',
+                content: 'CASS de 10% se datorează pe veniturile din investiții care depășesc 6 salarii minime (19.800 RON în 2025). Sistemul este în trepte: 6, 12 sau 24 salarii minime.',
+                tip: 'Praguri 2025: sub 19.800 = 0 RON, 19.800-39.600 = 1.980 RON, 39.600-79.200 = 3.960 RON, peste = 7.920 RON.',
+                examples: {
+                    small: { label: '25.000 RON venit net', saving: 'CASS: 1.980 RON. Dacă reduci la 19.799 RON: 0 RON. Economie: 1.980 RON!' },
+                    medium: { label: '50.000 RON venit net', saving: 'CASS: 3.960 RON. Dacă reduci la 39.599 RON: 1.980 RON. Economie: 1.980 RON!' },
+                    large: { label: '100.000 RON venit net', saving: 'CASS: 7.920 RON (plafonat). Nu se poate optimiza, dar nici nu crește peste acest nivel.' }
+                }
+            },
+            2026: {
+                taxRate: '10% (plafonat în trepte)',
+                cassRequired: 'Da, în trepte: 0 / 2.595 / 5.190 / 10.380 RON',
+                formula: 'Vezi praguri: <25.950=0, 25.950-51.900=2.595, 51.900-103.800=5.190, >103.800=10.380',
+                content: 'CASS de 10% se datorează pe veniturile din investiții care depășesc 6 salarii minime (25.950 RON în 2026). Sistemul este în trepte: 6, 12 sau 24 salarii minime.',
+                tip: 'Praguri 2026: sub 25.950 = 0 RON, 25.950-51.900 = 2.595 RON, 51.900-103.800 = 5.190 RON, peste = 10.380 RON.',
+                examples: {
+                    small: { label: '30.000 RON venit net', saving: 'CASS: 2.595 RON. Dacă reduci la 25.949 RON: 0 RON. Economie: 2.595 RON!' },
+                    medium: { label: '60.000 RON venit net', saving: 'CASS: 5.190 RON. Dacă reduci la 51.899 RON: 2.595 RON. Economie: 2.595 RON!' },
+                    large: { label: '150.000 RON venit net', saving: 'CASS: 10.380 RON (plafonat). Nu se poate optimiza, dar e plafonat indiferent cât câștigi.' }
+                }
+            }
+        }
+    }
+};
+
+/**
+ * Show tooltip popup
+ */
+function showTooltip(tooltipId) {
+    var data = getTooltipData(tooltipId, ACTIVE_TAX_YEAR);
+    if (!data) return;
+
+    var popup = document.getElementById('tooltipPopup');
+    var overlay = document.getElementById('tooltipOverlay');
+
+    if (!popup || !overlay) return;
+
+    // Build popup content
+    var html = '';
+    html += '<div class="tooltip-header">';
+    html += '  <div class="tooltip-title">' + data.title + '</div>';
+    html += '  <button class="tooltip-close" onclick="hideTooltip()">&times;</button>';
+    html += '</div>';
+    html += '<div class="tooltip-content">';
+
+    // Add structured info (tax rate, CASS, formula)
+    if (data.taxRate || data.cassRequired || data.formula) {
+        html += '<div class="tooltip-info-grid">';
+        if (data.taxRate) {
+            html += '<div class="tooltip-info-item">';
+            html += '  <span class="tooltip-info-label">Impozit:</span>';
+            html += '  <span class="tooltip-info-value">' + data.taxRate + '</span>';
+            html += '</div>';
+        }
+        if (data.cassRequired) {
+            html += '<div class="tooltip-info-item">';
+            html += '  <span class="tooltip-info-label">CASS:</span>';
+            html += '  <span class="tooltip-info-value">' + data.cassRequired + '</span>';
+            html += '</div>';
+        }
+        if (data.formula) {
+            html += '<div class="tooltip-info-item tooltip-info-formula">';
+            html += '  <span class="tooltip-info-label">Formulă:</span>';
+            html += '  <span class="tooltip-info-value">' + data.formula + '</span>';
+            html += '</div>';
+        }
+        html += '</div>';
+    }
+
+    html += '  <p>' + data.content + '</p>';
+
+    // Add optimization tips if exists
+    if (data.hasTip) {
+        // Handle multiple tips (new format)
+        if (data.tips && data.tips.length > 0) {
+            data.tips.forEach(function(tipItem) {
+                html += '<div class="tooltip-tip" style="margin-bottom: 12px;">';
+                html += '  <div class="tooltip-tip-header">💡 ' + tipItem.title + '</div>';
+                html += '  <div class="tooltip-tip-text">' + tipItem.text + '</div>';
+
+                // Add examples for this tip if available
+                if (tipItem.examples) {
+                    html += '  <div style="margin-top: 12px; font-size: 0.85em;">';
+                    html += '    <div style="font-weight: 600; margin-bottom: 8px;">Exemple concrete:</div>';
+                    if (tipItem.examples.small) {
+                        html += '    <div style="margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.5); border-radius: 6px;">';
+                        html += '      <div style="font-weight: 600; margin-bottom: 4px;">📊 ' + tipItem.examples.small.label + '</div>';
+                        html += '      <div>' + formatSavingLines(tipItem.examples.small.saving) + '</div>';
+                        html += '    </div>';
+                    }
+                    if (tipItem.examples.medium) {
+                        html += '    <div style="margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.5); border-radius: 6px;">';
+                        html += '      <div style="font-weight: 600; margin-bottom: 4px;">📊 ' + tipItem.examples.medium.label + '</div>';
+                        html += '      <div>' + formatSavingLines(tipItem.examples.medium.saving) + '</div>';
+                        html += '    </div>';
+                    }
+                    if (tipItem.examples.large) {
+                        html += '    <div style="padding: 8px; background: rgba(255,255,255,0.5); border-radius: 6px;">';
+                        html += '      <div style="font-weight: 600; margin-bottom: 4px;">📊 ' + tipItem.examples.large.label + '</div>';
+                        html += '      <div>' + formatSavingLines(tipItem.examples.large.saving) + '</div>';
+                        html += '    </div>';
+                    }
+                    html += '  </div>';
+                }
+                html += '</div>';
+            });
+        }
+        // Handle single tip (old format)
+        else if (data.tip) {
+            html += '<div class="tooltip-tip">';
+            html += '  <div class="tooltip-tip-header">💡 Optimizare fiscală</div>';
+            html += '  <div class="tooltip-tip-text">' + data.tip + '</div>';
+
+            // Add examples if available
+            if (data.examples) {
+                html += '  <div style="margin-top: 12px; font-size: 0.85em;">';
+                html += '    <div style="font-weight: 600; margin-bottom: 8px;">Exemple concrete:</div>';
+                if (data.examples.small) {
+                    html += '    <div style="margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.5); border-radius: 6px;">';
+                    html += '      <div style="font-weight: 600; margin-bottom: 4px;">📊 ' + data.examples.small.label + '</div>';
+                    html += '      <div>' + formatSavingLines(data.examples.small.saving) + '</div>';
+                    html += '    </div>';
+                }
+                if (data.examples.medium) {
+                    html += '    <div style="margin-bottom: 12px; padding: 8px; background: rgba(255,255,255,0.5); border-radius: 6px;">';
+                    html += '      <div style="font-weight: 600; margin-bottom: 4px;">📊 ' + data.examples.medium.label + '</div>';
+                    html += '      <div>' + formatSavingLines(data.examples.medium.saving) + '</div>';
+                    html += '    </div>';
+                }
+                if (data.examples.large) {
+                    html += '    <div style="padding: 8px; background: rgba(255,255,255,0.5); border-radius: 6px;">';
+                    html += '      <div style="font-weight: 600; margin-bottom: 4px;">📊 ' + data.examples.large.label + '</div>';
+                    html += '      <div>' + formatSavingLines(data.examples.large.saving) + '</div>';
+                    html += '    </div>';
+                }
+                html += '  </div>';
+            }
+            html += '</div>';
+        }
+    }
+
+    // Add warning if no official source
+    if (!data.hasSource) {
+        html += '<div class="tooltip-warning">';
+        html += '  <div class="tooltip-warning-header">⚠️ Sursă neoficială</div>';
+        html += '  <div class="tooltip-warning-text">Informația nu provine dintr-o sursă oficială. Consultă un expert fiscal.</div>';
+        html += '</div>';
+    }
+
+    // Add source links (supports multiple sources)
+    var sources = data.sources || (data.sourceUrl ? [{ label: data.sourceLabel, url: data.sourceUrl }] : []);
+    if (sources.length > 0) {
+        html += '<div class="tooltip-source">';
+        html += '  <div class="tooltip-source-label">Surse oficiale:</div>';
+        sources.forEach(function(source) {
+            html += '  <a href="' + source.url + '" target="_blank" rel="noopener" style="display: block; margin-top: 4px;">' + source.label + ' ↗</a>';
+        });
+        html += '</div>';
+    }
+
+    html += '</div>';
+
+    popup.innerHTML = html;
+    popup.classList.add('active');
+    overlay.classList.add('active');
+
+    // Prevent body scroll
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Hide tooltip popup
+ */
+function hideTooltip() {
+    var popup = document.getElementById('tooltipPopup');
+    var overlay = document.getElementById('tooltipOverlay');
+
+    if (popup) popup.classList.remove('active');
+    if (overlay) overlay.classList.remove('active');
+
+    // Restore body scroll
+    document.body.style.overflow = '';
+}
+
+/**
+ * Create help trigger HTML
+ */
+function createHelpTrigger(tooltipId) {
+    var data = getTooltipData(tooltipId, ACTIVE_TAX_YEAR);
+    if (!data) return '';
+
+    var classes = 'help-trigger';
+    if (!data.hasSource) classes += ' no-source';
+    else if (data.hasTip) classes += ' has-tip';
+
+    return '<span class="' + classes + '" onclick="showTooltip(\'' + tooltipId + '\')">?</span>';
+}
+
+/**
  * Validate number input field - removes invalid characters
  */
 function validateNumberInput(input) {
@@ -136,12 +754,20 @@ function getIncomeFieldsTemplate(sectionName, entryId) {
             var divComparison = prevRates ? createRateComparison(year, rates.DIVIDEND, prevRates.DIVIDEND) : '';
             var html = '';
             html += '<div class="form-group">';
-            html += '  <label for="domesticDividends_' + entryId + '">Dividende Românești (RON brut)</label>';
-            html += '  <input type="number" id="domesticDividends_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="domesticDividends" step="0.01" min="0" placeholder="0.00">';
-            html += '  <small>Taxa: ' + (rates.DIVIDEND * 100).toFixed(0) + '% (reținută la sursă)' + divComparison + '</small>';
+            html += '  <label>Dividende Românești' + createHelpTrigger('domesticDividends') + '</label>';
+            html += '  <div style="display: flex; gap: 12px;">';
+            html += '    <div style="flex: 1;">';
+            html += '      <input type="number" id="domesticDividendsNet_' + entryId + '" class="gross-net-field" data-entry="' + entryId + '" data-rate="' + rates.DIVIDEND + '" data-pair="domesticDividends_' + entryId + '" data-type="net" step="0.01" min="0" placeholder="0.00">';
+            html += '      <small>Net (primit)</small>';
+            html += '    </div>';
+            html += '    <div style="flex: 1;">';
+            html += '      <input type="number" id="domesticDividends_' + entryId + '" class="income-field gross-net-field" data-entry="' + entryId + '" data-field="domesticDividends" data-rate="' + rates.DIVIDEND + '" data-pair="domesticDividendsNet_' + entryId + '" data-type="gross" step="0.01" min="0" placeholder="0.00">';
+            html += '      <small>Brut (-' + (rates.DIVIDEND * 100).toFixed(0) + '% taxă)' + divComparison + '</small>';
+            html += '    </div>';
+            html += '  </div>';
             html += '</div>';
             html += '<div class="form-group">';
-            html += '  <label for="foreignDividends_' + entryId + '">Dividende Străine (RON brut)</label>';
+            html += '  <label for="foreignDividends_' + entryId + '">Dividende Străine (RON brut)' + createHelpTrigger('foreignDividends') + '</label>';
             html += '  <input type="number" id="foreignDividends_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="foreignDividends" step="0.01" min="0" placeholder="0.00">';
             html += '</div>';
             html += '<div class="form-group">';
@@ -154,68 +780,127 @@ function getIncomeFieldsTemplate(sectionName, entryId) {
         case 'capitalGains':
             var cgShortComparison = prevRates ? createRateComparison(year, rates.CAPITAL_GAINS_RO_SHORT, prevRates.CAPITAL_GAINS_RO_SHORT) : '';
             var cgLongComparison = prevRates ? createRateComparison(year, rates.CAPITAL_GAINS_RO_LONG, prevRates.CAPITAL_GAINS_RO_LONG) : '';
-            var html2 = '';
-            html2 += '<h4 style="margin: 0 0 12px 0; font-size: 1em; color: var(--text-muted);">Broker Românesc (XTB, Tradeville, BT Trade)</h4>';
-            html2 += '<div class="form-group">';
-            html2 += '  <label for="roGainsShort_' + entryId + '">Câștig &lt; 365 zile (RON)</label>';
-            html2 += '  <input type="number" id="roGainsShort_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="roGainsShort" step="0.01" min="0" placeholder="0.00">';
-            html2 += '  <small>Taxa: ' + (rates.CAPITAL_GAINS_RO_SHORT * 100).toFixed(0) + '% (reținută la sursă)' + cgShortComparison + '</small>';
-            html2 += '</div>';
-            html2 += '<div class="form-group">';
-            html2 += '  <label for="roGainsLong_' + entryId + '">Câștig ≥ 365 zile (RON)</label>';
-            html2 += '  <input type="number" id="roGainsLong_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="roGainsLong" step="0.01" min="0" placeholder="0.00">';
-            html2 += '  <small>Taxa: ' + (rates.CAPITAL_GAINS_RO_LONG * 100).toFixed(0) + '% (reținută la sursă)' + cgLongComparison + '</small>';
-            html2 += '</div>';
             var cgForeignComparison = prevRates ? createRateComparison(year, rates.CAPITAL_GAINS_FOREIGN, prevRates.CAPITAL_GAINS_FOREIGN) : '';
-            html2 += '<h4 style="margin: 16px 0 12px 0; font-size: 1em; color: var(--text-muted);">Broker Străin (IBKR, Trading212, eToro)</h4>';
-            html2 += '<div class="form-group">';
-            html2 += '  <label for="foreignGains_' + entryId + '">Câștiguri Totale (RON)</label>';
-            html2 += '  <input type="number" id="foreignGains_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="foreignGains" step="0.01" min="0" placeholder="0.00">';
-            html2 += '  <small>Taxa: ' + (rates.CAPITAL_GAINS_FOREIGN * 100).toFixed(0) + '% (declari și plătești tu)' + cgForeignComparison + '</small>';
+
+            var html2 = '';
+
+            // Broker type segmented control
+            html2 += '<div style="margin-bottom: 20px;">';
+            html2 += '  <div class="segmented-control" style="display: inline-flex; background: #f1f5f9; border-radius: 10px; padding: 4px;">';
+            html2 += '    <button type="button" class="broker-type-btn" data-entry="' + entryId + '" data-type="romanian" style="padding: 12px 20px; border: none; background: white; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: left;">';
+            html2 += '      <div style="font-size: 15px; font-weight: 600; color: var(--primary); margin-bottom: 2px;">Broker Românesc</div>';
+            html2 += '      <div style="font-size: 12px; font-weight: 400; color: #64748b;">ex: XTB, Tradeville, BT Trade</div>';
+            html2 += '    </button>';
+            html2 += '    <button type="button" class="broker-type-btn" data-entry="' + entryId + '" data-type="foreign" style="padding: 12px 20px; border: none; background: transparent; border-radius: 8px; cursor: pointer; transition: all 0.2s; text-align: left;">';
+            html2 += '      <div style="font-size: 15px; font-weight: 500; color: #64748b; margin-bottom: 2px;">Broker Străin</div>';
+            html2 += '      <div style="font-size: 12px; font-weight: 400; color: #94a3b8;">ex: IBKR, Trading212, eToro</div>';
+            html2 += '    </button>';
+            html2 += '  </div>';
+            html2 += '  <input type="hidden" id="isForeignBroker_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="isForeignBroker" value="0">';
             html2 += '</div>';
-            html2 += '<div class="form-group">';
-            html2 += '  <label for="foreignLosses_' + entryId + '">Pierderi Anul Curent (RON)</label>';
-            html2 += '  <input type="number" id="foreignLosses_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="foreignLosses" step="0.01" min="0" placeholder="0.00">';
-            html2 += '  <small>Se pot compensa cu câștigurile</small>';
+
+            // Romanian broker fields (default, hidden when foreign is checked)
+            html2 += '<div id="romanianBrokerFields_' + entryId + '" class="broker-fields">';
+            html2 += '  <div class="form-group">';
+            html2 += '    <label>Câștig &lt; 365 zile' + createHelpTrigger('roGainsShort') + '</label>';
+            html2 += '    <div style="display: flex; gap: 12px;">';
+            html2 += '      <div style="flex: 1;">';
+            html2 += '        <input type="number" id="roGainsShortNet_' + entryId + '" class="gross-net-field" data-entry="' + entryId + '" data-rate="' + rates.CAPITAL_GAINS_RO_SHORT + '" data-pair="roGainsShort_' + entryId + '" data-type="net" step="0.01" min="0" placeholder="0.00">';
+            html2 += '        <small>Net (primit)</small>';
+            html2 += '      </div>';
+            html2 += '      <div style="flex: 1;">';
+            html2 += '        <input type="number" id="roGainsShort_' + entryId + '" class="income-field gross-net-field" data-entry="' + entryId + '" data-field="roGainsShort" data-rate="' + rates.CAPITAL_GAINS_RO_SHORT + '" data-pair="roGainsShortNet_' + entryId + '" data-type="gross" step="0.01" min="0" placeholder="0.00">';
+            html2 += '        <small>Brut (-' + (rates.CAPITAL_GAINS_RO_SHORT * 100).toFixed(0) + '% taxă)' + cgShortComparison + '</small>';
+            html2 += '      </div>';
+            html2 += '    </div>';
+            html2 += '  </div>';
+            html2 += '  <div class="form-group">';
+            html2 += '    <label>Câștig ≥ 365 zile' + createHelpTrigger('roGainsLong') + '</label>';
+            html2 += '    <div style="display: flex; gap: 12px;">';
+            html2 += '      <div style="flex: 1;">';
+            html2 += '        <input type="number" id="roGainsLongNet_' + entryId + '" class="gross-net-field" data-entry="' + entryId + '" data-rate="' + rates.CAPITAL_GAINS_RO_LONG + '" data-pair="roGainsLong_' + entryId + '" data-type="net" step="0.01" min="0" placeholder="0.00">';
+            html2 += '        <small>Net (primit)</small>';
+            html2 += '      </div>';
+            html2 += '      <div style="flex: 1;">';
+            html2 += '        <input type="number" id="roGainsLong_' + entryId + '" class="income-field gross-net-field" data-entry="' + entryId + '" data-field="roGainsLong" data-rate="' + rates.CAPITAL_GAINS_RO_LONG + '" data-pair="roGainsLongNet_' + entryId + '" data-type="gross" step="0.01" min="0" placeholder="0.00">';
+            html2 += '        <small>Brut (-' + (rates.CAPITAL_GAINS_RO_LONG * 100).toFixed(0) + '% taxă)' + cgLongComparison + '</small>';
+            html2 += '      </div>';
+            html2 += '    </div>';
+            html2 += '  </div>';
             html2 += '</div>';
-            html2 += '<div class="form-group">';
-            html2 += '  <label for="priorYearLosses_' + entryId + '">Pierderi Reportate din Anii Trecuți (RON)</label>';
-            html2 += '  <input type="number" id="priorYearLosses_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="priorYearLosses" step="0.01" min="0" placeholder="0.00">';
-            html2 += '  <small>Se pot folosi 70% din valoare (până la 7 ani)</small>';
+
+            // Foreign broker fields (hidden by default, shown when foreign is checked)
+            html2 += '<div id="foreignBrokerFields_' + entryId + '" class="broker-fields" style="display: none;">';
+            html2 += '  <div class="form-group">';
+            html2 += '    <label for="foreignGains_' + entryId + '">Câștiguri Totale (RON)' + createHelpTrigger('foreignGains') + '</label>';
+            html2 += '    <input type="number" id="foreignGains_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="foreignGains" step="0.01" min="0" placeholder="0.00">';
+            html2 += '    <small>Taxa: ' + (rates.CAPITAL_GAINS_FOREIGN * 100).toFixed(0) + '% (declari și plătești tu)' + cgForeignComparison + '</small>';
+            html2 += '  </div>';
+            html2 += '  <div class="form-group">';
+            html2 += '    <label for="foreignLosses_' + entryId + '">Pierderi Anul Curent (RON)</label>';
+            html2 += '    <input type="number" id="foreignLosses_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="foreignLosses" step="0.01" min="0" placeholder="0.00">';
+            html2 += '    <small>Se pot compensa cu câștigurile</small>';
+            html2 += '  </div>';
+            html2 += '  <div class="form-group">';
+            html2 += '    <label for="priorYearLosses_' + entryId + '">Pierderi Reportate din Anii Trecuți (RON)' + createHelpTrigger('priorYearLosses') + '</label>';
+            html2 += '    <input type="number" id="priorYearLosses_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="priorYearLosses" step="0.01" min="0" placeholder="0.00">';
+            html2 += '    <small>Se pot folosi 70% din valoare (până la 7 ani)</small>';
+            html2 += '  </div>';
             html2 += '</div>';
+
             return html2;
 
         case 'crypto':
             var cryptoComparison = prevRates ? createRateComparison(year, rates.CRYPTO, prevRates.CRYPTO) : '';
             var html3 = '';
             html3 += '<div class="form-group">';
-            html3 += '  <label for="cryptoGains_' + entryId + '">Câștiguri Totale Criptomonede (RON)</label>';
+            html3 += '  <label for="cryptoGains_' + entryId + '">Câștiguri Totale Criptomonede (RON)' + createHelpTrigger('cryptoGains') + '</label>';
             html3 += '  <input type="number" id="cryptoGains_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="cryptoGains" step="0.01" min="0" placeholder="0.00">';
             html3 += '  <small>Taxa: ' + (rates.CRYPTO * 100).toFixed(0) + '%' + cryptoComparison + '</small>';
             html3 += '</div>';
-            html3 += '<label style="display: flex; align-items: center; gap: 8px; margin-top: 12px; cursor: pointer;">';
-            html3 += '  <input type="checkbox" id="cryptoExempt_' + entryId + '" class="income-field-checkbox" data-entry="' + entryId + '" data-field="cryptoExempt">';
-            html3 += '  <span>Scutit de taxă (&lt;200 RON/tranzacție, &lt;600 RON/an)</span>';
+            html3 += '<label style="display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; cursor: pointer;" title="Bifează doar dacă TOATE tranzacțiile sunt sub 200 RON ȘI totalul anual sub 600 RON">';
+            html3 += '  <input type="checkbox" id="cryptoExempt_' + entryId + '" class="income-field-checkbox" data-entry="' + entryId + '" data-field="cryptoExempt" style="margin-top: 3px;">';
+            html3 += '  <span style="line-height: 1.4;">Scutit de taxă<br><small style="color: #64748b;">Toate tranzacțiile &lt;200 RON ȘI total anual &lt;600 RON</small></span>';
             html3 += '</label>';
             return html3;
 
         case 'rental':
-            var forfeitRate = ACTIVE_TAX_YEAR === 2025 ? 20 : 30;
-            var rentComparison = prevRates ? createRateComparison(year, rates.RENT_EFFECTIVE, prevRates.RENT_EFFECTIVE) : '';
             var html4 = '';
+
+            // Rental type toggle (only show for 2026, since 2025 uses same rate for both)
+            if (ACTIVE_TAX_YEAR === 2026) {
+                html4 += '<label style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 16px; cursor: pointer;" title="Termen scurt: Airbnb, Booking (cheltuieli 30% → taxă 7%). Termen lung: contract tradițional (cheltuieli 20% → taxă 8%)">';
+                html4 += '  <input type="checkbox" id="rentalIsShortTerm_' + entryId + '" class="income-field-checkbox rental-type-toggle" data-entry="' + entryId + '" data-field="rentalIsShortTerm" style="margin-top: 3px;">';
+                html4 += '  <span style="line-height: 1.4;">Chirie pe termen scurt (Airbnb, Booking)<br><small style="color: #64748b;">Cheltuieli forfetare fixe 30% → Taxă efectivă 7% (necesită casă de marcat)</small></span>';
+                html4 += '</label>';
+            }
+
             html4 += '<div class="form-group">';
-            html4 += '  <label for="rentalIncome_' + entryId + '">Chirii Anuale Brute (RON)</label>';
+            html4 += '  <label for="rentalIncome_' + entryId + '">Venit anual brut (RON)' + createHelpTrigger('rentalIncome') + '</label>';
             html4 += '  <input type="number" id="rentalIncome_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="rentalIncome" step="0.01" min="0" placeholder="0.00">';
-            html4 += '  <small>Taxa efectivă: ' + (rates.RENT_EFFECTIVE * 100).toFixed(0) + '% (forfet ' + forfeitRate + '% + 10% pe net)' + rentComparison + '</small>';
+            html4 += '  <small id="rentalIncomeHelp_' + entryId + '">Total chirii încasate</small>';
             html4 += '</div>';
+
+            if (ACTIVE_TAX_YEAR === 2025) {
+                html4 += '<small style="display: block; margin-top: 8px; color: #64748b;">Cheltuieli forfetare fixe 20% → Taxă efectivă 8%</small>';
+            }
+
             return html4;
 
         case 'interest':
             var html5 = '';
             html5 += '<div class="form-group">';
-            html5 += '  <label for="bankInterest_' + entryId + '">Dobânzi Bancare Brute (RON)</label>';
-            html5 += '  <input type="number" id="bankInterest_' + entryId + '" class="income-field" data-entry="' + entryId + '" data-field="bankInterest" step="0.01" min="0" placeholder="0.00">';
-            html5 += '  <small>Taxa: 10% (reținută la sursă). Exclud titluri de stat (Fidelis, Tezaur)</small>';
+            html5 += '  <label>Dobânzi Bancare' + createHelpTrigger('bankInterest') + '</label>';
+            html5 += '  <div style="display: flex; gap: 12px;">';
+            html5 += '    <div style="flex: 1;">';
+            html5 += '      <input type="number" id="bankInterestNet_' + entryId + '" class="gross-net-field" data-entry="' + entryId + '" data-rate="' + rates.BANK_INTEREST + '" data-pair="bankInterest_' + entryId + '" data-type="net" step="0.01" min="0" placeholder="0.00">';
+            html5 += '      <small>Net (primit)</small>';
+            html5 += '    </div>';
+            html5 += '    <div style="flex: 1;">';
+            html5 += '      <input type="number" id="bankInterest_' + entryId + '" class="income-field gross-net-field" data-entry="' + entryId + '" data-field="bankInterest" data-rate="' + rates.BANK_INTEREST + '" data-pair="bankInterestNet_' + entryId + '" data-type="gross" step="0.01" min="0" placeholder="0.00">';
+            html5 += '      <small>Brut (-10% taxă)</small>';
+            html5 += '    </div>';
+            html5 += '  </div>';
             html5 += '</div>';
             return html5;
 
@@ -365,6 +1050,11 @@ function addIncomeEntry(sectionName, title, data) {
         title = getDefaultIncomeTitle(sectionName);
     }
 
+    // Initialize default data for capital gains section
+    if (!data && sectionName === 'capitalGains') {
+        data = { isForeignBroker: 0 };
+    }
+
     // Create entry data object
     var entry = {
         id: entryId,
@@ -378,23 +1068,24 @@ function addIncomeEntry(sectionName, title, data) {
     // Add to entries array
     incomeEntries[sectionName].push(entry);
 
-    // Auto-show and expand section when first entry is added
-    if (incomeEntries[sectionName].length === 1) {
-        var section = document.querySelector('[data-section="' + sectionName + '"]');
-        if (section) {
-            var content = section.querySelector('.section-content');
-            var collapseIcon = section.querySelector('.collapse-icon');
+    // Auto-show and expand section when entry is added
+    var section = document.querySelector('[data-section="' + sectionName + '"]');
+    if (section) {
+        var content = section.querySelector('.section-content');
+        var collapseIcon = section.querySelector('.collapse-icon');
 
-            section.style.display = '';
-            section.classList.remove('disabled');
-            content.classList.remove('collapsed');
-            if (collapseIcon) {
-                collapseIcon.classList.add('expanded');
-            }
+        // Show section (if hidden)
+        section.style.display = '';
+        section.classList.remove('disabled');
 
-            updateEmptyStateVisibility();
-            saveSectionStates();
+        // Expand section (if collapsed)
+        content.classList.remove('collapsed');
+        if (collapseIcon) {
+            collapseIcon.classList.add('expanded');
         }
+
+        updateEmptyStateVisibility();
+        saveSectionStates();
     }
 
     // Render the entry card
@@ -454,6 +1145,82 @@ function renderIncomeEntry(entry) {
                 }
             }
         });
+
+        // Disable crypto exempt checkbox if gains >= 600 RON
+        if (entry.data.cryptoGains >= 600) {
+            var checkbox = document.getElementById('cryptoExempt_' + entry.id);
+            if (checkbox) {
+                checkbox.checked = false;
+                checkbox.disabled = true;
+                checkbox.parentElement.style.opacity = '0.5';
+            }
+        }
+
+        // Handle broker type segmented control state
+        var isForeignBroker = entry.data.isForeignBroker == 1;
+        if (isForeignBroker) {
+            // If foreign broker was selected, update UI
+            var romanianFields = document.getElementById('romanianBrokerFields_' + entry.id);
+            var foreignFields = document.getElementById('foreignBrokerFields_' + entry.id);
+            var brokerTypeBtns = document.querySelectorAll('.broker-type-btn[data-entry="' + entry.id + '"]');
+
+            // Update button styles
+            brokerTypeBtns.forEach(function(btn) {
+                var titleDiv = btn.querySelector('div:first-child');
+                var subtitleDiv = btn.querySelector('div:last-child');
+
+                if (btn.dataset.type === 'foreign') {
+                    btn.style.background = 'white';
+                    btn.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                    if (titleDiv) {
+                        titleDiv.style.fontWeight = '600';
+                        titleDiv.style.color = 'var(--primary)';
+                    }
+                    if (subtitleDiv) {
+                        subtitleDiv.style.color = '#64748b';
+                    }
+                } else {
+                    btn.style.background = 'transparent';
+                    btn.style.boxShadow = 'none';
+                    if (titleDiv) {
+                        titleDiv.style.fontWeight = '500';
+                        titleDiv.style.color = '#64748b';
+                    }
+                    if (subtitleDiv) {
+                        subtitleDiv.style.color = '#94a3b8';
+                    }
+                }
+            });
+
+            // Show/hide fields
+            if (romanianFields) romanianFields.style.display = 'none';
+            if (foreignFields) foreignFields.style.display = 'block';
+        }
+
+        // Restore rental help text for short-term
+        if (entry.data.rentalIsShortTerm == 1) {
+            var incomeHelp = document.getElementById('rentalIncomeHelp_' + entry.id);
+            if (incomeHelp) {
+                incomeHelp.textContent = 'Total încasat minus comision platformă (ex: Airbnb 15%, Booking 15-18%)';
+            }
+        }
+
+        // Populate net fields from saved gross values
+        var grossNetPairs = [
+            { gross: 'domesticDividends', net: 'domesticDividendsNet', rate: 0.16 },
+            { gross: 'bankInterest', net: 'bankInterestNet', rate: 0.10 },
+            { gross: 'roGainsShort', net: 'roGainsShortNet', rate: 0.06 },
+            { gross: 'roGainsLong', net: 'roGainsLongNet', rate: 0.03 }
+        ];
+        grossNetPairs.forEach(function(pair) {
+            var grossValue = parseFloat(entry.data[pair.gross]) || 0;
+            if (grossValue > 0) {
+                var netField = document.getElementById(pair.net + '_' + entry.id);
+                if (netField) {
+                    netField.value = (grossValue * (1 - pair.rate)).toFixed(2);
+                }
+            }
+        });
     }
 
     console.log('renderIncomeEntry completed');
@@ -499,6 +1266,154 @@ function setupEntryEventListeners(entryId) {
     checkboxes.forEach(function(checkbox) {
         checkbox.addEventListener('change', function() {
             updateEntryFieldValue(entryId, this.dataset.field, this.checked ? 1 : 0);
+
+            // Update rental help text based on short-term toggle
+            if (this.classList.contains('rental-type-toggle')) {
+                var incomeHelp = document.getElementById('rentalIncomeHelp_' + entryId);
+                if (incomeHelp) {
+                    incomeHelp.textContent = this.checked
+                        ? 'Total încasat minus comision platformă (ex: Airbnb 15%, Booking 15-18%)'
+                        : 'Total chirii încasate';
+                }
+            }
+        });
+    });
+
+    // Broker type segmented control listeners
+    var brokerTypeBtns = document.querySelectorAll('.broker-type-btn[data-entry="' + entryId + '"]');
+    brokerTypeBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var brokerType = this.dataset.type;
+            var romanianFields = document.getElementById('romanianBrokerFields_' + entryId);
+            var foreignFields = document.getElementById('foreignBrokerFields_' + entryId);
+            var hiddenInput = document.getElementById('isForeignBroker_' + entryId);
+
+            // Update button styles
+            brokerTypeBtns.forEach(function(b) {
+                var titleDiv = b.querySelector('div:first-child');
+                var subtitleDiv = b.querySelector('div:last-child');
+
+                if (b.dataset.type === brokerType) {
+                    b.style.background = 'white';
+                    b.style.boxShadow = '0 1px 3px rgba(0,0,0,0.1)';
+                    if (titleDiv) {
+                        titleDiv.style.fontWeight = '600';
+                        titleDiv.style.color = 'var(--primary)';
+                    }
+                    if (subtitleDiv) {
+                        subtitleDiv.style.color = '#64748b';
+                    }
+                } else {
+                    b.style.background = 'transparent';
+                    b.style.boxShadow = 'none';
+                    if (titleDiv) {
+                        titleDiv.style.fontWeight = '500';
+                        titleDiv.style.color = '#64748b';
+                    }
+                    if (subtitleDiv) {
+                        subtitleDiv.style.color = '#94a3b8';
+                    }
+                }
+            });
+
+            if (brokerType === 'foreign') {
+                // Show foreign, hide Romanian
+                if (romanianFields) romanianFields.style.display = 'none';
+                if (foreignFields) foreignFields.style.display = 'block';
+                if (hiddenInput) {
+                    hiddenInput.value = '1';
+                    updateEntryFieldValue(entryId, 'isForeignBroker', 1);
+                }
+                // Clear Romanian broker fields
+                var roShort = document.getElementById('roGainsShort_' + entryId);
+                var roLong = document.getElementById('roGainsLong_' + entryId);
+                if (roShort) {
+                    roShort.value = '';
+                    updateEntryFieldValue(entryId, 'roGainsShort', 0);
+                }
+                if (roLong) {
+                    roLong.value = '';
+                    updateEntryFieldValue(entryId, 'roGainsLong', 0);
+                }
+            } else {
+                // Show Romanian, hide foreign
+                if (romanianFields) romanianFields.style.display = 'block';
+                if (foreignFields) foreignFields.style.display = 'none';
+                if (hiddenInput) {
+                    hiddenInput.value = '0';
+                    updateEntryFieldValue(entryId, 'isForeignBroker', 0);
+                }
+                // Clear foreign broker fields
+                var foreignGains = document.getElementById('foreignGains_' + entryId);
+                var foreignLosses = document.getElementById('foreignLosses_' + entryId);
+                var priorYearLosses = document.getElementById('priorYearLosses_' + entryId);
+                if (foreignGains) {
+                    foreignGains.value = '';
+                    updateEntryFieldValue(entryId, 'foreignGains', 0);
+                }
+                if (foreignLosses) {
+                    foreignLosses.value = '';
+                    updateEntryFieldValue(entryId, 'foreignLosses', 0);
+                }
+                if (priorYearLosses) {
+                    priorYearLosses.value = '';
+                    updateEntryFieldValue(entryId, 'priorYearLosses', 0);
+                }
+            }
+            // Recalculate
+            autoCalculate();
+        });
+    });
+
+    // Gross ↔ Net sync listeners (only for net fields - gross fields save via income-field listener)
+    var netFields = document.querySelectorAll('.gross-net-field[data-entry="' + entryId + '"][data-type="net"]');
+    netFields.forEach(function(field) {
+        // Add validation on input (same as income-field)
+        field.addEventListener('input', function() {
+            validateNumberInput(this);
+
+            var rate = parseFloat(this.dataset.rate) || 0;
+            var pairId = this.dataset.pair;
+            var grossField = document.getElementById(pairId);
+            var netValue = parseFloat(this.value) || 0;
+
+            if (grossField) {
+                if (netValue > 0) {
+                    // Net → Gross: gross = net / (1 - rate)
+                    var grossValue = (netValue / (1 - rate)).toFixed(2);
+                    grossField.value = grossValue;
+                    // Update data and calculate (don't dispatch event to avoid recursion)
+                    updateEntryFieldValue(entryId, grossField.dataset.field, grossValue);
+                } else {
+                    grossField.value = '';
+                    updateEntryFieldValue(entryId, grossField.dataset.field, 0);
+                }
+            }
+        });
+
+        // Prevent invalid characters on keypress (same as income-field)
+        field.addEventListener('keypress', function(e) {
+            return validateNumberKeypress(e, this);
+        });
+    });
+
+    // Gross → Net sync (update net display when gross changes)
+    var grossFields = document.querySelectorAll('.gross-net-field[data-entry="' + entryId + '"][data-type="gross"]');
+    grossFields.forEach(function(field) {
+        field.addEventListener('input', function() {
+            var rate = parseFloat(this.dataset.rate) || 0;
+            var pairId = this.dataset.pair;
+            var netField = document.getElementById(pairId);
+            var grossValue = parseFloat(this.value) || 0;
+
+            if (netField) {
+                if (grossValue > 0) {
+                    // Gross → Net: net = gross * (1 - rate)
+                    netField.value = (grossValue * (1 - rate)).toFixed(2);
+                } else {
+                    netField.value = '';
+                }
+            }
         });
     });
 }
@@ -533,6 +1448,24 @@ function updateEntryFieldValue(entryId, fieldName, value) {
                     entries[i].data = {};
                 }
                 entries[i].data[fieldName] = parseFloat(value) || 0;
+
+                // Handle crypto exempt checkbox - disable if gains >= 600 RON
+                if (fieldName === 'cryptoGains') {
+                    var checkbox = document.getElementById('cryptoExempt_' + entryId);
+                    if (checkbox) {
+                        var gains = parseFloat(value) || 0;
+                        if (gains >= 600) {
+                            checkbox.checked = false;
+                            checkbox.disabled = true;
+                            checkbox.parentElement.style.opacity = '0.5';
+                            entries[i].data['cryptoExempt'] = 0;
+                        } else {
+                            checkbox.disabled = false;
+                            checkbox.parentElement.style.opacity = '1';
+                        }
+                    }
+                }
+
                 saveIncomeEntries();
                 autoCalculate();
                 return;
@@ -1267,8 +2200,10 @@ function updateClearButtonVisibility(hasData) {
 function updateFloatingBanner(grandTotal) {
     const banner = document.getElementById('floatingBanner');
     const bannerAmount = document.getElementById('bannerAmount');
+    const bannerLabel = document.getElementById('bannerLabel');
 
     if (grandTotal > 0) {
+        bannerLabel.textContent = 'Total de Plată pentru ' + ACTIVE_TAX_YEAR + ':';
         bannerAmount.textContent = formatCurrency(grandTotal);
         banner.style.display = 'block';
     } else {

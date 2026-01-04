@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Panel Test</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #debugPanel {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            border-top: 2px solid #3b82f6;
+            z-index: 10000;
+        }
+        #debugPanel pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <h1>Debug Test</h1>
+    <p>Add a capital gains entry and type into the Romanian broker fields. Watch the debug panel below.</p>
+
+    <div id="debugPanel">
+        <strong>Debug Output:</strong>
+        <pre id="debugOutput">Waiting for input...</pre>
+    </div>
+
+    <script src="calculator.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // Override autoCalculate to show debug info
+        const originalAutoCalculate = autoCalculate;
+        window.autoCalculate = function() {
+            const data = getFormData();
+            const debugOutput = document.getElementById('debugOutput');
+            let output = 'getFormData() returned:\n';
+            output += JSON.stringify(data, null, 2);
+            output += '\n\nincomeEntries:\n';
+            output += JSON.stringify(incomeEntries, null, 2);
+            debugOutput.textContent = output;
+
+            // Call original
+            return originalAutoCalculate();
+        };
+
+        // Override updateEntryFieldValue to show updates
+        const originalUpdate = updateEntryFieldValue;
+        window.updateEntryFieldValue = function(entryId, fieldName, value) {
+            console.log('[DEBUG] updateEntryFieldValue called:', entryId, fieldName, value);
+            const debugOutput = document.getElementById('debugOutput');
+            let current = debugOutput.textContent;
+            current += `\n[UPDATE] ${entryId}.${fieldName} = ${value}`;
+            debugOutput.textContent = current;
+
+            return originalUpdate(entryId, fieldName, value);
+        };
+    </script>
+</body>
+</html>

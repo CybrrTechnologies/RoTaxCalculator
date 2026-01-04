@@ -224,5 +224,5 @@ Private project - All rights reserved
 
 ---
 
-**Last Updated**: January 2025
+**Last Updated**: January 2026
 **Tax Year**: 2026 (Legea 239/2025)

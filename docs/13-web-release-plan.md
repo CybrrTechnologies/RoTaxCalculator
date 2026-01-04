@@ -223,27 +223,58 @@ Jan 2026                Feb 2026                Mar 2026                Apr 2026
 
 ## Success Metrics
 
-### Phase 1 (Jan 15)
+### Year 1 (2026) Goals
+
+**Conservative Target**: 2,000-3,000 unique users
+**Target Goal**: 5,000-10,000 unique users
+**Optimistic**: 15,000-20,000 unique users
+
+See [Market Sizing](12-market-sizing-romania.md#72-realistic-user-projections) for detailed projections.
+
+### Phase 1 (Jan 15) - Soft Launch
 - [ ] Site live and functional
 - [ ] 0 critical bugs
+- [ ] All income types tested
+- [ ] CASS brackets verified
 
-### Phase 2 (Feb 1)
-- [ ] Analytics live
+### Phase 2 (Feb 1) - Analytics
+- [ ] Analytics live and tracking
 - [ ] 10+ feedback submissions
+- [ ] 50-100 unique visitors
+- [ ] 20-40 calculations completed
 
-### Phase 3 (Mar 1)
+### Phase 3 (Mar 1) - Polish
 - [ ] Lighthouse score > 90
-- [ ] Top issues resolved
+- [ ] Top 5 issues from feedback resolved
+- [ ] 200-500 unique visitors
+- [ ] 100-200 calculations completed
+- [ ] SEO starting to show in search results
 
-### Phase 4 (Apr 25)
-- [ ] 500+ unique visitors
-- [ ] 200+ calculations completed
-- [ ] Ready for traffic spike
+### Phase 4 (Apr 25) - Pre-Season Ready
+- [ ] 1,000-2,000 unique visitors (cumulative)
+- [ ] 500-1,000 calculations completed
+- [ ] Ready for peak traffic (load tested)
+- [ ] No critical bugs
+- [ ] Top 3 SEO keywords indexed
 
-### Phase 5 (May 25)
-- [ ] 1,000+ calculations
-- [ ] Positive feedback
-- [ ] List of features for v2
+### Phase 5 (May 25) - Peak Season Results
+- [ ] **Target**: 5,000-10,000 unique visitors (total Year 1)
+- [ ] **Conservative**: 2,000-3,000 visitors minimum
+- [ ] 2,000-4,000 calculations completed
+- [ ] 50-100 feedback submissions collected
+- [ ] Conversion rate: 40-60% (visitor → calculation)
+- [ ] Return rate: 30-40% (users return 2+ times)
+- [ ] List of top 10 requested features for v2
+
+### Traffic Distribution Expected
+
+Based on seasonal patterns:
+- **Jan-Feb**: 5-10% of annual traffic (early adopters, planning)
+- **Mar-May**: 60-70% of annual traffic (filing season peak)
+- **Jun-Nov**: 10-20% of annual traffic (off-season)
+- **Dec**: 15-20% of annual traffic (year-end planning)
+
+**Peak month**: April 2026 (3-4 weeks before May 25 deadline)
 
 ---
 

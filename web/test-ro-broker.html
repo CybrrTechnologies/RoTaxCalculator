@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Romanian Broker Test</title>
+    <style>
+        body {
+            font-family: system-ui;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        .test-result {
+            background: #f0f0f0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Romanian Broker Test</h1>
+    <p>Open browser console to see logs</p>
+
+    <div id="testResults"></div>
+
+    <script src="calculator.js"></script>
+    <script>
+        console.log('=== TEST STARTING ===');
+
+        // Set year to 2026
+        setTaxYear(2026);
+        console.log('Tax year set to 2026');
+
+        // Test 1: Romanian broker short-term gains
+        console.log('\n--- Test 1: Romanian broker short-term gains (1000 RON) ---');
+        const input1 = {
+            domesticDividends: 0,
+            foreignDividends: 0,
+            foreignTaxPaid: 0,
+            roGainsShort: 1000,
+            roGainsLong: 0,
+            foreignGains: 0,
+            foreignLosses: 0,
+            priorYearLosses: 0,
+            cryptoGains: 0,
+            cryptoExempt: 0,
+            rentalIncome: 0,
+            bankInterest: 0
+        };
+        console.log('Input:', input1);
+
+        const result1 = calculateAllTaxes(input1);
+        console.log('Result:', result1);
+
+        // Display results
+        let html = '<div class="test-result">';
+        html += '<h3>Test 1: roGainsShort = 1000 RON</h3>';
+        html += '<p><strong>Total Tax:</strong> ' + result1.totalTax.toFixed(2) + ' RON</p>';
+        html += '<p><strong>Total Net Income:</strong> ' + result1.totalNetIncome.toFixed(2) + ' RON</p>';
+        html += '<p><strong>CASS:</strong> ' + result1.cass.cassAmount.toFixed(2) + ' RON</p>';
+        html += '<p><strong>Number of tax items:</strong> ' + result1.taxes.length + '</p>';
+
+        if (result1.taxes.length > 0) {
+            html += '<h4>Tax Breakdown:</h4><ul>';
+            result1.taxes.forEach(tax => {
+                html += '<li>' + tax.type + ': ' + tax.tax.toFixed(2) + ' RON (rate: ' + tax.rate + ')</li>';
+            });
+            html += '</ul>';
+        } else {
+            html += '<p style="color: red;"><strong>ERROR: No taxes calculated!</strong></p>';
+        }
+        html += '</div>';
+
+        document.getElementById('testResults').innerHTML = html;
+
+        console.log('=== TEST COMPLETE ===');
+    </script>
+</body>
+</html>

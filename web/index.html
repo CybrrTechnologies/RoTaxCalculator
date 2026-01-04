@@ -189,13 +189,16 @@
                         
                         <h2>
                             <span>
-                                💵 Dobânzi & Altele
+                                💵 Dobânzi
                             </span>
                         </h2>
                         <button type="button" class="btn-add-entry" data-section="interest">+ Adaugă</button>
                     </div>
 
                     <div class="section-content collapsed">
+                        <p style="margin: 0 0 16px 0; padding: 12px; background: #f1f5f9; border-radius: 6px; font-size: 14px; color: #475569;">
+                            <strong>Notă:</strong> Titluri de stat (Fidelis, Tezaur) sunt scutite de taxă
+                        </p>
                         <div class="income-entries" data-section="interest">
                             <!-- Income entries will be added here dynamically -->
                         </div>
@@ -385,7 +388,7 @@
                 <p><a href="mailto:cybrrsoft@protonmail.com">cybrrsoft@protonmail.com</a></p>
 
                 <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e2e8f0; color: #64748b; font-size: 0.9em;">
-                    <strong>Ultima actualizare:</strong> Ianuarie 2025<br>
+                    <strong>Ultima actualizare:</strong> Ianuarie 2026<br>
                     <strong>Aplicabil pentru:</strong> impoziteonline.ro
                 </p>
             </div>
@@ -399,7 +402,7 @@
     <div id="floatingBanner" class="floating-banner" style="display: none;">
         <div class="banner-content">
             <div class="banner-info">
-                <span class="banner-label">Total de Plată:</span>
+                <span class="banner-label" id="bannerLabel">Total de Plată:</span>
                 <span class="banner-amount" id="bannerAmount">0 RON</span>
             </div>
             <button type="button" id="scrollToResultsBtn" class="banner-btn">
@@ -407,6 +410,10 @@
             </button>
         </div>
     </div>
+
+    <!-- Tooltip popup -->
+    <div id="tooltipOverlay" class="tooltip-overlay" onclick="hideTooltip()"></div>
+    <div id="tooltipPopup" class="tooltip-popup"></div>
 
     <script src="calculator.js"></script>
     <script src="app.js"></script>

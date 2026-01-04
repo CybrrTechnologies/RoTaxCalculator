@@ -12,12 +12,27 @@ const TAX_CONFIG = {
             CAPITAL_GAINS_RO_SHORT: 0.03,
             CAPITAL_GAINS_RO_LONG: 0.01,
             CRYPTO: 0.10,
-            RENT_EFFECTIVE: 0.08,
+            RENT_EFFECTIVE_LONG: 0.08,  // 80% net × 10%
+            RENT_EFFECTIVE_SHORT: 0.08, // Same in 2025
+            RENT_BASE: 0.10,
+            RENT_FORFEIT_LONG: 0.20,
+            RENT_FORFEIT_SHORT: 0.20,   // Same in 2025
             BANK_INTEREST: 0.10
         },
         minimumWage: 4050,
         minimumWageNote: 'Neschimbat din Iulie 2024 (crește +6.8% în 2026)',
-        legislation: 'Codul Fiscal 2025'
+        legislation: 'Codul Fiscal 2025',
+        // Example income categories for tooltips (in RON)
+        incomeCategories: {
+            small: { dividends: 5000, gains: 10000, crypto: 5000, rental: 12000, interest: 500 },
+            medium: { dividends: 30000, gains: 50000, crypto: 30000, rental: 36000, interest: 3000 },
+            large: { dividends: 100000, gains: 200000, crypto: 100000, rental: 120000, interest: 15000 }
+        },
+        // Crypto exemption thresholds
+        cryptoExemption: {
+            perTransaction: 200,
+            annualTotal: 600
+        }
     },
     2026: {
         rates: {
@@ -26,12 +41,27 @@ const TAX_CONFIG = {
             CAPITAL_GAINS_RO_SHORT: 0.06,
             CAPITAL_GAINS_RO_LONG: 0.03,
             CRYPTO: 0.16,
-            RENT_EFFECTIVE: 0.07,
+            RENT_EFFECTIVE_LONG: 0.08,  // 80% net × 10%
+            RENT_EFFECTIVE_SHORT: 0.07, // 70% net × 10% (new in 2026)
+            RENT_BASE: 0.10,
+            RENT_FORFEIT_LONG: 0.20,
+            RENT_FORFEIT_SHORT: 0.30,   // 30% for short-term (new in 2026)
             BANK_INTEREST: 0.10
         },
         minimumWage: 4050,  // CASS uses Jan 1 minimum wage (NOT average)
         minimumWageNote: 'CASS: 4,050 RON (Ian-Iun), salariu crește la 4,325 din Iul',
-        legislation: 'Legea 239/2025'
+        legislation: 'Legea 239/2025',
+        // Example income categories for tooltips (in RON)
+        incomeCategories: {
+            small: { dividends: 5000, gains: 10000, crypto: 5000, rental: 12000, interest: 500 },
+            medium: { dividends: 30000, gains: 50000, crypto: 30000, rental: 36000, interest: 3000 },
+            large: { dividends: 100000, gains: 200000, crypto: 100000, rental: 120000, interest: 15000 }
+        },
+        // Crypto exemption thresholds
+        cryptoExemption: {
+            perTransaction: 200,
+            annualTotal: 600
+        }
     }
 };
 
@@ -192,12 +222,25 @@ function calculateCryptoTax(totalGains, exemptGains) {
 
 /**
  * Calculate rental income tax (forfeit system)
- * 2025: 20% forfeit + 10% tax = 8% effective
- * 2026: 30% forfeit + 10% tax = 7% effective
+ * Long-term (traditional lease): 20% forfeit → 8% effective (both 2025 & 2026)
+ * Short-term (Airbnb/tourist): 20% forfeit → 8% effective (2025), 30% forfeit → 7% effective (2026)
  */
-function calculateRentalTax(grossRent) {
-    // Forfeit rate depends on tax year
-    const forfeitRate = ACTIVE_TAX_YEAR === 2025 ? 0.20 : 0.30;
+function calculateRentalTax(grossRent, isShortTerm) {
+    // Default to short-term if not specified (backwards compatibility)
+    if (typeof isShortTerm === 'undefined') {
+        isShortTerm = false;
+    }
+
+    // Determine forfeit rate based on year and rental type
+    let forfeitRate;
+    if (ACTIVE_TAX_YEAR === 2025) {
+        // 2025: Both types use 20%
+        forfeitRate = 0.20;
+    } else {
+        // 2026: Short-term = 30%, Long-term = 20%
+        forfeitRate = isShortTerm ? 0.30 : 0.20;
+    }
+
     const netIncome = grossRent * (1 - forfeitRate);
 
     // 10% tax on net
@@ -211,7 +254,8 @@ function calculateRentalTax(grossRent) {
         forfeitRate: forfeitRate,
         netIncome: netIncome,
         tax: tax,
-        effectiveRate: effectiveRate
+        effectiveRate: effectiveRate,
+        isShortTerm: isShortTerm
     };
 }
 
@@ -219,20 +263,11 @@ function calculateRentalTax(grossRent) {
  * Calculate CASS (health insurance contribution)
  */
 function calculateCASS(netIncome) {
-    // MINIMUM_WAGE is already the monthly average (4,187.50 for 2026)
-    // We need the annual total: 4,187.50 × 12 = 50,250 RON
-    const annualMinWage = MINIMUM_WAGE * 12;
-
-    // Calculate thresholds based on annual minimum wage
-    const threshold6MW = annualMinWage * CASS_BRACKETS.NONE;    // 50,250 × 6 = 301,500 (WRONG!)
-    const threshold12MW = annualMinWage * CASS_BRACKETS.LOW;    // 50,250 × 12 = 603,000 (WRONG!)
-    const threshold24MW = annualMinWage * CASS_BRACKETS.MEDIUM; // 50,250 × 24 = 1,206,000 (WRONG!)
-
-    // Actually, MINIMUM_WAGE for 2026 should be the monthly average
-    // So we calculate: Monthly × Number of months of MW
-    const cassBase6MW = MINIMUM_WAGE * CASS_BRACKETS.NONE;     // 4,187.50 × 6 = 25,125
-    const cassBase12MW = MINIMUM_WAGE * CASS_BRACKETS.LOW;     // 4,187.50 × 12 = 50,250
-    const cassBase24MW = MINIMUM_WAGE * CASS_BRACKETS.MEDIUM;  // 4,187.50 × 24 = 100,500
+    // Calculate CASS thresholds: MINIMUM_WAGE × multiplier
+    // For 2026: 4,050 × 6 = 24,300 RON, etc.
+    const cassBase6MW = MINIMUM_WAGE * CASS_BRACKETS.NONE;     // 4,050 × 6 = 24,300
+    const cassBase12MW = MINIMUM_WAGE * CASS_BRACKETS.LOW;     // 4,050 × 12 = 48,600
+    const cassBase24MW = MINIMUM_WAGE * CASS_BRACKETS.MEDIUM;  // 4,050 × 24 = 97,200
 
     // Determine bracket
     let bracket;
@@ -342,7 +377,9 @@ function calculateAllTaxes(inputData) {
         }
 
         results.totalTax += gains.totalTax;
-        results.totalNetIncome += gains.netGains;
+        // IMPORTANT: For Romanian brokers, CASS is calculated on GROSS gains, not NET
+        // Source: https://www.zf.ro/burse-fonduri-mutuale/bursa-impozite-vor-plati-1-ianuarie-2026-investitorii-tranzactii-22984186
+        results.totalNetIncome += (gains.gainsShort + gains.gainsLong);
     }
 
     // 4. Foreign Broker Capital Gains
@@ -395,18 +432,21 @@ function calculateAllTaxes(inputData) {
 
     // 6. Rental Income
     if (inputData.rentalIncome > 0) {
-        const rent = calculateRentalTax(inputData.rentalIncome);
+        const isShortTerm = inputData.rentalIsShortTerm || false;
+        const rent = calculateRentalTax(inputData.rentalIncome, isShortTerm);
         const forfeitPercent = (rent.forfeitRate * 100).toFixed(0);
         const netPercent = (100 - rent.forfeitRate * 100).toFixed(0);
 
+        const rentalType = isShortTerm ? 'Venituri din Chirii (Termen Scurt)' : 'Venituri din Chirii (Termen Lung)';
+
         results.taxes.push({
-            type: 'Venituri din Chirii',
+            type: rentalType,
             base: rent.netIncome,
             rate: '10%',
             tax: rent.tax,
             net: rent.netIncome,
             withheld: false,
-            note: `Forfet ${forfeitPercent}%: ${rent.grossRent.toFixed(2)} × ${netPercent}% = ${rent.netIncome.toFixed(2)} RON`
+            note: `Cheltuieli forfetare ${forfeitPercent}%: ${rent.grossRent.toFixed(2)} × ${netPercent}% = ${rent.netIncome.toFixed(2)} RON`
         });
         results.totalTax += rent.tax;
         results.totalNetIncome += rent.netIncome;

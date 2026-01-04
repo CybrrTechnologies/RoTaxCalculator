@@ -45,8 +45,11 @@
 | **Dividends** | Art. 97 CF | Art. 97 alin. (1) - 16% (2026) |
 | **Capital Gains (Stocks)** | Art. 94-96 CF | Art. 94 alin. (2) - 16% foreign, 6%/3% RO (2026) |
 | **Crypto** | Art. 98 CF | Art. 98 alin. (1) - 16% (2026) |
-| **Rental Income** | Art. 84-86 CF | Art. 84 alin. (3) - 10% on 70% = 7% effective |
+| **Rental Income (Long-Term)** | Art. 84-86 CF | Art. 84 alin. (2) - 10% on 80% = 8% effective |
+| **Rental Income (Short-Term)** | Art. 84-86 CF | Art. 84 alin. (3) - 10% on 70% = 7% effective |
 | **Bank Interest** | Art. 92 CF | Art. 92 alin. (1) - 10% |
+| **Prizes (Premii)** | Art. 110 CF | Art. 110 - 10% per prize >600 RON |
+| **Gambling (Jocuri de noroc)** | Art. 110 CF | Art. 110 - Progressive 4%-40% |
 | **PFA/IF Income** | Art. 67-69 CF | Art. 68 - 10% on profit |
 | **Employment (CIM)** | Art. 76-78 CF | Art. 76 - 10% on net salary |
 | **Copyright** | Art. 70-74 CF | Art. 72 - 10% on 80% (forfeit 20%) |
@@ -69,18 +72,36 @@
 
 ### 📰 Secondary Sources (Non-Government):
 
-**Tax Guides & Articles:**
-- [Groupama - Ghid Taxe PFA](https://www.groupama.ro/ghiduri/ghid-taxe-pfa)
-- [ContApp - Taxe PFA 2025](https://contapp.ro/blog/taxe-pfa-2025-cas-cass-si-impozit/)
-- [Financiarul - PFA 2025 ghid complet](https://financiarul.ro/economice/pfa-2025-taxe-venituri-contributii/)
-- [Tax Mentor - Calculator taxe PFA](https://www.taxmentor.ro/resurse-antreprenori/taxe-pfa/)
+**Professional Tax Consultancies (Big 4 + Law Firms):**
+- [EY Romania - Tax Alerts](https://www.ey.com/en_ro/technical/tax-alerts) - 2026 fiscal package analysis
+- [KPMG Romania - Tax Newsflash](https://kpmg.com/ro/en/home/services/tax.html) - Package 2 measures (Legea 239/2025)
+- [PwC Romania - Tax Updates](https://www.pwc.ro/ro/tax-legal/alerts/) - Legea 239/2025 analysis
+- [Accace Romania - Tax News Flash](https://accace.com/) - 2026 amendments & compliance
+- [Kinstellar - Tax Insights](https://www.kinstellar.com/) - Major tax changes 2026
+- [bpv GRIGORESCU STEFANICA](https://www.bpv-grigorescu.com/) - Tax reforms analysis
+- [Lexology](https://www.lexology.com/) - Romania tax law updates
+
+**Romanian Tax Portals & Calculators:**
+- [RoTaxIQ](https://rotaxiq.com/) - Tax changes 2026 (individuals & companies)
+- [ANAF Guidelines (PDF)](https://static.anaf.ro/static/10/Brasov/Brasov/cedare_2025.pdf) - Rental income obligations 2025
+- [ANAF Galați - Chirii 2025](https://static.anaf.ro/static/10/Galati/ven_inch_subinch.pdf) - Rental income guide
+- [Noul Cod Fiscal](https://www.noulcodfiscal.ro/) - Tax articles & calculators
+- [Lege5.ro](https://lege5.ro/) - Legal database with Fiscal Code commentary
+
+**News & Analysis:**
+- [Digi24 Economic - Airbnb regim fiscal 2026](https://www.digi24.ro/) - Short-term rental changes
+- [StartupCafe - Impozit Airbnb](https://startupcafe.ro/) - Legea 239/2025 impact
+- [Romania Insider](https://www.romania-insider.com/) - Tax news in English
+- [Bursa.ro](https://www.bursa.ro/) - Capital market investor statistics
+- [PlayTech - Calcul impozit chirii 2026](https://playtech.ro/) - Rental tax calculator
+- [LoveDeco - Chirii persoane fizice](https://lovedeco.ro/) - Individual rental obligations
 
 **Community Resources:**
 - [r/Romania Financial Wiki](https://www.reddit.com/r/Romania/wiki/financiar) - Community tax guides
 - [r/robursa](https://www.reddit.com/r/robursa/) - Romanian investors forum
 - [Impozite Online Forum](https://forum.softpedia.com/forum/181-economie-finante/) - Tax discussion community
 
-**Last Updated**: January 30, 2025
+**Last Updated**: January 3, 2026
 **Tax Years Covered**: 2025, 2026
 **Next Legislative Review**: March 2025 (potential ANAF clarifications)
 
@@ -253,6 +274,7 @@ Total tax paid: 742.50 (US) + 49.50 (RO) = 792 RON (16% total)
 - ✅ Broker reports to ANAF (you verify in Form 212)
 - ❌ **Losses NOT deductible** (tax is definitive)
 - ✅ **Optimal for**: Buy-and-hold investors (lower long-term rate)
+- ⚠️ **CASS calculated on GROSS gains** (before tax deduction)
 
 **Calculation Example**:
 ```
@@ -264,6 +286,8 @@ Capital gain: 15,000 - 10,000 = 5,000 RON
 Tax rate: 3% (held > 365 days)
 Tax withheld: 5,000 × 3% = 150 RON
 Net profit: 5,000 - 150 = 4,850 RON
+
+For CASS: Use 5,000 RON (GROSS gain, not net 4,850 RON)
 ```
 
 ### 2.2 Foreign Brokers (IBKR, Trading212, eToro)
@@ -276,6 +300,7 @@ Net profit: 5,000 - 150 = 4,850 RON
 - ✅ **Losses ARE deductible** from gains
 - ✅ **Loss carryforward**: 7 years at 70% value
 - ✅ **Optimal for**: Active traders (can offset losses)
+- ⚠️ **CASS calculated on NET gains** (after loss offset)
 
 **Example with Loss Offset**:
 ```
@@ -285,6 +310,8 @@ Net profit: 5,000 - 150 = 4,850 RON
 
 Net gain: 15,000 - 5,000 = 10,000 RON
 Tax: 10,000 × 16% = 1,600 RON
+
+For CASS: Use 10,000 RON (NET gain after losses)
 ```
 
 **Loss Carryforward Example**:
@@ -306,7 +333,63 @@ Remaining loss: 10,000 - 7,000 = 3,000 RON
 - ✅ Must be used in order (oldest first)
 - ❌ Cannot carry back to previous years
 
-### 2.3 ETFs - Accumulating vs Distributing
+---
+
+### 2.3 CRITICAL: CASS Calculation Difference by Broker Type
+
+> ⚠️ **MAJOR DIFFERENCE**: CASS calculation base differs between Romanian and foreign brokers!
+
+**Sources**:
+- [ZF.ro - Impozite investitori 2026](https://www.zf.ro/burse-fonduri-mutuale/bursa-impozite-vor-plati-1-ianuarie-2026-investitorii-tranzactii-22984186)
+- [BiblioInvest - Ghid fiscal 2026](https://biblioinvest.ro/index-investing/impozite-bursa-2025-2026-ghid-fiscal-etf/)
+
+| Broker Type | Tax Base | CASS Calculation Base | Why? |
+|-------------|----------|----------------------|------|
+| **Romanian (XTB, Tradeville, BT)** | Gross gain | **GROSS gain** | Tax withheld at source ≠ reduces CASS base |
+| **Foreign (IBKR, Trading212)** | Net gain (after losses) | **NET gain** (after losses) | You calculate tax yourself |
+
+**Example showing the difference**:
+
+**Scenario**: 100,000 RON capital gain in 2026
+
+**Romanian Broker (XTB, 6% short-term)**:
+```
+Gross gain: 100,000 RON
+Tax withheld: 100,000 × 6% = 6,000 RON
+Net received: 94,000 RON
+
+CASS calculation base: 100,000 RON (GROSS) ⚠️
+If > 97,200 RON → CASS = 9,720 RON
+```
+
+**Foreign Broker (IBKR, 16% rate)**:
+```
+Gross gain: 100,000 RON
+Tax you pay: 100,000 × 16% = 16,000 RON
+Net gain: 100,000 RON
+
+CASS calculation base: 100,000 RON (NET, no losses to offset)
+If > 97,200 RON → CASS = 9,720 RON
+```
+
+**With losses (foreign broker only)**:
+```
+Gains: 100,000 RON
+Losses: -30,000 RON
+Net gain: 70,000 RON
+Tax: 70,000 × 16% = 11,200 RON
+
+CASS calculation base: 70,000 RON (NET after losses) ✅
+70,000 < 97,200 → CASS = 4,860 RON (12 MW bracket)
+```
+
+**Key Takeaway**:
+- Romanian brokers: CASS on GROSS (cannot reduce with tax paid)
+- Foreign brokers: CASS on NET (reduced by losses)
+
+---
+
+### 2.4 ETFs - Accumulating vs Distributing
 
 **Tax Treatment Comparison**:
 
@@ -415,21 +498,36 @@ Gain calculation:
 ## 🏠 4. RENTAL INCOME
 
 > **Legal Basis**: Art. 84-86 Codul Fiscal ([Legea 227/2015](https://legislatie.just.ro/Public/DetaliiDocument/171282))
-> **Forfeit Rules**: Art. 84 alin. (2) - Cheltuieli forfetare
+> **2026 Changes**: [Legea 239/2025](https://legislatie.just.ro/Public/DetaliiDocumentAfis/287644) - Art. I pct. 60-62
+> **Forfeit Rules**: Art. 84 alin. (2), (3) - Cheltuieli forfetare
 
-### 4.1 Tax Calculation (2026)
+**⚠️ MAJOR CHANGE 2025→2026**: Romania now differentiates between **long-term rentals** (regular leasing) and **short-term rentals** (Airbnb/tourist), with different forfeit rates.
 
-**Forfeit System** (simplified):
-- **Forfeit Rate**: 30% (increased from 20% in 2025)
-- **Net Income**: Gross × 70%
+---
+
+### 4.1 Long-Term Rentals (Regular Leasing)
+
+**Applies to**: Traditional lease agreements (multi-month contracts)
+
+#### 4.1.1 Tax Calculation
+
+**2025 Rules**:
+- **Forfeit Rate**: 20%
+- **Net Income**: Gross × 80%
 - **Tax**: Net × 10%
-- **Effective Tax Rate**: 7% of gross (down from 8%)
+- **Effective Tax Rate**: 8% of gross
+
+**2026 Rules** ⚠️ **UNCHANGED FROM 2025**:
+- **Forfeit Rate**: 20% (NOT 30%)
+- **Net Income**: Gross × 80%
+- **Tax**: Net × 10%
+- **Effective Tax Rate**: 8% of gross
 
 **Formula**:
 ```
-Net income = Gross rent × (1 - 0.30) = Gross × 0.70
+Net income = Gross rent × (1 - 0.20) = Gross × 0.80
 Tax = Net income × 0.10
-Effective tax = Gross × 0.07
+Effective tax = Gross × 0.08
 ```
 
 **Example**:
@@ -437,25 +535,251 @@ Effective tax = Gross × 0.07
 Monthly rent: 2,000 RON
 Annual gross: 2,000 × 12 = 24,000 RON
 
-Net income: 24,000 × 70% = 16,800 RON
-Tax: 16,800 × 10% = 1,680 RON
-Effective rate: 1,680 / 24,000 = 7%
+Net income: 24,000 × 80% = 19,200 RON
+Tax: 19,200 × 10% = 1,920 RON
+Effective rate: 1,920 / 24,000 = 8%
 
-For CASS: Use 16,800 RON (net income)
+For CASS: Use 19,200 RON (net income)
 ```
 
-### 4.2 Requirements & Obligations
+#### 4.1.2 Withholding Rules (Business Tenants)
+
+If the **tenant is a legal entity** (PJ) or bookkeeping entity:
+- ✅ Tenant withholds 8% tax at source (10% on 80% net)
+- ✅ Tenant pays to ANAF by 25th of following month
+- ✅ Tax is **final** (landlord doesn't pay extra)
+- ✅ Landlord verifies in Form 212 next year
+
+**Example with Business Tenant**:
+```
+Monthly rent: 3,000 RON
+Tenant withholds: 3,000 × 8% = 240 RON
+Landlord receives: 3,000 - 240 = 2,760 RON
+
+Annual:
+- Gross: 36,000 RON
+- Tax withheld: 2,880 RON
+- Net received: 33,120 RON
+```
+
+---
+
+### 4.2 Short-Term Rentals (Airbnb, Booking, Tourist)
+
+**Applies to**: Accommodation services and short-term rental of **1-7 rooms** in personal residences
+
+#### 4.2.1 New Rules Starting 2026
+
+**⚠️ MAJOR CHANGES** (Legea 239/2025):
+1. **Higher forfeit rate**: 30% (vs 20% for long-term)
+2. **Lower effective tax**: 7% (vs 8% for long-term)
+3. **Mandatory fiscal receipts**: Electronic cash register required
+4. **Commission deduction**: Platform fees (Airbnb, Booking) excluded from gross
+
+**🔍 CRITICAL: Understanding "Gross Income" for Short-Term Rentals**
+
+Platform commissions are deducted **BEFORE** calculating tax. The "gross income" for tax purposes is what you actually receive from the platform, not the total booking amount.
+
+**Flow**:
+```
+1. Guest pays booking on Airbnb: 50,000 RON
+2. Airbnb takes commission (typically 15%): -7,500 RON
+3. You receive from Airbnb: 42,500 RON ← THIS is your GROSS INCOME for tax
+4. Apply 30% forfeit: 42,500 × 70% = 29,750 RON (net income)
+5. Calculate tax: 29,750 × 10% = 2,975 RON
+6. Effective tax rate: 7% (2,975 / 42,500)
+```
+
+**Common Platform Commissions**:
+- **Airbnb**: ~15% (host service fee)
+- **Booking.com**: 15-18% (commission varies by property type)
+- **Vrbo/HomeAway**: 8-15%
+
+**What to Declare**:
+- ✅ Declare: Amount received from platform (after commission)
+- ❌ NOT: Total booking value before commission
+- ✅ Commission is explicitly deductible per Legea 239/2025
+
+**Tax Calculation Formula**:
+```
+Gross income = Amount received from platform (commission already deducted)
+Net income = Gross × (1 - 0.30) = Gross × 0.70
+Tax = Net income × 0.10
+Effective tax = Gross × 0.07
+```
+
+**Complete Example**:
+```
+Guest books Airbnb accommodation: 50,000 RON
+Airbnb commission (15%): -7,500 RON
+Amount you receive: 42,500 RON (this is GROSS for tax)
+
+Tax calculation:
+- Forfeit (30%): 42,500 × 0.30 = 12,750 RON
+- Net income: 42,500 - 12,750 = 29,750 RON
+- Tax (10% of net): 29,750 × 0.10 = 2,975 RON
+- Effective rate: 2,975 / 42,500 = 7%
+
+For CASS calculation: Use 29,750 RON (net income)
+For Declarația Unică: Declare 42,500 RON as gross
+```
+
+#### 4.2.2 Comparison: 2025 vs 2026
+
+| Aspect | 2025 | 2026 |
+|--------|------|------|
+| **Forfeit Rate** | 20% (same as long-term) | **30%** |
+| **Effective Tax** | 8% | **7%** ✅ Better |
+| **Fiscal Receipts** | Not mandatory | **Mandatory** ⚠️ |
+| **Cash Register** | Not required | **Required** (electronic) |
+| **Commission Deduction** | Unclear | **Allowed** ✅ |
+
+#### 4.2.3 More Than 7 Rooms
+
+If you rent **>7 rooms** in tourist regime:
+- ❌ No longer qualifies as "cedarea folosinței bunurilor"
+- ✅ Becomes **independent activity** (PFA/business income)
+- ⚠️ Different tax rules apply (see Section 11)
+- ⚠️ Must pay both **CASS** and **CAS** (pension)
+
+---
+
+### 4.3 Requirements & Obligations
+
+#### 4.3.1 Long-Term Rentals
 
 **Mandatory**:
-- ✅ Register contract (Form C168) within 30 days of lease start
-- ✅ Short-term rentals (Airbnb, Booking): Issue fiscal receipts
-- ✅ ANAF pre-fills Form 212 if properly registered
-- ❌ No expenses deductible (forfeit system replaces itemization)
+- ✅ Register contract (Form C168) within 30 days
+- ✅ Declare in Declarația Unică (Form 212) by May 25
+- ✅ If tenant is PJ: Tax withheld automatically
+- ✅ If tenant is PF: You calculate and pay tax
 
-**Important Notes**:
-- Unregistered rent is illegal (ANAF penalties apply)
-- Multiple properties: Aggregate all rental income
-- Mixed use (personal + rental): Prorate by days rented
+**Documentation**:
+- Keep lease contracts for 5 years
+- Keep bank transfer proof
+- ANAF may cross-check tenant declarations
+
+#### 4.3.2 Short-Term Rentals (2026)
+
+**Mandatory**:
+- ✅ Register with ANAF for tourist accommodation
+- ✅ Install electronic cash register (casa de marcat electronică)
+- ✅ Issue fiscal receipts for each booking
+- ✅ Submit periodic reports to ANAF
+- ✅ Declare in Declarația Unică (Form 212)
+
+**Platform Reporting** (Airbnb, Booking):
+- Starting 2026: Platforms must report to ANAF
+- ANAF will cross-check your declarations
+- Underreporting = penalties + interest
+
+---
+
+### 4.4 Key Differences Summary
+
+| Feature | Long-Term Rental | Short-Term Rental (1-7 rooms) | >7 Rooms |
+|---------|------------------|-------------------------------|----------|
+| **Forfeit Rate (2026)** | 20% | 30% | N/A (business) |
+| **Effective Tax** | 8% | 7% | Varies |
+| **Fiscal Receipt** | Not required | **Mandatory** | Mandatory |
+| **Cash Register** | Not required | **Required** | Required |
+| **Contract Registration** | C168 form | ANAF registration | Business registration |
+| **Withholding (PJ tenant)** | Yes (8%) | No | N/A |
+| **Activity Type** | Cedarea folosinței bunurilor | Cedarea folosinței bunurilor | Activitate independentă |
+
+---
+
+### 4.5 Common Mistakes
+
+❌ **Using 30% forfeit for all rentals in 2026**:
+- Only short-term rentals (Airbnb-style) use 30%
+- Long-term leases still use 20%
+
+❌ **Not excluding platform commissions**:
+- Airbnb/Booking fees are NOT part of your taxable income
+- Only calculate tax on what you actually receive
+
+❌ **Skipping fiscal receipts for short-term**:
+- Mandatory from 2026 for tourist accommodation
+- ANAF penalties for non-compliance
+
+❌ **Not registering contracts**:
+- Both long-term and short-term require ANAF registration
+- Unregistered = illegal + penalties
+
+---
+
+### 4.6 Calculator Implementation Status
+
+**Current implementation**:
+- ✅ Uses 30% forfeit → 7% effective (assumes short-term)
+- ✅ Correct for Airbnb/Booking users
+- ⚠️ May overstate deduction for long-term landlords
+
+**Recommended Update**:
+- Add toggle: "Tip chirie: Pe termen lung / Pe termen scurt (Airbnb)"
+- Long-term: 20% forfeit → 8% effective
+- Short-term: 30% forfeit → 7% effective
+
+---
+
+## 🎰 4.5 PRIZES & GAMBLING (Future Implementation)
+
+> **Legal Basis**: Art. 110 Codul Fiscal ([Legea 227/2015](https://legislatie.just.ro/Public/DetaliiDocument/171282))
+> **Modified by**: Legea 141/2025 (effective Aug 1, 2025)
+
+### 4.5.1 Prizes (Premii)
+
+| Threshold | Tax Rate | Notes |
+|-----------|----------|-------|
+| < 600 RON | **0%** | Tax-free per prize |
+| ≥ 600 RON | **10%** | On each prize individually |
+
+**Key Rules:**
+- Tax applies per prize, not cumulative
+- Withheld at source by prize organizer
+- NO CASS on prize income
+- Must be declared in Declarația Unică only if NOT withheld (foreign prizes)
+
+### 4.5.2 Gambling (Jocuri de Noroc)
+
+**Progressive Tax Scale (from Aug 1, 2025):**
+
+| Winnings | Tax Rate | Calculation |
+|----------|----------|-------------|
+| ≤ 10,000 RON | **4%** | Direct percentage |
+| 10,001 - 66,750 RON | **400 + 20%** | 400 RON + 20% of amount over 10,000 |
+| > 66,750 RON | **11,750 + 40%** | 11,750 RON + 40% of amount over 66,750 |
+
+**Tax-Free Thresholds:**
+- Casino/poker/slots: < 66,750 RON per payment
+- Lottery: < 66,750 RON per payment
+
+**Key Rules:**
+- Tax withheld at source by gambling operator (Romania)
+- NO CASS on gambling winnings
+- NO declaration needed for Romanian winnings (already taxed)
+- Foreign gambling: Must declare in Declarația Unică
+
+### 4.5.3 Examples
+
+**Prize Example:**
+- Win 2,000 RON prize → Tax = 2,000 × 10% = **200 RON**
+- Net: 1,800 RON
+
+**Gambling Example:**
+- Win 25,000 RON at casino
+- Tax = 400 + (25,000 - 10,000) × 20% = 400 + 3,000 = **3,400 RON**
+- Net: 21,600 RON
+
+### 4.5.4 Implementation Status
+
+❌ **Not yet implemented in calculator**
+
+Future phases may include:
+- Prizes calculator
+- Gambling winnings calculator
+- Foreign gambling declaration support
 
 ---
 

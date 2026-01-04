@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rental Tax Calculator Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        .test-case {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .test-case h3 {
+            margin-top: 0;
+            color: #1e293b;
+        }
+        .result {
+            background: #f1f5f9;
+            padding: 12px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+        .pass { color: #10b981; font-weight: bold; }
+        .fail { color: #ef4444; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Rental Tax Calculator Tests</h1>
+
+    <div id="results"></div>
+
+    <script src="calculator.js"></script>
+    <script>
+        function runTests() {
+            const tests = [
+                {
+                    name: '2025 - Long-term rental (24,000 RON)',
+                    year: 2025,
+                    gross: 24000,
+                    isShortTerm: false,
+                    expected: {
+                        forfeitRate: 0.20,
+                        netIncome: 19200,
+                        tax: 1920,
+                        effectiveRate: 0.08
+                    }
+                },
+                {
+                    name: '2025 - Short-term rental (24,000 RON)',
+                    year: 2025,
+                    gross: 24000,
+                    isShortTerm: true,
+                    expected: {
+                        forfeitRate: 0.20,
+                        netIncome: 19200,
+                        tax: 1920,
+                        effectiveRate: 0.08
+                    }
+                },
+                {
+                    name: '2026 - Long-term rental (24,000 RON)',
+                    year: 2026,
+                    gross: 24000,
+                    isShortTerm: false,
+                    expected: {
+                        forfeitRate: 0.20,
+                        netIncome: 19200,
+                        tax: 1920,
+                        effectiveRate: 0.08
+                    }
+                },
+                {
+                    name: '2026 - Short-term rental (24,000 RON)',
+                    year: 2026,
+                    gross: 24000,
+                    isShortTerm: true,
+                    expected: {
+                        forfeitRate: 0.30,
+                        netIncome: 16800,
+                        tax: 1680,
+                        effectiveRate: 0.07
+                    }
+                },
+                {
+                    name: '2026 - Long-term rental (36,000 RON)',
+                    year: 2026,
+                    gross: 36000,
+                    isShortTerm: false,
+                    expected: {
+                        forfeitRate: 0.20,
+                        netIncome: 28800,
+                        tax: 2880,
+                        effectiveRate: 0.08
+                    }
+                },
+                {
+                    name: '2026 - Short-term rental (50,000 RON)',
+                    year: 2026,
+                    gross: 50000,
+                    isShortTerm: true,
+                    expected: {
+                        forfeitRate: 0.30,
+                        netIncome: 35000,
+                        tax: 3500,
+                        effectiveRate: 0.07
+                    }
+                }
+            ];
+
+            let html = '';
+            let passCount = 0;
+            let failCount = 0;
+
+            tests.forEach(test => {
+                // Set active tax year
+                setTaxYear(test.year);
+
+                // Run calculation
+                const result = calculateRentalTax(test.gross, test.isShortTerm);
+
+                // Check results
+                const checks = {
+                    forfeitRate: Math.abs(result.forfeitRate - test.expected.forfeitRate) < 0.001,
+                    netIncome: Math.abs(result.netIncome - test.expected.netIncome) < 0.01,
+                    tax: Math.abs(result.tax - test.expected.tax) < 0.01,
+                    effectiveRate: Math.abs(result.effectiveRate - test.expected.effectiveRate) < 0.001
+                };
+
+                const allPass = Object.values(checks).every(v => v);
+                if (allPass) passCount++; else failCount++;
+
+                html += '<div class="test-case">';
+                html += '<h3>' + (allPass ? '✅' : '❌') + ' ' + test.name + '</h3>';
+                html += '<div class="result">';
+                html += '<strong>Input:</strong> ' + test.gross.toLocaleString() + ' RON (isShortTerm: ' + test.isShortTerm + ')<br>';
+                html += '<strong>Forfeit Rate:</strong> ' + (result.forfeitRate * 100).toFixed(0) + '% ';
+                html += checks.forfeitRate ? '<span class="pass">PASS</span>' : '<span class="fail">FAIL (expected ' + (test.expected.forfeitRate * 100) + '%)</span>';
+                html += '<br>';
+                html += '<strong>Net Income:</strong> ' + result.netIncome.toFixed(2) + ' RON ';
+                html += checks.netIncome ? '<span class="pass">PASS</span>' : '<span class="fail">FAIL (expected ' + test.expected.netIncome + ')</span>';
+                html += '<br>';
+                html += '<strong>Tax:</strong> ' + result.tax.toFixed(2) + ' RON ';
+                html += checks.tax ? '<span class="pass">PASS</span>' : '<span class="fail">FAIL (expected ' + test.expected.tax + ')</span>';
+                html += '<br>';
+                html += '<strong>Effective Rate:</strong> ' + (result.effectiveRate * 100).toFixed(0) + '% ';
+                html += checks.effectiveRate ? '<span class="pass">PASS</span>' : '<span class="fail">FAIL (expected ' + (test.expected.effectiveRate * 100) + '%)</span>';
+                html += '</div>';
+                html += '</div>';
+            });
+
+            html = '<div style="background: ' + (failCount === 0 ? '#d1fae5' : '#fee2e2') + '; padding: 20px; border-radius: 8px; margin-bottom: 20px;">' +
+                   '<h2 style="margin-top: 0;">Test Results: ' + passCount + ' passed, ' + failCount + ' failed</h2>' +
+                   '</div>' + html;
+
+            document.getElementById('results').innerHTML = html;
+        }
+
+        // Run tests on page load
+        runTests();
+    </script>
+</body>
+</html>

@@ -1047,3 +1047,264 @@ footer p {
     font-weight: 500;
     color: var(--text-dark);
 }
+
+/* ===== Tooltip System ===== */
+
+.help-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-left: 6px;
+    border-radius: 50%;
+    background: var(--border-color);
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    vertical-align: middle;
+}
+
+.help-trigger:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Warning indicator (no official source) */
+.help-trigger.no-source::after {
+    content: '!';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 12px;
+    height: 12px;
+    background: var(--warning-color);
+    color: white;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Optimization indicator */
+.help-trigger.has-tip::after {
+    content: '💡';
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    font-size: 12px;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+}
+
+/* Tooltip popup */
+.tooltip-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+    padding: 20px;
+}
+
+.tooltip-popup.active {
+    display: block;
+    animation: tooltipFadeIn 0.2s ease-out;
+}
+
+@keyframes tooltipFadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -48%);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.tooltip-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.tooltip-overlay.active {
+    display: block;
+}
+
+.tooltip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tooltip-title {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tooltip-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.tooltip-close:hover {
+    color: var(--text-dark);
+}
+
+.tooltip-content {
+    font-size: 0.95em;
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+.tooltip-content p {
+    margin-bottom: 12px;
+}
+
+.tooltip-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Structured info grid (tax rate, CASS, formula) */
+.tooltip-info-grid {
+    background: var(--input-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    display: grid;
+    gap: 6px;
+}
+
+.tooltip-info-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.tooltip-info-label {
+    font-weight: 600;
+    color: var(--text-secondary);
+    min-width: 70px;
+}
+
+.tooltip-info-value {
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.tooltip-info-formula {
+    font-size: 0.9em;
+    padding-top: 6px;
+    border-top: 1px dashed var(--border-color);
+    margin-top: 2px;
+}
+
+.tooltip-info-formula .tooltip-info-value {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 0.95em;
+}
+
+/* Optimization tip box */
+.tooltip-tip {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 1px solid #6ee7b7;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+}
+
+.tooltip-tip-header {
+    font-weight: 600;
+    color: #047857;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tooltip-tip-text {
+    color: #065f46;
+    font-size: 0.9em;
+}
+
+/* Warning box (no official source) */
+.tooltip-warning {
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 12px 0;
+}
+
+.tooltip-warning-header {
+    font-weight: 600;
+    color: #b45309;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tooltip-warning-text {
+    color: #92400e;
+    font-size: 0.9em;
+}
+
+/* Source link */
+.tooltip-source {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+}
+
+.tooltip-source a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.85em;
+    font-weight: 500;
+}
+
+.tooltip-source a:hover {
+    text-decoration: underline;
+}
+
+.tooltip-source-label {
+    color: var(--text-muted);
+    font-size: 0.8em;
+    margin-bottom: 4px;
+}

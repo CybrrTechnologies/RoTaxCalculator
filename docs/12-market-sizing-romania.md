@@ -217,15 +217,162 @@ The market sizing from the ChatGPT conversation is **roughly accurate** with the
 
 ---
 
-## 7. Web Launch Plan (Phase 1 - MVP)
+## 7. Web App User Projections (impoziteonline.ro)
 
-### 7.1 Strategy: Web-First, Minimal Implementation
+### 7.1 Serviceable Available Market (SAM)
+
+**Who will use an online calculator vs hiring accountant/manual calculation?**
+
+| Factor | Percentage | Notes |
+|--------|------------|-------|
+| Tech-savvy investors | 60-70% | Comfortable with online tools |
+| Self-filers (not using accountant) | 40-50% | Want to understand taxes themselves |
+| **SAM Estimate** | **150,000-250,000** | Overlap of above factors |
+
+**Breakdown by Segment**:
+- Stock investors (foreign brokers): 80,000-120,000
+- Crypto traders: 50,000-80,000
+- Short-term rental hosts (Airbnb): 10,000-20,000
+- Long-term rental owners: 30,000-50,000
+- Multiple income types: 20,000-30,000 (overlap)
+
+### 7.2 Realistic User Projections
+
+**Year 1 (2026) - Launch Year**:
+- Launch timing: Before March 2026 (tax filing season)
+- Acquisition: SEO, word-of-mouth, investor communities
+- **Conservative**: 2,000-3,000 unique users
+- **Target**: 5,000-10,000 unique users
+- **Optimistic**: 15,000-20,000 unique users
+
+**Year 2 (2027) - Growth Phase**:
+- Established SEO rankings, social proof, recommendations
+- **Conservative**: 10,000-15,000 users
+- **Target**: 20,000-30,000 users
+- **Optimistic**: 40,000-50,000 users
+
+**Year 3 (2028) - Market Leader**:
+- Dominant position in Romanian tax calculator space
+- **Conservative**: 30,000-40,000 users
+- **Target**: 50,000-80,000 users
+- **Optimistic**: 100,000-120,000 users
+
+### 7.3 Market Capture Rate
+
+| Year | Conservative | Target | Optimistic |
+|------|--------------|--------|------------|
+| Year 1 | 1-2% of SAM | 3-5% of SAM | 8-10% of SAM |
+| Year 2 | 5-8% of SAM | 10-15% of SAM | 20-25% of SAM |
+| Year 3 | 15-20% of SAM | 25-35% of SAM | 40-50% of SAM |
+
+### 7.4 Growth Drivers
+
+**Favorable Trends** (increasing TAM):
+- ✅ 2026 tax increases (10% → 16%) drive awareness
+- ✅ Growing retail investor base (+20-30% YoY)
+- ✅ Foreign broker adoption (IBKR, Trading212, XTB)
+- ✅ Crypto regulation clarity → more filing
+- ✅ Airbnb/short-term rental growth
+- ✅ Platform reporting (Airbnb, Booking report to ANAF from 2026)
+- ✅ Increased ANAF enforcement and penalties
+
+**Seasonal Traffic Patterns**:
+- **Peak season**: March-May (Declarația Unică deadline: May 25)
+  - 60-70% of annual traffic
+- **Secondary peak**: December-January (year-end tax planning)
+  - 15-20% of annual traffic
+- **Off-season**: June-November
+  - 10-20% of annual traffic
+
+### 7.5 User Personas (Priority Order)
+
+**High Priority** (most likely to use online calculator):
+1. **Tech Investor** (25-45 years)
+   - Uses foreign brokers (IBKR, Trading212, eToro)
+   - Files own taxes, tracks gains/losses
+   - Needs: Foreign broker loss carryforward, tax credit calculation
+   - **Market size**: 80,000-120,000
+
+2. **Airbnb Host** (30-50 years)
+   - Needs 2026 short-term rental calculation (30% forfeit)
+   - Platform commission handling
+   - Needs: Commission deduction, CASS calculation
+   - **Market size**: 10,000-20,000
+
+3. **Crypto Trader** (20-40 years)
+   - Tracks multiple exchanges, wallets
+   - Understands 200 RON/600 RON exemptions
+   - Needs: Transaction aggregation, exemption tracking
+   - **Market size**: 50,000-80,000
+
+**Medium Priority**:
+4. **Romanian Broker User** (30-55 years)
+   - Tax withheld by broker, but needs CASS calculation
+   - Needs: CASS bracket determination
+   - **Market size**: 40,000-60,000
+
+5. **Traditional Landlord** (40-60 years)
+   - Long-term rental contracts
+   - Needs: Simple 20% forfeit calculation
+   - **Market size**: 30,000-50,000
+
+**Lower Priority**:
+6. **Bank Interest Only** (50+ years)
+   - Simple calculation, may not need calculator
+   - Tax withheld at source
+   - **Market size**: Low priority
+
+### 7.6 Competitive Analysis
+
+**Current Landscape**:
+- Generic tax calculators: 3-5 sites (not investment-specific)
+- Accounting firm tools: Limited availability, often paid
+- Excel templates: Widely used but not user-friendly
+- Manual calculation: Still very common
+
+**Competitive Advantages**:
+- ✅ **Investment-focused**: Stocks, crypto, rental income
+- ✅ **Dual-year support**: Both 2025 & 2026 tax rules
+- ✅ **Free, no registration**: Privacy-first, no data stored
+- ✅ **Real-time calculation**: Instant results as you type
+- ✅ **Complex scenarios**: Foreign losses, CASS brackets, tax credits
+- ✅ **Educational**: Show formulas, cite legal sources
+
+**SEO Target Keywords** (Romanian):
+- "calculator taxe dividende" (dividend tax calculator)
+- "declaratie unica 2026" (unique declaration 2026)
+- "taxe airbnb romania" (airbnb taxes romania)
+- "calculator CASS investitii" (CASS investment calculator)
+- "impozit capital gains" (capital gains tax)
+- "taxe criptomonede romania" (crypto tax romania)
+
+### 7.7 Conversion & Retention
+
+**First-Time User Journey**:
+1. Lands on site (Google search, referral)
+2. Selects income type
+3. Enters amounts
+4. Views results breakdown
+5. (Optional) Saves/prints results
+
+**Target Conversion Rate**: 40-60% (visitor → calculation completed)
+
+**Return Users** (during tax season):
+- Update values as year progresses
+- Test different scenarios
+- Verify final calculation before filing
+
+**Estimated Return Rate**: 30-40% of users return 2+ times
+
+### 7.8 Launch Plan (Phase 1 - MVP)
+
+#### 7.8.1 Strategy: Web-First, Minimal Implementation
 
 **Goal**: Launch fast, validate demand, gather feedback before building complex features.
 
 **Domain**: impoziteonline.ro
 
-### 7.2 MVP Features (No PDF Editing)
+#### 7.8.2 MVP Features (No PDF Editing)
 
 | Feature | Description | Priority |
 |---------|-------------|----------|
