@@ -8,6 +8,8 @@ const STORAGE_KEY_PREFIX = 'rotax_calculator_data';
 const STORAGE_KEY_SECTIONS_PREFIX = 'rotax_calculator_sections';
 const STORAGE_KEY_ACTIVE_YEAR = 'rotax_calculator_active_year';
 const STORAGE_KEY_SECTION_ORDER = 'rotax_calculator_section_order';
+// Show fiscal optimization tips in tooltips (set to false to hide)
+const SHOW_OPTIMIZATION_TIPS = false;
 
 /**
  * Get year-specific storage keys
@@ -547,8 +549,9 @@ function showTooltip(tooltipId) {
 
     html += '  <p>' + data.content + '</p>';
 
-    // Add optimization tips if exists
-    if (data.hasTip) {
+    // Add optimization tips section (controlled by SHOW_OPTIMIZATION_TIPS constant)
+    if (data.hasTip && SHOW_OPTIMIZATION_TIPS) {
+
         // Handle multiple tips (new format)
         if (data.tips && data.tips.length > 0) {
             data.tips.forEach(function(tipItem) {
@@ -636,6 +639,11 @@ function showTooltip(tooltipId) {
         html += '</div>';
     }
 
+    // Add floating disclaimer at the bottom
+    html += '<div class="tooltip-disclaimer">';
+    html += '  ⚠️ Verifică întotdeauna sursele oficiale și consultă un contabil autorizat.';
+    html += '</div>';
+
     html += '</div>';
 
     popup.innerHTML = html;
@@ -669,7 +677,8 @@ function createHelpTrigger(tooltipId) {
 
     var classes = 'help-trigger';
     if (!data.hasSource) classes += ' no-source';
-    else if (data.hasTip) classes += ' has-tip';
+    // Only show tip indicator if tips are enabled
+    else if (data.hasTip && SHOW_OPTIMIZATION_TIPS) classes += ' has-tip';
 
     return '<span class="' + classes + '" onclick="showTooltip(\'' + tooltipId + '\')">?</span>';
 }

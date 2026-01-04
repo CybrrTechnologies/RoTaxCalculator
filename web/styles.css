@@ -1308,3 +1308,15 @@ footer p {
     font-size: 0.8em;
     margin-bottom: 4px;
 }
+
+/* Disclaimer footer */
+.tooltip-disclaimer {
+    margin-top: 16px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 1px solid #fbbf24;
+    border-radius: 6px;
+    font-size: 0.75em;
+    color: #92400e;
+    text-align: center;
+}
